@@ -57,7 +57,6 @@ def getPerspective(e,m,pDict,wList,eList):
 	sub = re.sub("X", eList[e], m)
 	subdex = pDict[sub]
 	return subdex
-		
 
 def updateWorld(w,m,eList,wProbs,wVecs,cProbs,pDict,pList):
 	posterior = 0.0
