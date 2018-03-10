@@ -1,5 +1,6 @@
 from __future__ import division
 import sys
+import re
 
 def parseEntities(efile):
 	eDict = {}
@@ -8,7 +9,7 @@ def parseEntities(efile):
 	entities = ef.read().split("\n")
 	for e in entities:
 		entity = e.split("\t")
-		eDict[len(eList)] = entity[0]
+		eDict[entity[0]] = len(eList)
 		eList.append(entity[0])
 	return eList,eDict
 
@@ -19,7 +20,7 @@ def parsePropositions(pfile):
 	props = pf.read().split("\n")
 	for p in props:
 		prop = p.split("\t")
-		pDict[len(pList)] = prop[1]
+		pDict[prop[1]] = len(pList)
 		pList.append(prop[1])
 	return pList,pDict
 
@@ -33,7 +34,7 @@ def parseWorlds(wfile):
 		world = w.split("\t")
 		wname = world[0]
 		wvec = [int(x) for x in world[1:len(world)]]
-		wDict[len(wList)] = wname
+		wDict[wname] = len(wList)
 		wList.append(wname)
 		wVecs.append(wvec)
 	return wList,wDict,wVecs
@@ -45,8 +46,25 @@ def initWPriors(wList):
 	return wProbs
 
 def initCPriors(eList):
-	cProbs = []
+	cProbs = [0.4,0.4,0.1,0.1]
 	return cProbs
+
+def lzero(w,m,wProbs,wVecs):
+	posterior = wVecs[w][m] * wProbs[w]
+	return posterior
+
+def getPerspective(e,m,pDict,wList,eList):
+	sub = re.sub("X", eList[e], m)
+	subdex = pDict[sub]
+	return subdex
+		
+
+def updateWorld(w,m,eList,wProbs,wVecs,cProbs,pDict,pList):
+	posterior = 0.0
+	for e in range(0,len(eList)):
+		prop = getPerspective(e,m,pDict,pList,eList)
+		posterior += cProbs[e]*lzero(w,prop,wProbs,wVecs)
+	return posterior
 
 def main():
 	wfile = sys.argv[1]
@@ -57,6 +75,15 @@ def main():
 	wList,wDict,wVecs = parseWorlds(wfile)
 	wProbs = initWPriors(wList)
 	cProbs = initCPriors(eList)
+	print "World: ", wList[1]
+	print "Prop: ", pList[1]
+	lzero(1,1,wProbs,wVecs)
+	print "World: ", wList[1]
+	print "Prop: ", pList[0]
+	lzero(1,0,wProbs,wVecs)
+	update = updateWorld(1,"speaker in Amherst",eList,wProbs,wVecs,cProbs,pDict,pList)
+	print update
+
 
 main()
 

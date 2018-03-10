@@ -1,8 +1,8 @@
-I in N	Speaker in Northampton
-A in N	Addressee in Northampton
+I in N	speaker in Northampton
+A in N	addressee in Northampton
 J in N	Jill in Northampton
 S in N	Sarah in Northampton
-I in A	Speaker in Amherst
-A in A	Addressee in Amherst
+I in A	speaker in Amherst
+A in A	addressee in Amherst
 J in A	Jill in Amherst
 S in A	Sarah in Amherst
