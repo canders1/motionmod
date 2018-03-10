@@ -85,7 +85,6 @@ def makeCS(eList):
 
 def makeObservation(cs):
 	o = random.choice(cs)
-	print o
 	return o
 
 def main():
