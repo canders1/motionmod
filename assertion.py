@@ -83,16 +83,10 @@ def main():
 	wList,wDict,wVecs = parseWorlds(wfile)
 	wProbs = initWPriors(wList)
 	cProbs = initCPriors(eList)
-	print "World: ", wList[1]
-	print "Prop: ", pList[1]
 	lzero(1,1,wProbs,wVecs)
-	print "World: ", wList[1]
-	print "Prop: ", pList[0]
 	lzero(1,0,wProbs,wVecs)
-	update = updateWorld(1,"speaker in Amherst",eList,wProbs,wVecs,cProbs,pDict,pList)
-	print update
-	u = updatePerspective(3,"X in Amherst",cProbs,wList,eList,wProbs,wVecs,pDict,pList)
-	print u
+	updateWorld(1,"speaker in Amherst",eList,wProbs,wVecs,cProbs,pDict,pList)
+	updatePerspective(3,"X in Amherst",cProbs,wList,eList,wProbs,wVecs,pDict,pList)
 
 main()
 
