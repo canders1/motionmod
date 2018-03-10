@@ -1,6 +1,8 @@
 from __future__ import division
 import sys
 import re
+import itertools
+import random
 
 def parseEntities(efile):
 	eDict = {}
@@ -73,6 +75,19 @@ def updatePerspective(e,m,cProbs,wList,eList,wProbs,wVecs,pDict,pList):
 	posterior = postSum*cProbs[e]
 	return posterior
 
+def makeCS(eList):
+	cs = []
+	indexes = range(0,len(eList))
+	for i in range(0,len(eList)):
+		cs += list(itertools.combinations(indexes,i+1))
+	cs = [list(x) for x in cs]
+	return cs
+
+def makeObservation(cs):
+	o = random.choice(cs)
+	print o
+	return o
+
 def main():
 	wfile = sys.argv[1]
 	efile = sys.argv[2]
@@ -86,6 +101,7 @@ def main():
 	lzero(1,0,wProbs,wVecs)
 	updateWorld(1,"speaker in Amherst",eList,wProbs,wVecs,cProbs,pDict,pList)
 	updatePerspective(3,"X in Amherst",cProbs,wList,eList,wProbs,wVecs,pDict,pList)
-
+	cs = makeCS(eList)
+	makeObservation(cs)
 main()
 
