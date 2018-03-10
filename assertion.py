@@ -66,6 +66,14 @@ def updateWorld(w,m,eList,wProbs,wVecs,cProbs,pDict,pList):
 		posterior += cProbs[e]*lzero(w,prop,wProbs,wVecs)
 	return posterior
 
+def updatePerspective(e,m,cProbs,wList,eList,wProbs,wVecs,pDict,pList):
+	postSum = 0.0
+	prop = getPerspective(e,m,pDict,pList,eList)
+	for w in range(0,len(wList)):
+		postSum += lzero(w,prop,wProbs,wVecs)
+	posterior = postSum*cProbs[e]
+	return posterior
+
 def main():
 	wfile = sys.argv[1]
 	efile = sys.argv[2]
@@ -83,7 +91,8 @@ def main():
 	lzero(1,0,wProbs,wVecs)
 	update = updateWorld(1,"speaker in Amherst",eList,wProbs,wVecs,cProbs,pDict,pList)
 	print update
-
+	u = updatePerspective(3,"X in Amherst",cProbs,wList,eList,wProbs,wVecs,pDict,pList)
+	print u
 
 main()
 
