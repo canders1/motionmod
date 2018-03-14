@@ -41,6 +41,20 @@ def parseWorlds(wfile):
 		wVecs.append(wvec)
 	return wList,wDict,wVecs
 
+def urn(eList,it=100,mixProb=0.4):
+	probs = []
+	urn = [0,0,1] #Adjust bias towards speaker and addressee here
+	for i in it:
+		flip = random.float(0,1) #figure out how to get a random float in range
+		if flip > mixProb:
+			urn.append(random.choice(eList))
+		else:
+			urn.append(random.choice(urn))
+	norm = sum(urn)
+	for e in range(0,len(eList)):
+		probs[e] = count(urn,e)/norm #figure out how to count number of occurences of e in list
+	return probs
+
 def initWPriors(wList):
 	wProbs = []
 	for w in range(0,len(wList)):
@@ -48,12 +62,28 @@ def initWPriors(wList):
 	return wProbs
 
 def initCPriors(eList):
-	cProbs = [0.4,0.4,0.1,0.1]
-	return cProbs
+	return urn(eList)
 
-def lzero(w,m,wProbs,wVecs):
+def listener0(w,m,wProbs,wVecs):
 	posterior = wVecs[w][m] * wProbs[w]
 	return posterior
+
+def speaker0(o,wProbs,wVecs,cProbs,pList):
+	#argmax listener0(w|m) - cost(m)
+	print "Observation", o
+	mProbs = []
+	for p in range(0,len(pList)):
+		print "Considering ",pList[p]
+		mProb = 0.0
+		for w in o:
+			mProb += listener0(w,p,wProbs,wVecs)
+		mProbs.append(mProb)
+	best = 0
+	for p in range(0,len(mProbs)):
+		if mProbs[p] > mProbs[best]:
+			best = p
+	print "Chosen message is: ",pList[p]
+	return p	
 
 def getPerspective(e,m,pDict,wList,eList):
 	sub = re.sub("X", eList[e], m)
@@ -75,10 +105,10 @@ def updatePerspective(e,m,cProbs,wList,eList,wProbs,wVecs,pDict,pList):
 	posterior = postSum*cProbs[e]
 	return posterior
 
-def makeCS(eList):
+def makeCS(wList):
 	cs = []
-	indexes = range(0,len(eList))
-	for i in range(0,len(eList)):
+	indexes = range(0,len(wList))
+	for i in range(0,len(wList)):
 		cs += list(itertools.combinations(indexes,i+1))
 	cs = [list(x) for x in cs]
 	return cs
@@ -87,6 +117,29 @@ def makeObservation(cs):
 	o = random.choice(cs)
 	return o
 
+def updateCS(wProbs):
+	currW = []
+	for w in range(0,len(wProbs)):
+		if wProbs[w] > 0:
+			currW.append(w)
+	return makeCS(currW)
+
+def initPriors(wList,eList):
+	wProbs = initWPriors(wList)
+	cProbs = initCPriors(eList)
+	cs = makeCS(wList)
+	return wProbs,cProbs,cs
+
+def utter(eList,eDict,pList,pDict,wList,wDict,wVecs,wProbs,cProbs,cs):
+	observation = makeObservation(cs)
+	message = speaker0(observation,wProbs,wVecs,cProbs,pList)
+	for w in range(0,len(wList)):
+		wProbs[w] = updateWorld(w,message,eList,wProbs,wVecs,cProbs,pDict,pList)
+	for e in range(0,len(eList)):
+		cProbs[e] = updatePerspective(e,message,cProbs,wList,eList,wProbs,wVecs,pDict,pList)
+	cs = updateCS(wProbs)
+	return wProbs,cProbs,cs
+
 def main():
 	wfile = sys.argv[1]
 	efile = sys.argv[2]
@@ -94,13 +147,7 @@ def main():
 	eList,eDict = parseEntities(efile)
 	pList,pDict = parsePropositions(pfile)
 	wList,wDict,wVecs = parseWorlds(wfile)
-	wProbs = initWPriors(wList)
-	cProbs = initCPriors(eList)
-	lzero(1,1,wProbs,wVecs)
-	lzero(1,0,wProbs,wVecs)
-	updateWorld(1,"speaker in Amherst",eList,wProbs,wVecs,cProbs,pDict,pList)
-	updatePerspective(3,"X in Amherst",cProbs,wList,eList,wProbs,wVecs,pDict,pList)
-	cs = makeCS(eList)
-	makeObservation(cs)
+	wProbs,cProbs,cs = initPriors(wList,eList)
+	wProbs,cProbs,cs = utter(eList,eDict,pList,pDict,wList,wDict,wProbs,cProbs,cs)
 main()
 
