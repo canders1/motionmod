@@ -44,15 +44,16 @@ def parseWorlds(wfile):
 def urn(eList,it=100,mixProb=0.4):
 	probs = []
 	urn = [0,0,1] #Adjust bias towards speaker and addressee here
-	for i in it:
-		flip = random.float(0,1) #figure out how to get a random float in range
+	eIndexes = range(0,len(eList))
+	for i in range(0,it):
+		flip = random.random()
 		if flip > mixProb:
-			urn.append(random.choice(eList))
+			urn.append(random.choice(eIndexes))
 		else:
 			urn.append(random.choice(urn))
-	norm = sum(urn)
+	norm = sum(map(int,urn))
 	for e in range(0,len(eList)):
-		probs[e] = count(urn,e)/norm #figure out how to count number of occurences of e in list
+		probs.append(urn.count(e)/norm)
 	return probs
 
 def initWPriors(wList):
@@ -62,8 +63,8 @@ def initWPriors(wList):
 	return wProbs
 
 def initCPriors(eList):
-	#return urn(eList)
-	return [0.4,0.4,0.1,0.1]
+	return urn(eList)
+	#return [0.4,0.4,0.1,0.1]
 
 def listener0(w,m,wProbs,wVecs):
 	posterior = wVecs[w][m] * wProbs[w]
@@ -85,7 +86,7 @@ def speaker0(o,wProbs,wVecs,cProbs,mList,eList,pDict,pList):
 	for p in range(0,len(mProbs)):
 		if mProbs[p] > mProbs[best]:
 			best = p
-	print mProbs
+	print "Message probabilities: ", mProbs
 	print "Chosen message is: ",pList[best]
 	return best
 
