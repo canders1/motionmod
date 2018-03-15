@@ -32,6 +32,15 @@ class World:
 			else:
 				return False
 
+	def getPropositions(self):
+		return self.propositions
+
+	def getDefinedEntities(self):
+		return self.entities["entity"]
+
+	def getName(self):
+		return self.name
+
 w = World("w1")
 w.addProposition(["exists","Sarah"])
 w.addProposition(["exists","I"])
