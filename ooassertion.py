@@ -4,9 +4,12 @@ import re
 import itertools
 import random
 from messageClass import Message
+from worldClass import World
 import copy
 
 def expandMessages(u,aList,pList,eDict,gaps):
+	#Generates all possible messages given an utterance with gaps
+	#The gaps can be plugged by any entity in the relevant ontological class
 	messageList = [[u,aList,pList]]
 	for gap in gaps:
 		subList = eDict[gap]
@@ -79,6 +82,7 @@ def parsePredicates(prfile):
 	return predList
 
 def genPropSet(pred,eDict):
+	#Generates all possible propositions given a predicate and a entity dictionary
 	name = pred[0]
 	args = pred[1]
 	ex = pred[2]
@@ -103,23 +107,44 @@ def genPropSet(pred,eDict):
 				for p in possibilities:
 					newArgs = [p if x==e else x for x in pred]
 					expandedList.append(newArgs) 
-				exList.append(map(lambda x: [name,x],expandedList))
+				exList.append(map(lambda x: [name]+x,expandedList))
 		predList = exList
 	else:
-		predList = map(lambda x: [[name,x]],predList)
+		predList = map(lambda x: [[name]+x],predList)
 	return predList
 
 
 def genWorlds(predList,eDict):
+	#Generates all possible worlds given a list of predicates and entities
 	wDict = {}
 	wList = []
 	predSet = []
+	wSet = [World("0")]
 	for p in predList:
-		predSet += genPropSet(p,eDict)
-	print len(predSet)
-	#Create worlds for all options for first prop
-	#For each subsequent prop, clone n times where n is number of options for that prop
-	#Add a diff option for that prop to each clone
+		predSet += genPropSet(p,eDict) #Generate all possible propositions
+	for pSet in predSet:
+		print pSet
+		if len(pSet) == 1:
+			#Free choice, add some or all
+			prop = pSet[0]
+			newWSet =[]
+			for w in wSet:
+				newW = w.copy()
+				newW.addProposition(prop[0]+prop[1])
+				newWSet.append(newW)
+			wSet += newWSet
+		else:
+			#Forced choice (mutually exclusive options, one must be true)
+			newWorlds = []
+			for choice in pSet:
+				newWSet = []
+				for w in wSet:
+					newW = w.copy()
+					newW.addProposition(choice[0]+choice[1])
+					newWSet.append(newW)
+				newWorlds += newWSet
+			wSet = newWorlds
+	print len(wSet)
 	return wDict,wList
 
 def main():

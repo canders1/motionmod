@@ -1,11 +1,10 @@
+import copy
+
 class World:
-	def __init__(self,name,entities):
+	def __init__(self,name,entities={'entity':[]},propositions={}):
 		self.name = name
-		if entities == {}:
-			self.entities = {'entity':[]}
-		else:
-			self.entities = entities
-		self.propositions = {}
+		self.entities = entities
+		self.propositions = propositions
 
 	def addProposition(self,prop):
 		pred = prop[0]
@@ -43,6 +42,9 @@ class World:
 
 	def getName(self):
 		return self.name
+
+	def copy(self):
+		return World(self.name+"new",copy.copy(self.entities),copy.copy(self.propositions))
 
 w = World("w1")
 w.addProposition(["exists","Sarah"])
