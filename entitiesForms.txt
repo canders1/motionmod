@@ -1,3 +1,4 @@
 entities	I,you,Sarah,Jill,Amherst,Northampton
 SUBJ	I,you,Sarah,Jill
 LOC	Amherst,Northampton
+T	now,future

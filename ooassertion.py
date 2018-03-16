@@ -66,15 +66,71 @@ def parseEntities(efile):
 		eDict[name] = entries
 	return eDict
 
+def parsePredicates(prfile):
+	predList = []
+	prf = open(prfile,"r")
+	prLines = prf.read().split("\n")
+	for pr in prLines:
+		prs = pr.split("\t")
+		name = prs[0]
+		args = prs[1].split(",")
+		exclusives = prs[2].split(",")
+		predList.append([name,args,exclusives])
+	return predList
+
+def genPropSet(pred,eDict):
+	name = pred[0]
+	args = pred[1]
+	ex = pred[2]
+	predList = [args]
+	for e in range(0,len(args)):
+		arg = args[e]
+		if arg not in ex:
+			expandedList = []
+			for pred in predList:
+				possibilities = eDict[arg]
+				for poss in possibilities:
+					newArgs = copy.copy(pred)
+					newArgs[e] = poss
+					expandedList.append(newArgs)
+		predList = expandedList
+	if ex != ['']:
+		for e in ex:
+			exList = []
+			possibilities = eDict[e]
+			for pred in predList:
+				expandedList = []
+				for p in possibilities:
+					newArgs = [p if x==e else x for x in pred]
+					expandedList.append(newArgs) 
+				exList.append(map(lambda x: [name,x],expandedList))
+		predList = exList
+	else:
+		predList = map(lambda x: [[name,x]],predList)
+	return predList
+
+
+def genWorlds(predList,eDict):
+	wDict = {}
+	wList = []
+	predSet = []
+	for p in predList:
+		predSet += genPropSet(p,eDict)
+	print len(predSet)
+	#Create worlds for all options for first prop
+	#For each subsequent prop, clone n times where n is number of options for that prop
+	#Add a diff option for that prop to each clone
+	return wDict,wList
+
 def main():
 	if len(sys.argv) < 3:
-		print "Usage: python assertion.py worlds entities messages"
+		print "Usage: python assertion.py entities messages predicates"
 		quit()
-	wfile = sys.argv[1]
-	efile = sys.argv[2]
-	mfile = sys.argv[3]
+	efile = sys.argv[1]
+	mfile = sys.argv[2]
+	prfile = sys.argv[3]
 	eDict = parseEntities(efile)
 	mDict,mList= parseMessages(mfile,eDict)
-	for m in mList:
-		print m
+	predList = parsePredicates(prfile)
+	wDict,wList = genWorlds(predList,eDict)
 main()
