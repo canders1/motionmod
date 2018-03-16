@@ -1,7 +1,10 @@
 class World:
-	def __init__(self,name):
+	def __init__(self,name,entities):
 		self.name = name
-		self.entities = {'entity':[]}
+		if entities == {}:
+			self.entities = {'entity':[]}
+		else:
+			self.entities = entities
 		self.propositions = {}
 
 	def addProposition(self,prop):

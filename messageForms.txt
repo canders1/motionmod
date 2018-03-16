@@ -1,0 +1,2 @@
+SUBJ in LOC&in,SUBJ,LOC&&SUBJ,LOC
+X in LOC&in,X,LOC&&SUBJ,LOC
