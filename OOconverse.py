@@ -117,13 +117,11 @@ def genPropSet(pred,eDict):
 def genWorlds(predList,eDict):
 	#Generates all possible worlds given a list of predicates and entities
 	wDict = {}
-	wList = []
 	predSet = []
 	wSet = [World("0")]
 	for p in predList:
 		predSet += genPropSet(p,eDict) #Generate all possible propositions
 	for pSet in predSet:
-		print pSet
 		if len(pSet) == 1:
 			#Free choice, add some or all
 			prop = pSet[0]
@@ -144,8 +142,86 @@ def genWorlds(predList,eDict):
 					newWSet.append(newW)
 				newWorlds += newWSet
 			wSet = newWorlds
-	print len(wSet)
-	return wDict,wList
+	return wDict,wSet
+
+def initWPriors(wList):
+	wProbs = []
+	for w in range(0,len(wList)):
+		wProbs.append(1/float(len(wList)))
+	return wProbs
+
+def initCPriors(eList):
+	return urn(eList)
+
+def urn(eList,it=100,mixProb=0.4):
+	probs = []
+	urn = [0,0,1] #Adjust bias towards speaker and addressee here
+	eIndexes = range(0,len(eList))
+	for i in range(0,it):
+		flip = random.random()
+		if flip > mixProb:
+			urn.append(random.choice(eIndexes))
+		else:
+			urn.append(random.choice(urn))
+	norm = sum(map(int,urn))
+	for e in range(0,len(eList)):
+		probs.append(urn.count(e)/norm)
+	return probs
+
+def initPriors(wList,eList):
+	print "initializing world probs"
+	wProbs = initWPriors(wList)
+	print "initializing perspective probs"
+	cProbs = initCPriors(eList)
+	cs = range(0,len(wList))
+	return wProbs,cProbs,cs
+
+def evaluate(wProbs,cProbs,cs, label):
+	print label+" max world prob: ", max(wProbs)
+	print label+" min world prob: ", min(wProbs)
+	print label+" perspective probs: ", cProbs
+	print label+" size of context set: ", len(cs)
+	return
+
+def utter(perspList,eDict,wList,wDict,wProbs,cProbs,cs,mList,mDict):
+	observation = makeObservation(cs)
+	message = speaker0(observation,wProbs,cProbs,mList,mDict,perspList)
+	for w in range(0,len(wList)):
+		wProbs[w] = updateWorld(w,message,eList,wProbs,cProbs,pDict,pList)
+	for e in range(0,len(eList)):
+		cProbs[e] = updatePerspective(e,message,cProbs,wList,eList,wProbs,pDict,pList)
+	cs = updateCS(wProbs)
+	return normProbs(wProbs),normProbs(cProbs),cs
+
+def makeObservation(cs):
+	size = random.randint(1,len(cs))
+	sample = random.sample(cs,size)
+	return sample
+
+def speaker0(o,wProbs,cProbs,mList,mDict,perspList):
+	mProbs = []
+	for m in range(0,len(mList)):
+		print "Considering ",mList[m]
+		mProb = 0.0
+		for w in o:
+			for per in range(0,len(perspList)):
+				prop = getPerspective(per,m,mList,mDict,perspList)
+				mProb += listener0(w,prop,wProbs,wVecs)
+		mProbs.append(mProb)
+	best = 0
+	for p in range(0,len(mProbs)):
+		if mProbs[p] > mProbs[best]:
+			best = p
+	print "Message probabilities: ", mProbs
+	print "Chosen message is: ",pList[best]
+	return best
+
+def getPerspective(p,m,mList,mDict,perspList):
+	print perspList[p]
+	print mList[m]
+	sub = re.sub("X", perspList[p], mList[m])
+	subdex = mDict[sub]
+	return subdex
 
 def main():
 	if len(sys.argv) < 3:
@@ -157,5 +233,10 @@ def main():
 	eDict = parseEntities(efile)
 	mDict,mList= parseMessages(mfile,eDict)
 	predList = parsePredicates(prfile)
+	perspList = eDict["SUBJ"]
 	wDict,wList = genWorlds(predList,eDict)
+	wProbs,cProbs,cs = initPriors(wList,perspList)
+	evaluate(wProbs,cProbs,cs, "Initial")
+	wProbs,cProbs,cs = utter(perspList,eDict,wList,wDict,wProbs,cProbs,cs,mList,mDict)
+	
 main()
