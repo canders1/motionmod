@@ -6,23 +6,58 @@ var worldPrior = function() {
 	{locSarah: 'Noho', locJane: 'Amherst'}])
 }
 
-var utterances = ['Jane in Amherst','Jane in Noho','Sarah in Amherst','Sarah in Noho']
-
-var meaning = function(utterance, world){
-  return utterance == 'Jane in Amherst' ? world.locJane == 'Amherst' :
-  utterance == 'Jane in Noho' ? world.locJane == 'Noho' :
-  utterance == 'Sarah in Amherst' ? world.locSarah == 'Amherst' :
-  utterance == 'Sarah in Amherst' ? world.locSarah == 'Noho' :
-  true
+var perspectivePrior = function() {
+	return uniformDraw([
+	{value: 'Sarah'},
+	{value: 'Jane'}])
 }
 
-var literalListener = function(utterance){
+var utterances = [
+'Jane is in Amherst',
+'Jane is in Noho',
+'Sarah is in Amherst',
+'Sarah is in Noho',
+'I am in Amherst',
+'I am in Noho',
+'You are in Amherst',
+'You are in Noho']
+
+var meaning = function(utterance, world, perspective){
+  return utterance == 'Jane is in Amherst' ? world.locJane == 'Amherst' :
+  utterance == 'Jane is in Noho' ? world.locJane == 'Noho' :
+  utterance == 'Sarah is in Amherst' ? world.locSarah == 'Amherst' :
+  utterance == 'Sarah is in Amherst' ? world.locSarah == 'Noho' :
+  utterance == 'You am in Amherst'? perspective.value == 'Sarah'&& world.locSarah == 'Amherst' || perspective.value == 'Jane' && world.locJane == 'Amherst' :
+  utterance == 'I am in Amherst'? perspective.value == 'Sarah'&& world.locSarah == 'Amherst' || perspective.value == 'Jane' && world.locJane == 'Amherst' 
+  : true
+}
+
+var literalListener = function(utterance,perspective){
   Infer({method:'enumerate'}, function(){
     var world = worldPrior();
-    var uttTruthVal = meaning(utterance, world);
+    var uttTruthVal = meaning(utterance, world, perspective);
     condition(uttTruthVal == true)
     return world
   })
 }
 
-literalListener('Jane in Amherst')
+var speaker = function(world,perspective){
+	Infer({method:'enumerate'}, function(){
+	var utterance = uniformDraw(utterances);
+	factor(literalListener(utterance,perspective).score(world));
+	return utterance
+	})
+}
+
+var pragmaticListener = function(utterance){
+	Infer({method:"enumerate"}, function(){
+	var world = worldPrior();
+	var perspective = perspectivePrior();
+	observe(speaker(world,perspective),utterance,perspective);
+	return [world,perspective]
+	})
+}
+
+//literalListener('I am in Amherst',{value: 'Sarah'})
+//speaker({locSarah: 'Amherst', locJane: 'Amherst'},{value: 'Sarah'})
+pragmaticListener('You are in Amherst')
