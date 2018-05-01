@@ -1,0 +1,28 @@
+var worldPrior = function() {
+	return uniformDraw([
+	{locSarah: 'Amherst', locJane: 'Amherst'},
+	{locSarah: 'Amherst', locJane: 'Noho'},
+	{locSarah: 'Noho', locJane: 'Noho'},
+	{locSarah: 'Noho', locJane: 'Amherst'}])
+}
+
+var utterances = ['Jane in Amherst','Jane in Noho','Sarah in Amherst','Sarah in Noho']
+
+var meaning = function(utterance, world){
+  return utterance == 'Jane in Amherst' ? world.locJane == 'Amherst' :
+  utterance == 'Jane in Noho' ? world.locJane == 'Noho' :
+  utterance == 'Sarah in Amherst' ? world.locSarah == 'Amherst' :
+  utterance == 'Sarah in Amherst' ? world.locSarah == 'Noho' :
+  true
+}
+
+var literalListener = function(utterance){
+  Infer({method:'enumerate'}, function(){
+    var world = worldPrior();
+    var uttTruthVal = meaning(utterance, world);
+    condition(uttTruthVal == true)
+    return world
+  })
+}
+
+literalListener('Jane in Amherst')
