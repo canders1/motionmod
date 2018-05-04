@@ -1,0 +1,14 @@
+
+target/streams/compile/compileIncremental/$global/streams/out
+
+target/streams/compile/compile/$global/streams/out
+
+*.jar
+
+*.class
+
+*.class
+
+*.jar
+
+*.class
