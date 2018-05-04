@@ -1,3 +1,17 @@
 target/.*
 project/.*
 *.class
+
+*.class
+
+*.properties
+
+*.xml
+
+target/streams/$global/$global/$global/streams/out
+
+target/streams/$global/dependencyPositions/$global/streams/update_cache_2.12/input_dsp
+
+*.jar
+
+*.class
