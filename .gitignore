@@ -12,3 +12,7 @@ target/streams/compile/compile/$global/streams/out
 *.jar
 
 *.class
+
+*.class
+
+*.jar
