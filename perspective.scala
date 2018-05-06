@@ -4,6 +4,7 @@ import com.cra.figaro.library.compound.^^
 import com.cra.figaro.language._
 import com.cra.figaro.library.collection.FixedSizeArray
 import com.cra.figaro.library.atomic.discrete
+import com.cra.figaro.util.random
 
 object PerspectiveModel {
 
@@ -63,6 +64,16 @@ object PerspectiveModel {
 		}
 	}
 
+	def sampleWorld(worldList:List[Map[String,Boolean]],wProbs:IndexedSeq[Double]) = {
+		val world = Select(0.until(worldList.length-1).map(v => wProbs(v) -> v): _*)
+		world
+	}
+
+	def samplePerspective(perspectives:List[String],pProbs:IndexedSeq[Double]) = {
+		val perspective = Select(0.until(perspectives.length-1).map(v => pProbs(v) -> v): _*)
+		perspective
+	}
+
 	def literalListener(utterance: String, perspective:String, worldList:List[Map[String,Boolean]],wProbs:IndexedSeq[Double]) = {
 		val postW = for (w <- 0 until worldList.length) yield {
 			getTruthValue(utterance,worldList(w),perspective)*wProbs(w)
@@ -84,6 +95,13 @@ object PerspectiveModel {
 		println(uttUtil)
 		val winner = uttUtil.indexOf(uttUtil.max)
 		winner
+	}
+
+	def sampleLiteralSpeaker(worldList:List[Map[String,Boolean]],wProbs:IndexedSeq[Double],perspectives:List[String],pProbs:IndexedSeq[Double],utterances:List[String]) = {
+		val p = samplePerspective(perspectives,pProbs)
+		val w = sampleWorld(worldList,wProbs)
+		val u = literalSpeaker(w,p,worldList,wProbs,pProbs,utterances)
+		u
 	}
 
 	def main(args: Array[String]){
