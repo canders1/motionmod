@@ -5,20 +5,21 @@ import com.cra.figaro.language._
 import com.cra.figaro.library.collection.FixedSizeArray
 import com.cra.figaro.library.atomic.discrete
 import com.cra.figaro.util.random
+import com.cra.figaro.patterns.learning._
+import com.cra.figaro.library.atomic.continuous._
+import com.cra.figaro.patterns.learning.ParameterCollection
 
 object PerspectiveModel {
 
 	def makeWorldProbs(numW : Int)={
-		val wProbs = for(w <- 0 until numW) yield {
-			1.0/numW
-		}
+		val p = 1.0/numW
+		val wProbs = discrete.Uniform(0.until(numW).map(v => p): _*)
 		wProbs
 	}
 
 	def makePerspectiveProbs(numP : Int)={
-		val pProbs = for(p <- 0 until numP) yield {
-			1.0/numP
-		}
+		val p = 1.0/numP
+		val pProbs = Dirichlet(0.until(numP).map(v => p): _*)
 		pProbs
 	}
 
@@ -64,7 +65,7 @@ object PerspectiveModel {
 		}
 	}
 
-	def sampleWorld(worldList:List[Map[String,Boolean]],wProbs:IndexedSeq[Double]) = {
+	/*def sampleWorld(worldList:List[Map[String,Boolean]],wProbs:IndexedSeq[Double]) = {
 		val world = Select(0.until(worldList.length-1).map(v => wProbs(v) -> v): _*)
 		world
 	}
@@ -74,7 +75,7 @@ object PerspectiveModel {
 		perspective
 	}
 
-	def literalListener(utterance: String, perspective:String, worldList:List[Map[String,Boolean]],wProbs:IndexedSeq[Double]) = {
+	def literalListener(utterance: String, perspective:String, worldList:List[Map[String,Boolean]],wProbs:IndexedSeq[AtomicSelect[Int]]) = {
 		val postW = for (w <- 0 until worldList.length) yield {
 			getTruthValue(utterance,worldList(w),perspective)*wProbs(w)
 		}
@@ -86,7 +87,7 @@ object PerspectiveModel {
 		normPostW}; else postW
 	}
 
-	def literalSpeaker(worldIndex:Int,perspective:String,worldList:List[Map[String,Boolean]],wProbs:IndexedSeq[Double],pProbs:IndexedSeq[Double], utterances:List[String]) = {
+	def literalSpeaker(worldIndex:Int,perspective:String,worldList:List[Map[String,Boolean]],wProbs:IndexedSeq[AtomicSelect[Int]], utterances:List[String]) = {
 		println(utterances)
 		val uttUtil = for (u <- utterances) yield {
 			println(literalListener(u,perspective,worldList,wProbs))
@@ -102,17 +103,23 @@ object PerspectiveModel {
 		val w = sampleWorld(worldList,wProbs)
 		val u = literalSpeaker(w,p,worldList,wProbs,pProbs,utterances)
 		u
-	}
+	}*/
 
 	def main(args: Array[String]){
-		val worldList = makeWorlds()
-		val wProbs = makeWorldProbs(worldList.length)
-		val utterances = makeUtterances()
+		val params = ModelParameters()
 		val perspectives = makePerspectives()
-		val pProbs = makePerspectiveProbs(perspectives.length)
-		val truth = getTruthValue("I am coming to Northampton",worldList(worldList.length-3),perspectives(1))
+		val pp = 1.0/perspectives.length
+		val pProbs = Dirichlet(0.until(perspectives.length).map(v => pp): _*)("pProbs", params)
+		val worldList = makeWorlds()
+		val wp = 1.0/worldList.length
+		val wProbs = discrete.Uniform(0.until(worldList.length).map(v => wp): _*)("wProbs", params)
+		val utterances = makeUtterances()
+		
+		//val pProbs = makePerspectiveProbs(perspectives.length)
+		println(pProbs)
+		/*val truth = getTruthValue("I am coming to Northampton",worldList(worldList.length-3),perspectives(1))
 		val lit = literalListener("I am coming to Northampton",perspectives(0),worldList,wProbs)
 		val utterance= literalSpeaker(worldList.length-3,perspectives(0),worldList,wProbs,pProbs,utterances)
-		println(utterance)
+		println(utterance)*/
 	}
 }

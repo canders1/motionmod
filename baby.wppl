@@ -3,38 +3,18 @@ var addressee = 'Jane'
 
 var worldPrior = function() {
 	return uniformDraw([
-	{locSarah: 'Amherst', locJane: 'Amherst', moveJaneNoho: true, moveSarahNoho: true, moveElizaNoho: true},
-	{locSarah: 'Amherst', locJane: 'Amherst', moveJaneNoho: true, moveSarahNoho: true, moveElizaNoho: false},
-	{locSarah: 'Amherst', locJane: 'Amherst', moveJaneNoho: true, moveSarahNoho: false, moveElizaNoho: true},
-	{locSarah: 'Amherst', locJane: 'Amherst', moveJaneNoho: false, moveSarahNoho: true, moveElizaNoho: true},
 	{locSarah: 'Amherst', locJane: 'Amherst', moveJaneNoho: true, moveSarahNoho: false, moveElizaNoho: false},
 	{locSarah: 'Amherst', locJane: 'Amherst', moveJaneNoho: false, moveSarahNoho: false, moveElizaNoho: true},
 	{locSarah: 'Amherst', locJane: 'Amherst', moveJaneNoho: false, moveSarahNoho: true, moveElizaNoho: false},
-	{locSarah: 'Amherst', locJane: 'Amherst', moveJaneNoho: false, moveSarahNoho: false, moveElizaNoho: false},
-	{locSarah: 'Noho', locJane: 'Noho', moveJaneNoho: true, moveSarahNoho: true, moveElizaNoho: true},
-	{locSarah: 'Noho', locJane: 'Noho', moveJaneNoho: true, moveSarahNoho: true, moveElizaNoho: false},
-	{locSarah: 'Noho', locJane: 'Noho', moveJaneNoho: true, moveSarahNoho: false, moveElizaNoho: true},
-	{locSarah: 'Noho', locJane: 'Noho', moveJaneNoho: false, moveSarahNoho: true, moveElizaNoho: true},
 	{locSarah: 'Noho', locJane: 'Noho', moveJaneNoho: true, moveSarahNoho: false, moveElizaNoho: false},
 	{locSarah: 'Noho', locJane: 'Noho', moveJaneNoho: false, moveSarahNoho: false, moveElizaNoho: true},
 	{locSarah: 'Noho', locJane: 'Noho', moveJaneNoho: false, moveSarahNoho: true, moveElizaNoho: false},
-	{locSarah: 'Noho', locJane: 'Noho', moveJaneNoho: false, moveSarahNoho: false, moveElizaNoho: false},
-	{locSarah: 'Noho', locJane: 'Amherst', moveJaneNoho: true, moveSarahNoho: true, moveElizaNoho: true},
-	{locSarah: 'Noho', locJane: 'Amherst', moveJaneNoho: true, moveSarahNoho: true, moveElizaNoho: false},
-	{locSarah: 'Noho', locJane: 'Amherst', moveJaneNoho: true, moveSarahNoho: false, moveElizaNoho: true},
-	{locSarah: 'Noho', locJane: 'Amherst', moveJaneNoho: false, moveSarahNoho: true, moveElizaNoho: true},
 	{locSarah: 'Noho', locJane: 'Amherst', moveJaneNoho: true, moveSarahNoho: false, moveElizaNoho: false},
 	{locSarah: 'Noho', locJane: 'Amherst', moveJaneNoho: false, moveSarahNoho: false, moveElizaNoho: true},
 	{locSarah: 'Noho', locJane: 'Amherst', moveJaneNoho: false, moveSarahNoho: true, moveElizaNoho: false},
-	{locSarah: 'Noho', locJane: 'Amherst', moveJaneNoho: false, moveSarahNoho: false, moveElizaNoho: false},
-	{locSarah: 'Amherst', locJane: 'Noho', moveJaneNoho: true, moveSarahNoho: true, moveElizaNoho: true},
-	{locSarah: 'Amherst', locJane: 'Noho', moveJaneNoho: true, moveSarahNoho: true, moveElizaNoho: false},
-	{locSarah: 'Amherst', locJane: 'Noho', moveJaneNoho: true, moveSarahNoho: false, moveElizaNoho: true},
-	{locSarah: 'Amherst', locJane: 'Noho', moveJaneNoho: false, moveSarahNoho: true, moveElizaNoho: true},
 	{locSarah: 'Amherst', locJane: 'Noho', moveJaneNoho: true, moveSarahNoho: false, moveElizaNoho: false},
 	{locSarah: 'Amherst', locJane: 'Noho', moveJaneNoho: false, moveSarahNoho: false, moveElizaNoho: true},
 	{locSarah: 'Amherst', locJane: 'Noho', moveJaneNoho: false, moveSarahNoho: true, moveElizaNoho: false},
-	{locSarah: 'Amherst', locJane: 'Noho', moveJaneNoho: false, moveSarahNoho: false, moveElizaNoho: false},
 	])
 }
 
@@ -53,44 +33,39 @@ var utterances = [
 var meaning = function(utterance, world, perspective){
   return utterance == 'Eliza is coming to Northampton' ? (world.moveElizaNoho && (((perspective.holder === speaker) && (world.locSarah === 'Noho'))||((perspective.holder === addressee) && (world.locJane === 'Noho')))):
   utterance == 'Eliza is going to Northampton' ? (world.moveElizaNoho && ((perspective.holder === speaker) && (world.locSarah === 'Amherst')||(perspective.holder === addressee && world.locJane === 'Amherst'))):
-  utterance == 'I am coming to Northampton' ? (world.moveSarahNoho && ((perspective.holder === addressee) && (world.locJane === 'Noho'))):
-  utterance == 'You are coming to Northampton' ? (world.moveJaneNoho && ((perspective.holder === speaker) && (world.locSarah === 'Noho')))
+  utterance == 'I am coming to Northampton' ? (world.moveSarahNoho && (((perspective.holder === speaker) && (world.locSarah === 'Noho'))||((perspective.holder === addressee) && (world.locJane === 'Noho')))):
+  utterance == 'You are coming to Northampton' ? (world.moveJaneNoho && (((perspective.holder === speaker) && (world.locSarah === 'Noho'))||((perspective.holder === addressee) && (world.locJane === 'Noho'))))
   : true
 }
 
-var literalListener = function(utterance,perspective){
+var literalListener = cache(function(utterance,perspective){
   Infer({method:'enumerate'}, function(){
     var world = worldPrior();
     var uttTruthVal = meaning(utterance, world, perspective);
-    console.log(world)
     condition(uttTruthVal == true)
     return world
-  })
-}
+  });
+});
 
-var literalSpeaker = function(world,perspective){
-//console.log(world)
-//console.log(perspective)
+var literalSpeaker = cache(function(world,perspective){
 	Infer({method:'enumerate'}, function(){
 	var utterance = uniformDraw(utterances);
-	//console.log(utterance)
-	//console.log(literalListener(utterance,perspective))
-	console.log(literalListener(utterance,perspective).score(world))
 	factor(literalListener(utterance,perspective).score(world));
 	return utterance
-	})
-}
+	});
+});
 
-var pragmaticListener = function(utterance){
+var pragmaticListener = cache(function(utterance){
 	Infer({method:'enumerate'}, function(){
 	var world = worldPrior();
-	//console.log(world)
 	var perspective = perspectivePrior();
+	console.log(world)
+	console.log(perspective)
 	observe(literalSpeaker(world,perspective),utterance,perspective);
 	return [world,perspective]
-	})
-}
+	});
+});
 
 literalListener('Eliza is coming to Northampton',{holder: addressee})
-literalSpeaker({locSarah: 'Amherst', locJane: 'Noho', moveJaneNoho: false, moveSarahNoho: true, moveElizaNoho: true},{holder: addressee})
-//pragmaticListener('Eliza is coming to Northampton')
+literalSpeaker({locSarah: 'Amherst', locJane: 'Noho', moveJaneNoho: false, moveSarahNoho: false, moveElizaNoho: true},{holder: speaker})
+pragmaticListener('Eliza is coming to Northampton')
