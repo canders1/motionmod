@@ -19,9 +19,21 @@ var worldPrior = function() {
 }
 
 var perspectivePrior = function() {
-	return uniformDraw([
+	return Dirichlet([
 	{holder: speaker},
 	{holder: addressee}])
+}
+
+var perspectiveCost = function(perspective) {
+	if(perspective.holder === speaker) {
+	return 0 }
+	else {
+	return 1
+	}
+}
+
+var utteranceCost = function(utterance) {
+	return 0
 }
 
 var utterances = [
@@ -50,7 +62,7 @@ var literalListener = cache(function(utterance,perspective){
 var literalSpeaker = cache(function(world,perspective){
 	Infer({method:'enumerate'}, function(){
 	var utterance = uniformDraw(utterances);
-	factor(literalListener(utterance,perspective).score(world));
+	factor(literalListener(utterance,perspective).score(world) - perspectiveCost(perspective) - utteranceCost(utterance));
 	return utterance
 	});
 });
@@ -68,4 +80,4 @@ var pragmaticListener = cache(function(utterance){
 
 literalListener('Eliza is coming to Northampton',{holder: addressee})
 literalSpeaker({locSarah: 'Amherst', locJane: 'Noho', moveJaneNoho: false, moveSarahNoho: false, moveElizaNoho: true},{holder: speaker})
-pragmaticListener('Eliza is coming to Northampton')
+//pragmaticListener('Eliza is coming to Northampton')
