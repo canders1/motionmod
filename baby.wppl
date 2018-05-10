@@ -18,11 +18,13 @@ var worldPrior = function() {
 	])
 }
 
-var perspectivePrior = function() {
-	return Dirichlet([
-	{holder: speaker},
-	{holder: addressee}])
-}
+var perspectiveVals = [
+{holder: speaker},
+{holder: addressee}]
+
+var perspectivePrior = dirichlet(ones([perspectiveVals.length,1]))
+
+var perspectives = Categorical({vs: perspectiveVals, ps: perspectivePrior});
 
 var perspectiveCost = function(perspective) {
 	if(perspective.holder === speaker) {
@@ -70,7 +72,7 @@ var literalSpeaker = cache(function(world,perspective){
 var pragmaticListener = cache(function(utterance){
 	Infer({method:'enumerate'}, function(){
 	var world = worldPrior();
-	var perspective = perspectivePrior();
+	var perspective = sample(perspectives);
 	console.log(world)
 	console.log(perspective)
 	observe(literalSpeaker(world,perspective),utterance,perspective);
@@ -78,6 +80,7 @@ var pragmaticListener = cache(function(utterance){
 	});
 });
 
+
 literalListener('Eliza is coming to Northampton',{holder: addressee})
-literalSpeaker({locSarah: 'Amherst', locJane: 'Noho', moveJaneNoho: false, moveSarahNoho: false, moveElizaNoho: true},{holder: speaker})
-//pragmaticListener('Eliza is coming to Northampton')
+literalSpeaker({locSarah: 'Amherst', locJane: 'Noho', moveJaneNoho: false, moveSarahNoho: false, moveElizaNoho: true},sample(perspectives))
+pragmaticListener('Eliza is coming to Northampton')
