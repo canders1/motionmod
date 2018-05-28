@@ -50,11 +50,14 @@ var utterances = [
 //This set-up allows redundant moving to X when already located in X utterances
 var meaning = function(utterance, world, perspective){
   return utterance == 'Eliza is coming to Northampton' ? (world.moveElizaNoho && (((perspective.holder === speaker) && (world.locSarah === 'Noho'))||((perspective.holder === addressee) && (world.locJane === 'Noho')))):
-  utterance == 'Eliza is going to Northampton' ? (world.moveElizaNoho && ((perspective.holder === speaker) && (world.locSarah === 'Amherst')||(perspective.holder === addressee && world.locJane === 'Amherst'))):
-  utterance == 'I am coming to Northampton' ? (world.moveSarahNoho && (((perspective.holder === speaker) && (world.locSarah === 'Noho'))||((perspective.holder === addressee) && (world.locJane === 'Noho')))):
   utterance == 'You are coming to Northampton' ? (world.moveJaneNoho && (((perspective.holder === speaker) && (world.locSarah === 'Noho'))||((perspective.holder === addressee) && (world.locJane === 'Noho')))):
-  utterance == 'You are going to Northampton' ? (world.moveJaneNoho && ((perspective.holder === speaker) && (world.locSarah === 'Amherst')||(perspective.holder === addressee && world.locJane === 'Amherst'))):
-  utterance == 'I am going to Northampton' ? (world.moveSarahNoho && ((perspective.holder === speaker) && (world.locSarah === 'Amherst')||(perspective.holder === addressee && world.locJane === 'Amherst')))
+  utterance == 'I am coming to Northampton' ? (world.moveSarahNoho && (((perspective.holder === speaker) && (world.locSarah === 'Noho'))||((perspective.holder === addressee) && (world.locJane === 'Noho')))):
+  utterance == 'Eliza is going to Northampton' ? world.moveElizaNoho:
+  utterance == 'You are going to Northampton' ? world.moveJaneNoho:
+  utterance == 'I am going to Northampton' ? world.moveSarahNoho 
+  //utterance == 'Eliza is going to Northampton' ? (world.moveElizaNoho && ((perspective.holder === speaker) && (world.locSarah === 'Amherst')||(perspective.holder === addressee && world.locJane === 'Amherst'))):
+  //utterance == 'You are going to Northampton' ? (world.moveJaneNoho && ((perspective.holder === speaker) && (world.locSarah === 'Amherst')||(perspective.holder === addressee && world.locJane === 'Amherst'))):
+  //utterance == 'I am going to Northampton' ? (world.moveSarahNoho && ((perspective.holder === speaker) && (world.locSarah === 'Amherst')||(perspective.holder === addressee && world.locJane === 'Amherst')))
   : true
 }
 
@@ -86,4 +89,4 @@ var pragmaticListener = cache(function(utterance){
 
 literalListener('Eliza is coming to Northampton',{holder: addressee})
 literalSpeaker({locSarah: 'Amherst', locJane: 'Noho', moveJaneNoho: false, moveSarahNoho: false, moveElizaNoho: true},sample(perspectives))
-pragmaticListener('Eliza is coming to Northampton')
+pragmaticListener('Eliza is going to Northampton')
