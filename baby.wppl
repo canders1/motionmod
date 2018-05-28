@@ -30,7 +30,7 @@ var perspectiveCost = function(perspective) {
 	if(perspective.holder === speaker) {
 	return 0 }
 	else {
-	return 0.1
+	return 1
 	}
 }
 
