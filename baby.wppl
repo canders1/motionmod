@@ -87,6 +87,17 @@ var pragmaticListener = cache(function(utterance){
 	});
 });
 
-literalListener('Eliza is coming to Northampton',{holder: addressee})
-literalSpeaker({locSarah: 'Amherst', locJane: 'Noho', moveJaneNoho: false, moveSarahNoho: false, moveElizaNoho: true},sample(perspectives))
-pragmaticListener('Eliza is going to Northampton')
+//literalListener('Eliza is coming to Northampton',{holder: addressee})
+//literalSpeaker({locSarah: 'Amherst', locJane: 'Noho', moveJaneNoho: false, moveSarahNoho: false, moveElizaNoho: true},sample(perspectives))
+
+var printAll = function(utterances){
+  if (utterances.length == 0){
+    return
+    }
+  else {
+    console.log(utterances[0]);
+    console.log(Infer({method: 'MCMC',samples: 50000,lag:100,burn:100, model: function(){return pragmaticListener(utterances[0])}}));
+    printAll(utterances.slice(1))
+    }
+}
+printAll(utterances)
