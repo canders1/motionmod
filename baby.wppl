@@ -30,7 +30,7 @@ var perspectiveCost = function(perspective) {
 	if(perspective.holder === speaker) {
 	return 0 }
 	else {
-	return 1
+	return 0
 	}
 }
 
@@ -52,12 +52,12 @@ var meaning = function(utterance, world, perspective){
   return utterance == 'Eliza is coming to Northampton' ? (world.moveElizaNoho && (((perspective.holder === speaker) && (world.locSarah === 'Noho'))||((perspective.holder === addressee) && (world.locJane === 'Noho')))):
   utterance == 'You are coming to Northampton' ? (world.moveJaneNoho && (((perspective.holder === speaker) && (world.locSarah === 'Noho'))||((perspective.holder === addressee) && (world.locJane === 'Noho')))):
   utterance == 'I am coming to Northampton' ? (world.moveSarahNoho && (((perspective.holder === speaker) && (world.locSarah === 'Noho'))||((perspective.holder === addressee) && (world.locJane === 'Noho')))):
-  utterance == 'Eliza is going to Northampton' ? world.moveElizaNoho:
-  utterance == 'You are going to Northampton' ? world.moveJaneNoho:
-  utterance == 'I am going to Northampton' ? world.moveSarahNoho 
-  //utterance == 'Eliza is going to Northampton' ? (world.moveElizaNoho && ((perspective.holder === speaker) && (world.locSarah === 'Amherst')||(perspective.holder === addressee && world.locJane === 'Amherst'))):
-  //utterance == 'You are going to Northampton' ? (world.moveJaneNoho && ((perspective.holder === speaker) && (world.locSarah === 'Amherst')||(perspective.holder === addressee && world.locJane === 'Amherst'))):
-  //utterance == 'I am going to Northampton' ? (world.moveSarahNoho && ((perspective.holder === speaker) && (world.locSarah === 'Amherst')||(perspective.holder === addressee && world.locJane === 'Amherst')))
+  //utterance == 'Eliza is going to Northampton' ? world.moveElizaNoho:
+  //utterance == 'You are going to Northampton' ? world.moveJaneNoho:
+  //utterance == 'I am going to Northampton' ? world.moveSarahNoho 
+  utterance == 'Eliza is going to Northampton' ? (world.moveElizaNoho && ((perspective.holder === speaker) && (world.locSarah === 'Amherst')||(perspective.holder === addressee && world.locJane === 'Amherst'))):
+  utterance == 'You are going to Northampton' ? (world.moveJaneNoho && ((perspective.holder === speaker) && (world.locSarah === 'Amherst')||(perspective.holder === addressee && world.locJane === 'Amherst'))):
+  utterance == 'I am going to Northampton' ? (world.moveSarahNoho && ((perspective.holder === speaker) && (world.locSarah === 'Amherst')||(perspective.holder === addressee && world.locJane === 'Amherst')))
   : true
 }
 
@@ -96,7 +96,7 @@ var printAll = function(utterances){
     }
   else {
     console.log(utterances[0]);
-    console.log(Infer({method: 'MCMC',samples: 50000,lag:100,burn:100, model: function(){return pragmaticListener(utterances[0])}}));
+    console.log(Infer({method: 'MCMC',samples: 500000,lag:100,burn:1000, model: function(){return pragmaticListener(utterances[0])}}));
     printAll(utterances.slice(1))
     }
 }
