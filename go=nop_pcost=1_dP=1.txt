@@ -1,19 +1,36 @@
-You are coming to Northampton
-Marginal:
-    {"probs":[0.07733986172593313,0.42266013827406707,0.07733986172593313,0.42266013827406707],"support":[[{"locSarah":"Amherst","locJane":"Noho","moveJaneNoho":true,"moveSarahNoho":false,"moveElizaNoho":false},{"holder":"Jane"}],[{"locSarah":"Noho","locJane":"Amherst","moveJaneNoho":true,"moveSarahNoho":false,"moveElizaNoho":false},{"holder":"Sarah"}],[{"locSarah":"Noho","locJane":"Noho","moveJaneNoho":true,"moveSarahNoho":false,"moveElizaNoho":false},{"holder":"Jane"}],[{"locSarah":"Noho","locJane":"Noho","moveJaneNoho":true,"moveSarahNoho":false,"moveElizaNoho":false},{"holder":"Sarah"}]]} : 1
-I am coming to Northampton
-Marginal:
-    {"probs":[0.07733986172593313,0.42266013827406707,0.07733986172593313,0.42266013827406707],"support":[[{"locSarah":"Amherst","locJane":"Noho","moveJaneNoho":false,"moveSarahNoho":true,"moveElizaNoho":false},{"holder":"Jane"}],[{"locSarah":"Noho","locJane":"Amherst","moveJaneNoho":false,"moveSarahNoho":true,"moveElizaNoho":false},{"holder":"Sarah"}],[{"locSarah":"Noho","locJane":"Noho","moveJaneNoho":false,"moveSarahNoho":true,"moveElizaNoho":false},{"holder":"Jane"}],[{"locSarah":"Noho","locJane":"Noho","moveJaneNoho":false,"moveSarahNoho":true,"moveElizaNoho":false},{"holder":"Sarah"}]]} : 1
-Eliza is going to Northampton
-Marginal:
-    {"probs":[0.01933496543148328,0.31699510370555006,0.0580048962944498,0.1056650345685167,0.01933496543148328,0.1056650345685167,0.0580048962944498,0.31699510370555006],"support":[[{"locSarah":"Amherst","locJane":"Noho","moveJaneNoho":false,"moveSarahNoho":false,"moveElizaNoho":true},{"holder":"Jane"}],[{"locSarah":"Amherst","locJane":"Noho","moveJaneNoho":false,"moveSarahNoho":false,"moveElizaNoho":true},{"holder":"Sarah"}],[{"locSarah":"Noho","locJane":"Amherst","moveJaneNoho":false,"moveSarahNoho":false,"moveElizaNoho":true},{"holder":"Jane"}],[{"locSarah":"Noho","locJane":"Amherst","moveJaneNoho":false,"moveSarahNoho":false,"moveElizaNoho":true},{"holder":"Sarah"}],[{"locSarah":"Noho","locJane":"Noho","moveJaneNoho":false,"moveSarahNoho":false,"moveElizaNoho":true},{"holder":"Jane"}],[{"locSarah":"Noho","locJane":"Noho","moveJaneNoho":false,"moveSarahNoho":false,"moveElizaNoho":true},{"holder":"Sarah"}],[{"locSarah":"Amherst","locJane":"Amherst","moveJaneNoho":false,"moveSarahNoho":false,"moveElizaNoho":true},{"holder":"Jane"}],[{"locSarah":"Amherst","locJane":"Amherst","moveJaneNoho":false,"moveSarahNoho":false,"moveElizaNoho":true},{"holder":"Sarah"}]]} : 1
-Eliza is coming to Northampton
-Marginal:
-    {"probs":[0.07733986172593313,0.42266013827406707,0.07733986172593313,0.42266013827406707],"support":[[{"locSarah":"Amherst","locJane":"Noho","moveJaneNoho":false,"moveSarahNoho":false,"moveElizaNoho":true},{"holder":"Jane"}],[{"locSarah":"Noho","locJane":"Amherst","moveJaneNoho":false,"moveSarahNoho":false,"moveElizaNoho":true},{"holder":"Sarah"}],[{"locSarah":"Noho","locJane":"Noho","moveJaneNoho":false,"moveSarahNoho":false,"moveElizaNoho":true},{"holder":"Jane"}],[{"locSarah":"Noho","locJane":"Noho","moveJaneNoho":false,"moveSarahNoho":false,"moveElizaNoho":true},{"holder":"Sarah"}]]} : 1
-I am going to Northampton
-Marginal:
-    {"probs":[0.01933496543148328,0.31699510370555006,0.0580048962944498,0.1056650345685167,0.01933496543148328,0.1056650345685167,0.0580048962944498,0.31699510370555006],"support":[[{"locSarah":"Amherst","locJane":"Noho","moveJaneNoho":false,"moveSarahNoho":true,"moveElizaNoho":false},{"holder":"Jane"}],[{"locSarah":"Amherst","locJane":"Noho","moveJaneNoho":false,"moveSarahNoho":true,"moveElizaNoho":false},{"holder":"Sarah"}],[{"locSarah":"Noho","locJane":"Amherst","moveJaneNoho":false,"moveSarahNoho":true,"moveElizaNoho":false},{"holder":"Jane"}],[{"locSarah":"Noho","locJane":"Amherst","moveJaneNoho":false,"moveSarahNoho":true,"moveElizaNoho":false},{"holder":"Sarah"}],[{"locSarah":"Noho","locJane":"Noho","moveJaneNoho":false,"moveSarahNoho":true,"moveElizaNoho":false},{"holder":"Jane"}],[{"locSarah":"Noho","locJane":"Noho","moveJaneNoho":false,"moveSarahNoho":true,"moveElizaNoho":false},{"holder":"Sarah"}],[{"locSarah":"Amherst","locJane":"Amherst","moveJaneNoho":false,"moveSarahNoho":true,"moveElizaNoho":false},{"holder":"Jane"}],[{"locSarah":"Amherst","locJane":"Amherst","moveJaneNoho":false,"moveSarahNoho":true,"moveElizaNoho":false},{"holder":"Sarah"}]]} : 1
-You are going to Northampton
-Marginal:
-    {"probs":[0.01933496543148328,0.31699510370555006,0.0580048962944498,0.1056650345685167,0.01933496543148328,0.1056650345685167,0.0580048962944498,0.31699510370555006],"support":[[{"locSarah":"Amherst","locJane":"Noho","moveJaneNoho":true,"moveSarahNoho":false,"moveElizaNoho":false},{"holder":"Jane"}],[{"locSarah":"Amherst","locJane":"Noho","moveJaneNoho":true,"moveSarahNoho":false,"moveElizaNoho":false},{"holder":"Sarah"}],[{"locSarah":"Noho","locJane":"Amherst","moveJaneNoho":true,"moveSarahNoho":false,"moveElizaNoho":false},{"holder":"Jane"}],[{"locSarah":"Noho","locJane":"Amherst","moveJaneNoho":true,"moveSarahNoho":false,"moveElizaNoho":false},{"holder":"Sarah"}],[{"locSarah":"Noho","locJane":"Noho","moveJaneNoho":true,"moveSarahNoho":false,"moveElizaNoho":false},{"holder":"Jane"}],[{"locSarah":"Noho","locJane":"Noho","moveJaneNoho":true,"moveSarahNoho":false,"moveElizaNoho":false},{"holder":"Sarah"}],[{"locSarah":"Amherst","locJane":"Amherst","moveJaneNoho":true,"moveSarahNoho":false,"moveElizaNoho":false},{"holder":"Jane"}],[{"locSarah":"Amherst","locJane":"Amherst","moveJaneNoho":true,"moveSarahNoho":false,"moveElizaNoho":false},{"holder":"Sarah"}]]} : 1
-undefined
+You are coming to Northampton, 0.07733986172593313,"Amherst","Noho",true,false,false,"Jane"
+You are coming to Northampton, 0.42266013827406707,"Noho","Amherst",true,false,false,"Sarah"
+You are coming to Northampton, 0.07733986172593313,"Noho","Noho",true,false,false,"Jane"
+You are coming to Northampton, 0.42266013827406707,"Noho","Noho",true,false,false,"Sarah"
+I am coming to Northampton,0.07733986172593313,"Amherst","Noho",false,true,false,"Jane"
+I am coming to Northampton,0.42266013827406707,"Noho","Amherst",false,true,false,"Sarah"
+I am coming to Northampton,0.07733986172593313,"Noho","Noho",false,true,false,"Jane"
+I am coming to Northampton,0.42266013827406707,"Noho","Noho",false,true,false,"Sarah"
+Eliza is going to Northampton,0.01933496543148328,"Amherst","Noho",false,false,true,"Jane"
+Eliza is going to Northampton,0.31699510370555006,"Amherst","Noho",false,false,true,"Sarah"
+Eliza is going to Northampton,0.0580048962944498,"Noho","Amherst",false,false,true,"Jane"
+Eliza is going to Northampton,0.1056650345685167,"Noho","Amherst",false,false,true,"Sarah"
+Eliza is going to Northampton,0.01933496543148328,"Noho","Noho",false,false,true,"Jane"
+Eliza is going to Northampton,0.1056650345685167,"Noho","Noho",false,false,true,"Sarah"
+Eliza is going to Northampton,0.0580048962944498,"Amherst","Amherst",false,false,true,"Jane"
+Eliza is going to Northampton,0.31699510370555006,"Amherst","Amherst",false,false,true,"Sarah"
+Eliza is coming to Northampton,0.07733986172593313,"Amherst","Noho",false,false,true,"Jane"
+Eliza is coming to Northampton,0.42266013827406707,"Noho","Amherst",false,false,true,"Sarah"
+Eliza is coming to Northampton,0.07733986172593313,"Noho","Noho",false,false,true,"Jane"
+Eliza is coming to Northampton,0.42266013827406707],"Noho","Noho",false,false,true,"Sarah"
+I am going to Northampton,0.01933496543148328,"Amherst","Noho",false,true,false,"Jane"
+I am going to Northampton,0.31699510370555006,"Amherst","Noho",false,true,false,"Sarah"
+I am going to Northampton,0.0580048962944498,"Noho","Amherst",false,true,false,"Jane"
+I am going to Northampton,0.1056650345685167,"Noho","Amherst",false,true,false,"Sarah"
+I am going to Northampton,0.01933496543148328,"Noho","Noho",false,true,false,"Jane"
+I am going to Northampton,0.1056650345685167,"Noho","Noho",false,true,false,"Sarah"
+I am going to Northampton,0.0580048962944498,"Amherst","Amherst",false,true,false,"Jane"
+I am going to Northampton,0.31699510370555006,"Amherst","Amherst",false,true,false,"Sarah"
+You are going to Northampton,0.01933496543148328,"Amherst","Noho",true,false,false,"Jane"
+You are going to Northampton,0.31699510370555006,"Amherst","Noho",true,false,false,"Sarah"
+You are going to Northampton,0.0580048962944498,"Noho","Amherst",true,false,false,"Jane"
+You are going to Northampton,0.1056650345685167,"Noho","Amherst",true,false,false,"Sarah"
+You are going to Northampton,0.01933496543148328,"Noho","Noho",true,false,false,"Jane"
+You are going to Northampton,0.1056650345685167,"Noho","Noho",true,false,false,"Sarah"
+You are going to Northampton,0.0580048962944498,"Amherst","Amherst",true,false,false,"Jane"
+You are going to Northampton,0.31699510370555006,"Amherst","Amherst",true,false,false,"Sarah"
