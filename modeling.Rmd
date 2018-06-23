@@ -12,9 +12,9 @@ library(ggplot2)
 
 ```{r}
 #import data
-n <- c("utterance", "probability", "locSarah", "locJane","moveJ","moveS","moveE","perspective")
-pairs <- read.csv('~/Documents/modeling/motionmod/go=nop_pcost=0_dP=1.txt',header=FALSE,col.names=n,comment.char = "#")
-
+n <- c("utterance", "probability", "locSarah", "locJane","moveJ","moveS","moveE","perspective","go.is.p","cost","pPrior")
+pairs <- read.csv('~/Documents/modeling/motionmod/all.txt',header=FALSE,col.names=n,comment.char = "#")
+pairs$probability <- as.numeric(pairs$probability)
 pairs <- pairs %>% rowwise() %>% mutate(world=paste(toString(locSarah),toString(locJane),toString(moveJ),toString(moveS),toString(moveE)))
 ```
 
@@ -31,10 +31,18 @@ youGoing <- subset(pairs,utterance=="You are going to Northampton")
 ggplot(data=youGoing,mapping=aes(x=world,y=probability,color=perspective)) + geom_point()
 ```
 
+
 ```{r}
+moveE.sNotInDest.aInDest <- subset(pairs, as.character(moveE)=='true' & as.character(locSarah)=='Amherst' & as.character(locJane)=='Noho')
+ggplot(data=moveE.sNotInDest.aInDest,mapping=aes(x=utterance,y=probability,shape=perspective,color=cost)) + geom_point()
 ```
+
 ```{r}
-ggplot() + 
-geom_boxplot(meangg, mapping=aes(x=type,y=Mean,color=type), stat = "boxplot",outlier.fill = NULL, outlier.shape = 19, outlier.size = 1.5,) + scale_y_continuous(name="Participant Mean") + scale_x_discrete(name="Condition",labels=c("item-day1" = "False control", "item-day2" = "True control", "item-nextday" = "Next Day","item-tomorrow"="Tomorrow","fill-bad"="False filler","fill-good"="True filler","fill-med"="Prag. subpar filler")) + guides(color=FALSE) + scale_color_manual(values=c("red","green","blue","#9900cc","#ff6600","#ffb84d","#FF8000")) +  geom_vline(xintercept=c(0,4.5), linetype="dotted")
-ggsave("fillanditem1.png")
+moveE.sInDest.aInDest <- subset(pairs, as.character(moveE)=='true' & as.character(locSarah)=='Noho' & as.character(locJane)=='Noho')
+ggplot(data=moveE.sInDest.aInDest,mapping=aes(x=utterance,y=probability,color=cost,shape=perspective)) + geom_point()
+```
+
+```{r}
+moveS.aInDest <- subset(pairs, as.character(moveS)=='true' & as.character(locSarah)=='Amherst' & as.character(locJane)=='Noho')
+ggplot(data=moveS.aInDest,mapping=aes(x=utterance,y=probability,color=cost,shape=perspective)) + geom_point()
 ```

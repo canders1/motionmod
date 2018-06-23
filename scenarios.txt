@@ -1,0 +1,5 @@
+3rd party moving, speaker not at destination but addressee at destination.
+
+Speaker moving, addressee at destination.
+
+Speaker and addressee at destination, 3rd person moving.
