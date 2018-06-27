@@ -15,7 +15,8 @@ library(ggplot2)
 n <- c("utterance", "probability", "locSarah", "locJane","moveJ","moveS","moveE","perspective","go.is.p","cost","pPrior")
 pairs <- read.csv('~/Documents/modeling/motionmod/all.txt',header=FALSE,col.names=n,comment.char = "#")
 pairs$probability <- as.numeric(pairs$probability)
-pairs <- pairs %>% rowwise() %>% mutate(world=paste(toString(locSarah),toString(locJane),toString(moveJ),toString(moveS),toString(moveE)))
+pairs <- pairs %>% rowwise() %>% mutate(world=paste(toString(locSarah),"\n",toString(locJane),"\n",toString(moveJ),"\n",toString(moveS),"\n",toString(moveE),"\n"))
+pairs$go.is.p <- as.factor(pairs$go.is.p)
 ```
 
 ```{r}
@@ -38,8 +39,21 @@ ggplot(data=moveE.sNotInDest.aInDest,mapping=aes(x=utterance,y=probability,shape
 ```
 
 ```{r}
-moveE.sInDest.aInDest <- subset(pairs, as.character(moveE)=='true' & as.character(locSarah)=='Noho' & as.character(locJane)=='Noho')
-ggplot(data=moveE.sInDest.aInDest,mapping=aes(x=utterance,y=probability,color=cost,shape=perspective)) + geom_point()
+moveE <- subset(pairs, as.character(utterance)=='Eliza is coming to Northampton' | as.character(utterance)=='Eliza is going to Northampton')
+moveE = moveE %>% mutate(perspective.and.world = paste(as.character(perspective),paste("\n",as.character(world))))
+ggplot(data=moveE,mapping=aes(x=perspective.and.world,y=probability,size=cost,color=utterance,shape=go.is.p)) + geom_point()
+```
+
+```{r}
+moveJ <- subset(pairs, as.character(utterance)=='You are coming to Northampton' | as.character(utterance)=='You are going to Northampton')
+moveJ = moveJ %>% mutate(perspective.and.world = paste(as.character(perspective),paste("\n",as.character(world))))
+ggplot(data=moveJ,mapping=aes(x=perspective.and.world,y=probability,size=cost,color=utterance,shape=go.is.p)) + geom_point()
+```
+
+```{r}
+moveS <- subset(pairs, as.character(utterance)=='I am coming to Northampton' | as.character(utterance)=='I am going to Northampton')
+moveS = moveS %>% mutate(perspective.and.world = paste(as.character(perspective),paste("\n",as.character(world))))
+ggplot(data=moveS,mapping=aes(x=perspective.and.world,y=probability,size=cost,color=utterance,shape=go.is.p)) + geom_point()
 ```
 
 ```{r}
