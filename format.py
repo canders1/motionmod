@@ -56,6 +56,8 @@ def output_data(pDict,go,cost,dirichlet,pp,filename):
 	outputfile = filename.replace('txt','csv')
 	lineEnd = [go,cost,dirichlet,pp]
 	lines = []
+	key = ["sentence"]
+	key += pDict[pDict.keys()[0]][pDict[pDict.keys()[0]].keys()[0]]
 	for s in pDict.keys():
 		for w in pDict[s].keys():
 			lineList = [s]
@@ -67,6 +69,9 @@ def output_data(pDict,go,cost,dirichlet,pp,filename):
 	with open(outputfile,'w') as of:
 		for line in lines:
 			of.write(line)
+	key+=["go.is.p","pCost","dirWeight","pPrior"]
+	with open("key.csv","w") as kf:
+		kf.write(','.join(key)+'\n')
 			
 def main():
 	if len(sys.argv) < 6:
