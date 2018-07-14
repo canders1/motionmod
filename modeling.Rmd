@@ -14,7 +14,7 @@ library(ggplot2)
 #import data
 n <- c("utterance", "probability", "locSarah", "locJane","moveJ","moveS","moveE","perspective","go.is.p","cost","pPrior")
 pairs <- read.csv('~/Documents/modeling/motionmod/all.txt',header=FALSE,col.names=n,comment.char = "#")
-pairs$probability <- as.numeric(pairs$probability)
+pairs$probability <- as.numeric(as.character(pairs$probability))
 pairs <- pairs %>% rowwise() %>% mutate(world=paste(toString(locSarah),"\n",toString(locJane),"\n",toString(moveJ),"\n",toString(moveS),"\n",toString(moveE),"\n"))
 pairs$go.is.p <- as.factor(pairs$go.is.p)
 ```
@@ -54,6 +54,11 @@ ggplot(data=moveJ,mapping=aes(x=perspective.and.world,y=probability,size=cost,co
 moveS <- subset(pairs, as.character(utterance)=='I am coming to Northampton' | as.character(utterance)=='I am going to Northampton')
 moveS = moveS %>% mutate(perspective.and.world = paste(as.character(perspective),paste("\n",as.character(world))))
 ggplot(data=moveS,mapping=aes(x=perspective.and.world,y=probability,size=cost,color=utterance,shape=go.is.p)) + geom_point()
+```
+```{r}
+moveS <- subset(pairs, as.character(utterance)=='I am coming to Northampton' | as.character(utterance)=='I am going to Northampton')
+moveS = moveS %>% mutate(perspective.and.world = paste(as.character(perspective),paste("\n",as.character(world))))
+ggplot(data=moveS,mapping=aes(x=perspective.and.world,y=probability,color=utterance,shape=go.is.p)) + geom_point()+ facet_wrap(~cost)
 ```
 
 ```{r}
