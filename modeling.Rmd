@@ -15,7 +15,7 @@ library(ggplot2)
 n <- c("utterance", "locJane","moveS","locSarah", "moveE","moveJ","perspective","probability", "go.is.p","cost","dirWeight","pPrior")
 pairs <- read.csv('~/Documents/modeling/motionmod/all.csv',header=FALSE,col.names=n,comment.char = "#")
 pairs$probability <- as.numeric(as.character(pairs$probability))
-pairs <- pairs %>% rowwise() %>% mutate(world=paste(toString(locSarah),"\n",toString(locJane),"\n",toString(moveJ),"\n",toString(moveS),"\n",toString(moveE),"\n"))
+pairs <- pairs %>% rowwise() %>% mutate(world=paste(toString(locJane),"\n",toString(locSarah),"\n",toString(moveS),"\n",toString(moveE),"\n",toString(moveJ),"\n"))
 pairs$go.is.p <- as.factor(pairs$go.is.p)
 ```
 
@@ -32,11 +32,6 @@ youGoing <- subset(pairs,utterance=="You are going to Northampton")
 ggplot(data=youGoing,mapping=aes(x=world,y=probability,color=perspective)) + geom_point()
 ```
 
-
-```{r}
-moveE.sNotInDest.aInDest <- subset(pairs, as.character(moveE)=='true' & as.character(locSarah)=='Amherst' & as.character(locJane)=='Noho')
-ggplot(data=moveE.sNotInDest.aInDest,mapping=aes(x=utterance,y=probability,shape=perspective,color=cost)) + geom_point()
-```
 
 ```{r}
 moveE <- subset(pairs, as.character(utterance)=='Eliza is coming to Northampton' | as.character(utterance)=='Eliza is going to Northampton')
@@ -59,9 +54,4 @@ ggplot(data=moveS,mapping=aes(x=perspective.and.world,y=probability,size=cost,co
 moveS <- subset(pairs, as.character(utterance)=='I am coming to Northampton' | as.character(utterance)=='I am going to Northampton')
 moveS = moveS %>% mutate(perspective.and.world = paste(as.character(perspective),paste("\n",as.character(world))))
 ggplot(data=moveS,mapping=aes(x=perspective.and.world,y=probability,color=utterance,shape=go.is.p)) + geom_point()+ facet_wrap(~cost)
-```
-
-```{r}
-moveS.aInDest <- subset(pairs, as.character(moveS)=='true' & as.character(locSarah)=='Amherst' & as.character(locJane)=='Noho')
-ggplot(data=moveS.aInDest,mapping=aes(x=utterance,y=probability,color=cost,shape=perspective)) + geom_point()
 ```
