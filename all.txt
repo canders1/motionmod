@@ -1,11 +1,11 @@
 You are coming to Northampton,0.32330074199077574,"Amherst","Noho",true,false,false,"Jane",0,0.1,1
 You are coming to Northampton,0.17669925800922415,"Noho","Amherst",true,false,false,"Sarah",0,0.1,1
 You are coming to Northampton,0.32330074199077574,"Noho","Noho",true,false,false,"Jane",0,0.1,1
-You are coming to Northampton,0.17669925800922415],"Noho","Noho",true,false,false,"Sarah",0,0.1,1
+You are coming to Northampton,0.17669925800922415,"Noho","Noho",true,false,false,"Sarah",0,0.1,1
 I am coming to Northampton,0.32330074199077574,"Amherst","Noho",false,true,false,"Jane",0,0.1,1
 I am coming to Northampton,0.17669925800922415,"Noho","Amherst",false,true,false,"Sarah",0,0.1,1
 I am coming to Northampton,0.32330074199077574,"Noho","Noho",false,true,false,"Jane",0,0.1,1
-I am coming to Northampton,0.17669925800922415],"Noho","Noho",false,true,false,"Sarah",0,0.1,1
+I am coming to Northampton,0.17669925800922415,"Noho","Noho",false,true,false,"Sarah",0,0.1,1
 Eliza is going to Northampton,0.08082518549769394,"Amherst","Noho",false,false,true,"Jane",0,0.1,1
 Eliza is going to Northampton,0.13252444350691814,"Amherst","Noho",false,false,true,"Sarah",0,0.1,1
 Eliza is going to Northampton,0.24247555649308186,"Noho","Amherst",false,false,true,"Jane",0,0.1,1
@@ -13,11 +13,11 @@ Eliza is going to Northampton,0.04417481450230607,"Noho","Amherst",false,false,t
 Eliza is going to Northampton,0.08082518549769394,"Noho","Noho",false,false,true,"Jane",0,0.1,1
 Eliza is going to Northampton,0.04417481450230607,"Noho","Noho",false,false,true,"Sarah",0,0.1,1
 Eliza is going to Northampton,0.24247555649308186,"Amherst","Amherst",false,false,true,"Jane",0,0.1,1
-Eliza is going to Northampton,0.13252444350691814],"Amherst","Amherst",false,false,true,"Sarah",0,0.1,1
+Eliza is going to Northampton,0.13252444350691814,"Amherst","Amherst",false,false,true,"Sarah",0,0.1,1
 Eliza is coming to Northampton,0.32330074199077574,"Amherst","Noho",false,false,true,"Jane",0,0.1,1
 Eliza is coming to Northampton,0.17669925800922415,"Noho","Amherst",false,false,true,"Sarah",0,0.1,1
 Eliza is coming to Northampton,0.32330074199077574,"Noho","Noho",false,false,true,"Jane",0,0.1,1
-Eliza is coming to Northampton,0.17669925800922415],"Noho","Noho",false,false,true,"Sarah",0,0.1,1
+Eliza is coming to Northampton,0.17669925800922415,"Noho","Noho",false,false,true,"Sarah",0,0.1,1
 I am going to Northampton,0.08082518549769394,"Amherst","Noho",false,true,false,"Jane",0,0.1,1
 I am going to Northampton,0.13252444350691814,"Amherst","Noho",false,true,false,"Sarah",0,0.1,1
 I am going to Northampton,0.24247555649308186,"Noho","Amherst",false,true,false,"Jane",0,0.1,1
@@ -161,7 +161,7 @@ Eliza is going to Northampton,0.31699510370555006,"Amherst","Amherst",false,fals
 Eliza is coming to Northampton,0.07733986172593313,"Amherst","Noho",false,false,true,"Jane",0,1,1
 Eliza is coming to Northampton,0.42266013827406707,"Noho","Amherst",false,false,true,"Sarah",0,1,1
 Eliza is coming to Northampton,0.07733986172593313,"Noho","Noho",false,false,true,"Jane",0,1,1
-Eliza is coming to Northampton,0.42266013827406707],"Noho","Noho",false,false,true,"Sarah",0,1,1
+Eliza is coming to Northampton,0.42266013827406707,"Noho","Noho",false,false,true,"Sarah",0,1,1
 I am going to Northampton,0.01933496543148328,"Amherst","Noho",false,true,false,"Jane",0,1,1
 I am going to Northampton,0.31699510370555006,"Amherst","Noho",false,true,false,"Sarah",0,1,1
 I am going to Northampton,0.0580048962944498,"Noho","Amherst",false,true,false,"Jane",0,1,1
