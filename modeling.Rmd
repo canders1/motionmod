@@ -55,3 +55,8 @@ moveS <- subset(pairs, as.character(utterance)=='I am coming to Northampton' | a
 moveS = moveS %>% mutate(perspective.and.world = paste(as.character(perspective),paste("\n",as.character(world))))
 ggplot(data=moveS,mapping=aes(x=perspective.and.world,y=probability,color=utterance,shape=go.is.p)) + geom_point()+ facet_wrap(~cost)
 ```
+```{r}
+moveE <- subset(pairs, as.character(utterance)=='Eliza is coming to Northampton' | as.character(utterance)=='Eliza is going to Northampton')
+moveE = moveE %>% mutate(perspective.and.world = paste(as.character(perspective),paste("\n",as.character(world))))
+ggplot(data=moveE,mapping=aes(x=perspective.and.world,y=probability,color=utterance,shape=go.is.p)) + geom_point()+ facet_wrap(~cost)
+```
