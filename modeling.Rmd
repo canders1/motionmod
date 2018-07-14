@@ -12,8 +12,8 @@ library(ggplot2)
 
 ```{r}
 #import data
-n <- c("utterance", "probability", "locSarah", "locJane","moveJ","moveS","moveE","perspective","go.is.p","cost","pPrior")
-pairs <- read.csv('~/Documents/modeling/motionmod/all.txt',header=FALSE,col.names=n,comment.char = "#")
+n <- c("utterance", "locJane","moveS","locSarah", "moveE","moveJ","perspective","probability", "go.is.p","cost","dirWeight","pPrior")
+pairs <- read.csv('~/Documents/modeling/motionmod/all.csv',header=FALSE,col.names=n,comment.char = "#")
 pairs$probability <- as.numeric(as.character(pairs$probability))
 pairs <- pairs %>% rowwise() %>% mutate(world=paste(toString(locSarah),"\n",toString(locJane),"\n",toString(moveJ),"\n",toString(moveS),"\n",toString(moveE),"\n"))
 pairs$go.is.p <- as.factor(pairs$go.is.p)
