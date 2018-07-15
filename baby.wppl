@@ -22,15 +22,17 @@ var perspectiveVals = [
 {holder: speaker},
 {holder: addressee}]
 
-var perspectivePrior = dirichlet(ones([perspectiveVals.length,1]))
+//var perspectivePrior = dirichlet(ones([perspectiveVals.length,1]))
 
-var perspectives = Categorical({vs: perspectiveVals, ps: perspectivePrior});
+//var perspectives = Categorical({vs: perspectiveVals, ps: perspectivePrior});
+
+var perspectives = Categorical({vs: perspectiveVals});
 
 var perspectiveCost = function(perspective) {
 	if(perspective.holder === speaker) {
 	return 0 }
 	else {
-	return 0
+	return 0.75
 	}
 }
 
@@ -45,6 +47,9 @@ var utterances = [
 'Eliza is coming to Northampton',
 'I am going to Northampton',
 'You are going to Northampton']
+
+var uttPrior = function() {
+	return uniformDraw(utterances)};
 
 //Should the 'going' sentences require that the perspective holder not be in the location or just that the person is moving (default)?
 //This set-up allows redundant moving to X when already located in X utterances
@@ -75,11 +80,43 @@ var literalListener = cache(function(utterance,perspective){
   });
 });
 
-var literalSpeaker = cache(function(world,perspective){
+var newliteralSpeaker = cache(function(world,perspective){
+   	var scores = map(function(x)
+   				{return literalListener(x,perspective).score(world)},
+   				utterances);
+	//var winner = reduce(function(x,y){return Math.max(x,y)},-Infinity,scores);
+	var scores2 = map(function(x)
+	                 {return x-perspectiveCost(perspective)-utteranceCost(x)},scores);
+	var pairs = map2(function(x,y){return {'utterance' : y, 'probability':x}},scores2,utterances);
+	return pairs;
+	}
+);
+
+var evalLitSpeaker = cache(function(utterance,world,perspective){
+	var pairs = newliteralSpeaker(world,perspective);
+	var res = find(function(x){return x.utterance===utterance},pairs)
+	return res.probability;
+}
+);
+
+
+var newPragmaticListener = cache(function(utterance){
 	Infer({method:'enumerate'}, function(){
-	var utterance = uniformDraw(utterances);
-	factor(literalListener(utterance,perspective).score(world) - perspectiveCost(perspective) - utteranceCost(utterance));
-	return utterance
+	var world = worldPrior();
+	var perspective = sample(perspectives);
+	factor(evalLitSpeaker(utterance,world,perspective));
+	return [world,perspective]
+	});
+});
+
+var literalSpeaker = cache(function(world,perspective){
+
+	Infer({method:'enumerate'}, function(){
+	var utterance = uttPrior();
+	var lit = literalListener(utterance,perspective).score(world);
+    var post = lit - perspectiveCost(perspective) - utteranceCost(utterance);
+	factor(post);
+	return utterance;
 	});
 });
 
@@ -87,13 +124,15 @@ var pragmaticListener = cache(function(utterance){
 	Infer({method:'enumerate'}, function(){
 	var world = worldPrior();
 	var perspective = sample(perspectives);
-	observe(literalSpeaker(world,perspective),utterance,perspective);
+	factor(literalSpeaker(world,perspective).score(utterance));
 	return [world,perspective]
 	});
 });
 
+//console.log(newliteralSpeaker({locSarah: 'Amherst', locJane: 'Noho', moveJaneNoho: false, moveSarahNoho: false, moveElizaNoho: true},sample(perspectives)));
 //literalListener('Eliza is coming to Northampton',{holder: addressee})
-//literalSpeaker({locSarah: 'Amherst', locJane: 'Noho', moveJaneNoho: false, moveSarahNoho: false, moveElizaNoho: true},sample(perspectives))
+//console.log(literalSpeaker({locSarah: 'Amherst', locJane: 'Noho', moveJaneNoho: false, moveSarahNoho: false, moveElizaNoho: true},sample(perspectives)));
+//console.log(newPragmaticListener("I am coming to Northampton"));
 
 var printAll = function(utterances){
   if (utterances.length == 0){
@@ -101,7 +140,7 @@ var printAll = function(utterances){
     }
   else {
     console.log(utterances[0]);
-    console.log(Infer({method: 'MCMC',samples: 50000,lag:100,burn:1000, model: function(){return pragmaticListener(utterances[0])}}));
+    console.log(Infer({method: 'MCMC',samples: 10000,lag:100,burn:100, model: function(){return newPragmaticListener(utterances[0])}}));
     printAll(utterances.slice(1))
     }
 }
