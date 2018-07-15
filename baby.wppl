@@ -32,7 +32,7 @@ var perspectiveCost = function(perspective) {
 	if(perspective.holder === speaker) {
 	return 0 }
 	else {
-	return 0.75
+	return 1
 	}
 }
 
@@ -80,11 +80,10 @@ var literalListener = cache(function(utterance,perspective){
   });
 });
 
-var newliteralSpeaker = cache(function(world,perspective){
+var newLiteralSpeaker = cache(function(world,perspective){
    	var scores = map(function(x)
    				{return literalListener(x,perspective).score(world)},
    				utterances);
-	//var winner = reduce(function(x,y){return Math.max(x,y)},-Infinity,scores);
 	var scores2 = map(function(x)
 	                 {return x-perspectiveCost(perspective)-utteranceCost(x)},scores);
 	var pairs = map2(function(x,y){return {'utterance' : y, 'probability':x}},scores2,utterances);
@@ -93,7 +92,7 @@ var newliteralSpeaker = cache(function(world,perspective){
 );
 
 var evalLitSpeaker = cache(function(utterance,world,perspective){
-	var pairs = newliteralSpeaker(world,perspective);
+	var pairs = newLiteralSpeaker(world,perspective);
 	var res = find(function(x){return x.utterance===utterance},pairs)
 	return res.probability;
 }
@@ -140,7 +139,7 @@ var printAll = function(utterances){
     }
   else {
     console.log(utterances[0]);
-    console.log(Infer({method: 'MCMC',samples: 10000,lag:100,burn:100, model: function(){return newPragmaticListener(utterances[0])}}));
+    console.log(Infer({method: 'MCMC',samples: 100000,lag:1000,burn:1000, model: function(){return newPragmaticListener(utterances[0])}}));
     printAll(utterances.slice(1))
     }
 }
