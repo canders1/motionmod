@@ -82,6 +82,9 @@ def main():
 		dirichlet = sys.argv[4]
 		pp = sys.argv[5]
   		data = open(sys.argv[1],'r').readlines()
+  		if data[0][0:11] == 'Categorical':
+  			priors = data[5]
+  			data = data[6:]
   		data = data[0:len(data)-1]
 		dDict = get_data(data)
   		probDict = sep_data(dDict)

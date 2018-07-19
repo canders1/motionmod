@@ -21,3 +21,9 @@ python format.py gop=0_cost=0.25_p=dir1.txt 0 0.25 1 1
 python format.py gop=0_cost=0.5_p=dir1.txt 0 0.5 1 1
 python format.py gop=0_cost=0.75_p=dir1.txt 0 0.75 1 1
 python format.py gop=0_cost=1_p=dir1.txt 0 1 1 1
+
+python format.py gop=0_cost=0_p=dir2_1.txt 0 0 2 1
+python format.py gop=0_cost=0_p=dir4_1.txt 0 0 4 1
+python format.py gop=0_cost=0_p=dir10_1.txt 0 0 10 1
+python format.py gop=0_cost=0_p=dir50_1.txt 0 0 50 1
+python format.py gop=0_cost=0_p=dir1_1.txt 0 1 0 1
