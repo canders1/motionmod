@@ -15,8 +15,11 @@ library(ggplot2)
 n <- c("utterance", "locJane","moveS","locSarah", "moveE","moveJ","perspective","probability", "go.is.p","cost","dirWeight","pPrior")
 pairs <- read.csv('~/Documents/modeling/motionmod/all_uni.csv',header=FALSE,col.names=n,comment.char = "#")
 pairs$probability <- as.numeric(as.character(pairs$probability))
-pairs <- pairs %>% rowwise() %>% mutate(world=paste(toString(locJane),"\n",toString(locSarah),"\n",toString(moveS),"\n",toString(moveE),"\n",toString(moveJ),"\n"))
+pairs <- pairs %>% rowwise() %>% mutate(mover=ifelse(moveS=='True',"S",ifelse(moveE=='True',"T","A")))
+pairs <- pairs %>% rowwise() %>% mutate(world=paste("A in",substr(toString(locJane),1,2),"\n S in",substr(toString(locSarah),1,2),"\n",toString(mover),"moving"))
 pairs$go.is.p <- as.factor(pairs$go.is.p)
+pairs <- subset(pairs,go.is.p==0)
+pairs <- pairs %>% mutate(perspective.and.world = paste(as.character(perspective),paste("\n",as.character(world))))
 ```
 
 ```{r}
@@ -36,27 +39,71 @@ ggplot(data=youGoing,mapping=aes(x=world,y=probability,color=perspective)) + geo
 ```{r}
 moveE <- subset(pairs, as.character(utterance)=='Eliza is coming to Northampton' | as.character(utterance)=='Eliza is going to Northampton')
 moveE = moveE %>% mutate(perspective.and.world = paste(as.character(perspective),paste("\n",as.character(world))))
-ggplot(data=moveE,mapping=aes(x=perspective.and.world,y=probability,size=cost,color=utterance,shape=go.is.p)) + geom_point()
+ggplot(data=moveE,mapping=aes(x=perspective.and.world,y=probability,size=cost,color=utterance)) + geom_point()
 ```
 
 ```{r}
 moveJ <- subset(pairs, as.character(utterance)=='You are coming to Northampton' | as.character(utterance)=='You are going to Northampton')
 moveJ = moveJ %>% mutate(perspective.and.world = paste(as.character(perspective),paste("\n",as.character(world))))
-ggplot(data=moveJ,mapping=aes(x=perspective.and.world,y=probability,size=cost,color=utterance,shape=go.is.p)) + geom_point()
+ggplot(data=moveJ,mapping=aes(x=perspective.and.world,y=probability,size=cost,color=utterance)) + geom_point()
 ```
 
 ```{r}
 moveS <- subset(pairs, as.character(utterance)=='I am coming to Northampton' | as.character(utterance)=='I am going to Northampton')
 moveS = moveS %>% mutate(perspective.and.world = paste(as.character(perspective),paste("\n",as.character(world))))
-ggplot(data=moveS,mapping=aes(x=perspective.and.world,y=probability,size=cost,color=utterance,shape=go.is.p)) + geom_point()
+ggplot(data=moveS,mapping=aes(x=perspective.and.world,y=probability,size=cost,color=utterance)) + geom_point()
 ```
 ```{r}
 moveS <- subset(pairs, as.character(utterance)=='I am coming to Northampton' | as.character(utterance)=='I am going to Northampton')
 moveS = moveS %>% mutate(perspective.and.world = paste(as.character(perspective),paste("\n",as.character(world))))
-ggplot(data=moveS,mapping=aes(x=perspective.and.world,y=probability,color=utterance,shape=go.is.p)) + geom_point()+ facet_wrap(~cost)
+ggplot(data=moveS,mapping=aes(x=perspective.and.world,y=probability,color=utterance)) + geom_point()+ facet_wrap(~cost)
 ```
 ```{r}
 moveE <- subset(pairs, as.character(utterance)=='Eliza is coming to Northampton' | as.character(utterance)=='Eliza is going to Northampton')
 moveE = moveE %>% mutate(perspective.and.world = paste(as.character(perspective),paste("\n",as.character(world))))
-ggplot(data=moveE,mapping=aes(x=perspective.and.world,y=probability,color=utterance,shape=go.is.p)) + geom_point()+ facet_wrap(~cost)
+ggplot(data=moveE,mapping=aes(x=perspective.and.world,y=probability,color=utterance)) + geom_point()+ facet_wrap(~cost)
+```
+
+```{r}
+comeE <- subset(pairs, as.character(utterance)=='Eliza is coming to Northampton')
+ggplot(data=comeE,mapping=aes(x=perspective.and.world,size=cost,y=probability)) + geom_point()
+```
+```{r}
+comeS <- subset(pairs, as.character(utterance)=='I am coming to Northampton')
+ggplot(data=comeS,mapping=aes(x=perspective.and.world,size=cost,y=probability)) + geom_point()
+```
+```{r}
+comeA <- subset(pairs, as.character(utterance)=='You are coming to Northampton')
+ggplot(data=comeA,mapping=aes(x=perspective.and.world,size=cost,y=probability)) + geom_point()
+```
+```{r}
+goE <- subset(pairs, as.character(utterance)=='Eliza is going to Northampton')
+ggplot(data=goE,mapping=aes(x=perspective.and.world,size=cost,y=probability)) + geom_point()
+```
+```{r}
+goS <- subset(pairs, as.character(utterance)=='I am going to Northampton')
+ggplot(data=goS,mapping=aes(x=perspective.and.world,size=cost,y=probability)) + geom_point()
+```
+```{r}
+goA <- subset(pairs, as.character(utterance)=='You are going to Northampton')
+ggplot(data=goA,mapping=aes(x=perspective.and.world,size=cost,y=probability)) + geom_point()
+```
+```{r}
+ggplot(data=pairs,mapping=aes(x=perspective.and.world,color=cost,y=probability)) + geom_point() + facet_wrap(~utterance)
+```
+```{r}
+goAtrue <- subset(goA,probability >0)
+ggplot(data=goAtrue,mapping=aes(x=world,size=cost,y=probability)) + geom_point() +facet_wrap(~perspective) + ggtitle("You are going to Northampton") + xlab("World") + ylab("Joint probability of perspective and world") + labs(size="Perspective cost")
+```
+```{r}
+goEtrue <- subset(goE,probability >0)
+ggplot(data=goEtrue,mapping=aes(x=world,size=cost,y=probability)) + geom_point() +facet_wrap(~perspective) + ggtitle("Thera is going to Northampton") + xlab("World") + ylab("Joint probability of perspective and world") + labs(size="Perspective cost")
+```
+```{r}
+goStrue <- subset(goS,probability >0)
+ggplot(data=goAtrue,mapping=aes(x=world,size=cost,y=probability)) + geom_point() +facet_wrap(~perspective) + ggtitle("I am going to Northampton") + xlab("World") + ylab("Joint probability of perspective and world") + labs(size="Perspective cost")
+```
+```{r}
+comeEtrue <- subset(comeE,probability >0)
+ggplot(data=comeEtrue,mapping=aes(x=world,size=cost,y=probability)) + geom_point() +facet_wrap(~perspective) + ggtitle("Thera is coming to Northampton") + xlab("World") + ylab("Joint probability of perspective and world") + labs(size="Perspective cost")
 ```
