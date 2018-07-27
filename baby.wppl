@@ -22,18 +22,18 @@ var perspectiveVals = [
 {holder: speaker},
 {holder: addressee}]
 
-var perspectivePrior = dirichlet(Tensor([perspectiveVals.length,1],[4,1]))
+//var perspectivePrior = dirichlet(Tensor([perspectiveVals.length,1],[1,1]))
 
-var perspectives = Categorical({vs: perspectiveVals, ps: perspectivePrior});
-console.log(perspectives);
+//var perspectives = Categorical({vs: perspectiveVals, ps: perspectivePrior});
+//console.log(perspectives);
 
-//var perspectives = Categorical({vs: perspectiveVals});
+var perspectives = Categorical({vs: perspectiveVals});
 
 var perspectiveCost = function(perspective) {
 	if(perspective.holder === speaker) {
 	return 0 }
 	else {
-	return 0
+	return 1
 	}
 }
 
@@ -82,12 +82,25 @@ var literalListener = cache(function(utterance,perspective){
 });
 
 var newLiteralSpeaker = cache(function(world,perspective){
+    //console.log(world);
+    //console.log(perspective);
    	var scores = map(function(x)
    				{return literalListener(x,perspective).score(world)},
    				utterances);
+   	//console.log(scores);
 	var scores2 = map(function(x)
 	                 {return x-perspectiveCost(perspective)-utteranceCost(x)},scores);
-	var pairs = map2(function(x,y){return {'utterance' : y, 'probability':x}},scores2,utterances);
+	//console.log("SCORES");
+	//console.log(scores2);
+	var sum = sum(map(function(x) 
+	                  {if(x==-Infinity) {return 0} return x},scores2));
+	//console.log(sum);
+	var scores3 = map(function(x)
+	                  {if(x==-Infinity) {return x} return x/sum},scores)
+	var pairs = map2(function(x,y){return {'utterance' : y, 'probability':x}},scores3,utterances);
+	//console.log("PAIRS");
+	//console.log(pairs);
+
 	return pairs;
 	}
 );
@@ -140,7 +153,7 @@ var printAll = function(utterances){
     }
   else {
     console.log(utterances[0]);
-    console.log(Infer({method: 'MCMC',samples: 10000,lag:1000,burn:1000, model: function(){return newPragmaticListener(utterances[0])}}));
+    console.log(Infer({method: 'MCMC',samples: 100000,lag:1000,burn:1000, model: function(){return newPragmaticListener(utterances[0])}}));
     printAll(utterances.slice(1))
     }
 }
