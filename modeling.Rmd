@@ -13,27 +13,14 @@ library(ggplot2)
 ```{r}
 #import data
 n <- c("utterance", "locJane","moveS","locSarah", "moveE","moveJ","perspective","probability", "go.is.p","cost","dirWeight","pPrior")
-pairs <- read.csv('~/Documents/modeling/motionmod/all_dir.csv',header=FALSE,col.names=n,comment.char = "#")
+pairs <- read.csv('~/Documents/modeling/motionmod/all_uni.csv',header=FALSE,col.names=n,comment.char = "#")
 pairs$probability <- as.numeric(as.character(pairs$probability))
-pairs <- pairs %>% rowwise() %>% mutate(p=ifelse(perspective=='Sarah','Sarah','Addy'))
-pairs <- pairs %>% rowwise() %>% mutate(mover=ifelse(moveS=='True',"S",ifelse(moveE=='True',"T","A")))
-pairs <- pairs %>% rowwise() %>% mutate(world=paste("A in",substr(toString(locJane),1,2),"\n S in",substr(toString(locSarah),1,2),"\n",toString(mover),"moving"))
+pairs <- pairs %>% rowwise() %>% mutate(p=ifelse(perspective=='Sarah','Sarah','Lydia'))
+pairs <- pairs %>% rowwise() %>% mutate(mover=ifelse(moveS=='True',"S",ifelse(moveE=='True',"T","L")))
+pairs <- pairs %>% rowwise() %>% mutate(world=paste("L in",substr(toString(locJane),1,1),"\n S in",substr(toString(locSarah),1,1),"\n",toString(mover),"moving"))
 pairs$go.is.p <- as.factor(pairs$go.is.p)
 pairs <- subset(pairs,go.is.p==0)
 pairs <- pairs %>% mutate(perspective.and.world = paste(as.character(p),paste("\n",as.character(world))))
-```
-
-```{r}
-ggplot(data=subset(pairs,grepl("coming",utterance,fixed=TRUE)),mapping=aes(x=world,y=probability,color=p)) + geom_point()
-```
-
-```{r}
-ggplot(data=subset(pairs,grepl("going",utterance,fixed=TRUE)),mapping=aes(x=world,y=probability,color=p)) + geom_point()
-```
-
-```{r}
-youGoing <- subset(pairs,utterance=="You are going to Northampton")
-ggplot(data=youGoing,mapping=aes(x=world,y=probability,color=p)) + geom_point()
 ```
 
 
@@ -52,11 +39,9 @@ moveS <- subset(pairs, as.character(utterance)=='I am coming to Northampton' | a
 ggplot(data=moveS,mapping=aes(x=perspective.and.world,y=probability,size=cost,color=utterance)) + geom_point()
 ```
 ```{r}
-moveS <- subset(pairs, as.character(utterance)=='I am coming to Northampton' | as.character(utterance)=='I am going to Northampton')
 ggplot(data=moveS,mapping=aes(x=perspective.and.world,y=probability,color=utterance)) + geom_point()+ facet_wrap(~cost)
 ```
 ```{r}
-moveE <- subset(pairs, as.character(utterance)=='Eliza is coming to Northampton' | as.character(utterance)=='Eliza is going to Northampton')
 ggplot(data=moveE,mapping=aes(x=perspective.and.world,y=probability,color=utterance)) + geom_point()+ facet_wrap(~cost)
 ```
 
@@ -100,7 +85,17 @@ goStrue <- subset(goS,probability >0)
 ggplot(data=goAtrue,mapping=aes(x=world,size=cost,y=probability)) + geom_point() +facet_wrap(~p) + ggtitle("I am going to Northampton") + xlab("World") + ylab("Joint probability of perspective and world") + labs(size="Perspective cost")
 ```
 ```{r}
-comeEtrue <- subset(comeE,probability >0)
-ggplot(data=comeEtrue,mapping=aes(x=world,size=cost,y=probability)) + geom_point() +facet_wrap(~p) + ggtitle("Thera is coming to Northampton") + xlab("World") + ylab("Joint probability of perspective and world") + labs(size="Perspective cost")
-ggsave('comeEtrueD.png')
+comeEtrue <- subset(comeE,probability >0 )
+ggplot(data=comeEtrue,mapping=aes(x=world,size=cost,y=probability)) + geom_point()  +facet_wrap(~p)+ ggtitle("Thera is coming to Northampton") + xlab("World") + ylab("Joint probability of perspective and world") + labs(size="Perspective cost")
+ggsave('comeEtrueC.png')
+```
+```{r}
+comeStrue <- subset(comeS,probability >0 )
+ggplot(data=comeStrue,mapping=aes(x=world,size=cost,y=probability)) + geom_point()  +facet_wrap(~p)+ ggtitle("I am coming to Northampton") + xlab("World") + ylab("Joint probability of perspective and world") + labs(size="Perspective cost")
+ggsave('comeStrueC.png')
+```
+```{r}
+comeStrueP <- subset(comeS,perspective=='Jane' )
+ggplot(data=comeStrueP,mapping=aes(x=world,size=cost,y=probability)) + geom_point()  +facet_wrap(~p)+ ggtitle("I am coming to Northampton") + xlab("World") + ylab("Joint probability of perspective and world") + labs(size="Perspective cost")
+ggsave('comeStruePC.png')
 ```
