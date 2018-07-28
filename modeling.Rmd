@@ -75,14 +75,17 @@ ggplot(data=pairs,mapping=aes(x=perspective.and.world,color=cost,y=probability))
 ```{r}
 goAtrue <- subset(goA,probability >0)
 ggplot(data=goAtrue,mapping=aes(x=world,size=cost,y=probability)) + geom_point() +facet_wrap(~p) + ggtitle("You are going to Northampton") + xlab("World") + ylab("Joint probability of perspective and world") + labs(size="Perspective cost")
+ggsave("goAtrueC.png")
 ```
 ```{r}
 goEtrue <- subset(goE,probability >0)
 ggplot(data=goEtrue,mapping=aes(x=world,size=cost,y=probability)) + geom_point() +facet_wrap(~p) + ggtitle("Thera is going to Northampton") + xlab("World") + ylab("Joint probability of perspective and world") + labs(size="Perspective cost")
+ggsave("goEtrueC.png")
 ```
 ```{r}
 goStrue <- subset(goS,probability >0)
-ggplot(data=goAtrue,mapping=aes(x=world,size=cost,y=probability)) + geom_point() +facet_wrap(~p) + ggtitle("I am going to Northampton") + xlab("World") + ylab("Joint probability of perspective and world") + labs(size="Perspective cost")
+ggplot(data=goStrue,mapping=aes(x=world,size=cost,y=probability)) + geom_point() +facet_wrap(~p) + ggtitle("I am going to Northampton") + xlab("World") + ylab("Joint probability of perspective and world") + labs(size="Perspective cost")
+ggsave("goStrueC.png")
 ```
 ```{r}
 comeEtrue <- subset(comeE,probability >0 )
@@ -98,4 +101,11 @@ ggsave('comeStrueC.png')
 comeStrueP <- subset(comeS,perspective=='Jane' )
 ggplot(data=comeStrueP,mapping=aes(x=world,size=cost,y=probability)) + geom_point()  +facet_wrap(~p)+ ggtitle("I am coming to Northampton") + xlab("World") + ylab("Joint probability of perspective and world") + labs(size="Perspective cost")
 ggsave('comeStruePC.png')
+```
+```{r}
+go <- subset(pairs,grepl('go',as.character(utterance,fixed=TRUE)))
+
+gotrue <- subset(go,probability >0)
+ggplot(data=gotrue,mapping=aes(x=world,size=cost,y=probability,shape=utterance)) + geom_point() +facet_wrap(~p) + ggtitle("Go sentences") + xlab("World") + ylab("Joint probability of perspective and world") + labs(size="Perspective cost")
+ggsave("gotrueC.png")
 ```
