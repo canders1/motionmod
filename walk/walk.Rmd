@@ -31,8 +31,11 @@ get.number <- function(x) {
           else{cat("\nNOT FOUND")}}}}}}}}
 }
 
-n <- c("utterance", "locJane","moveS","locSarah", "moveE","moveJ","perspective","probability", "go.is.p","cost","dirWeight","pPrior")
-pairs <- read.csv('~/Documents/modeling/motionmod/all_uni.csv',header=FALSE,col.names=n,comment.char = "#")
+n <- c("utterance", "locJane","moveS","locSarah", "moveE","moveJ","perspective","probability", "go.is.p","cost")
+pairs <- read.csv('~/Documents/modeling/motionmod/walk/all.csv',header=FALSE,col.names=n,comment.char = "#")
+```
+
+```{r}
 pairs$probability <- as.numeric(as.character(pairs$probability))
 pairs$utterance <- gsub('Eliza','Thera',pairs$utterance)
 pairs <- pairs %>% rowwise() %>% mutate(p=ifelse(perspective=='Sarah','Sarah','Lydia'))
@@ -40,118 +43,98 @@ pairs <- pairs %>% rowwise() %>% mutate(mover=ifelse(moveS=='True',"S",ifelse(mo
 pairs <- pairs %>% rowwise() %>% mutate(world=paste("L in",substr(toString(locJane),1,1),"\n S in",substr(toString(locSarah),1,1)))
 pairs <- pairs %>% rowwise() %>% mutate(world1=paste(substr(toString(locJane),1,1),substr(toString(locSarah),1,1),substr(toString(mover),1,1)))
 pairs <- pairs %>% rowwise() %>% mutate(world=paste(world,"\n",get.number(world1)))
+```
+
+```{r}
 pairs$go.is.p <- as.factor(pairs$go.is.p)
 pairs <- subset(pairs,go.is.p==0)
 pairs <- pairs %>% mutate(perspective.and.world = paste(as.character(p),paste("\n",as.character(world))))
 facet_labs <- c(Lydia = "Perspective holder = Lydia", Sarah = "Perspective holder = Sarah")
 ```
 
+```{r}
+moveE <- subset(pairs, as.character(utterance)=='Thera is coming to Northampton' | as.character(utterance)=='Thera is going to Northampton' | as.character(utterance)=='Thera is walking to Northampton')
 
-```{r}
-moveE <- subset(pairs, as.character(utterance)=='Thera is coming to Northampton' | as.character(utterance)=='Thera is going to Northampton')
-ggplot(data=moveE,mapping=aes(x=perspective.and.world,y=probability,size=cost,color=utterance)) + geom_point()
-```
+moveJ <- subset(pairs, as.character(utterance)=='You are coming to Northampton' | as.character(utterance)=='You are going to Northampton' | as.character(utterance)=='You are walking to Northampton')
 
-```{r}
-moveJ <- subset(pairs, as.character(utterance)=='You are coming to Northampton' | as.character(utterance)=='You are going to Northampton')
-ggplot(data=moveJ,mapping=aes(x=perspective.and.world,y=probability,size=cost,color=utterance)) + geom_point()
-```
-
-```{r}
-moveS <- subset(pairs, as.character(utterance)=='I am coming to Northampton' | as.character(utterance)=='I am going to Northampton')
-ggplot(data=moveS,mapping=aes(x=perspective.and.world,y=probability,size=cost,color=utterance)) + geom_point()
-```
-```{r}
-ggplot(data=moveS,mapping=aes(x=perspective.and.world,y=probability,color=utterance)) + geom_point()+ facet_wrap(~cost)
-```
-```{r}
-ggplot(data=moveE,mapping=aes(x=perspective.and.world,y=probability,color=utterance)) + geom_point()+ facet_wrap(~cost)
+moveS <- subset(pairs, as.character(utterance)=='I am coming to Northampton' | as.character(utterance)=='I am going to Northampton' | as.character(utterance)=='I am walking to Northampton')
 ```
 
 ```{r}
 comeE <- subset(pairs, as.character(utterance)=='Thera is coming to Northampton')
-ggplot(data=comeE,mapping=aes(x=perspective.and.world,size=cost,y=probability)) + geom_point()
-```
-```{r}
+
 comeS <- subset(pairs, as.character(utterance)=='I am coming to Northampton')
-ggplot(data=comeS,mapping=aes(x=perspective.and.world,size=cost,y=probability)) + geom_point()
-```
-```{r}
+
 comeA <- subset(pairs, as.character(utterance)=='You are coming to Northampton')
-ggplot(data=comeA,mapping=aes(x=perspective.and.world,size=cost,y=probability)) + geom_point()
-```
-```{r}
+
 goE <- subset(pairs, as.character(utterance)=='Thera is going to Northampton')
-ggplot(data=goE,mapping=aes(x=perspective.and.world,size=cost,y=probability)) + geom_point()
-```
-```{r}
+
 goS <- subset(pairs, as.character(utterance)=='I am going to Northampton')
-ggplot(data=goS,mapping=aes(x=perspective.and.world,size=cost,y=probability)) + geom_point()
-```
-```{r}
+
 goA <- subset(pairs, as.character(utterance)=='You are going to Northampton')
-ggplot(data=goA,mapping=aes(x=perspective.and.world,size=cost,y=probability)) + geom_point()
-```
-```{r}
-ggplot(data=pairs,mapping=aes(x=perspective.and.world,color=cost,y=probability)) + geom_point() + facet_wrap(~utterance)
-```
-```{r}
+
 goAtrue <- subset(goA,probability >0)
+goEtrue <- subset(goE,probability >0)
+goStrue <- subset(goS,probability >0)
+
+comeEtrue <- subset(comeE,probability >0 )
+comeStrue <- subset(comeS,probability >0 )
+
+go <- subset(pairs,grepl('go',as.character(utterance,fixed=TRUE)))
+gotrue <- subset(go,probability >0)
+gotrue05 <- subset(gotrue,cost==0.5)
+
+moveEtrue <- subset(moveE,probability >0)
+moveE05 <- subset(moveE,cost == 0.5)
+moveEC0 <- subset(moveE,cost==0)
+```
+
+```{r}
 ggplot(data=goA,mapping=aes(x=world,size=cost,y=probability)) + geom_point()+facet_wrap(~p,labeller=labeller(p = facet_labs)) + ylim(0,0.5) + ggtitle("You are going to Northampton") + xlab("World") + ylab("Joint probability of perspective and world") + labs(size="Perspective cost") + theme(text=element_text(size=16))
 ggsave("goAtrueC.png",width=12, height=5)
 ```
+
 ```{r}
-goEtrue <- subset(goE,probability >0)
 ggplot(data=goE,mapping=aes(x=world,size=cost,y=probability)) + geom_point() +facet_wrap(~p,labeller=labeller(p = facet_labs)) + ylim(0,0.5) + ggtitle("Thera is going to Northampton") + xlab("World") + ylab("Joint probability of perspective and world") + labs(size="Perspective cost") + theme(text=element_text(size=16))
 ggsave("goEtrueC.png",width=12, height=5)
 ```
 ```{r}
-goStrue <- subset(goS,probability >0)
 ggplot(data=goS,mapping=aes(x=world,size=cost,y=probability)) + geom_point() +facet_wrap(~p,labeller=labeller(p = facet_labs)) + ylim(0,0.5) + ggtitle("I am going to Northampton") + xlab("World") + ylab("Joint probability of perspective and world") + labs(size="Perspective cost") + theme(text=element_text(size=16))
 ggsave("goStrueC.png",width=12, height=5)
 ```
 ```{r}
-comeEtrue <- subset(comeE,probability >0 )
 ggplot(data=comeE,mapping=aes(x=world,size=cost,y=probability)) + geom_point() + ylim(0,0.5) + facet_wrap(~p,labeller=labeller(p = facet_labs))+ ggtitle("Thera is coming to Northampton") + xlab("World") + ylab("Joint probability of perspective and world") + labs(size="Perspective cost") + theme(text=element_text(size=16))
 ggsave('comeEtrueC.png',width=12, height=5)
 ```
 ```{r}
-comeStrue <- subset(comeS,probability >0 )
-ggplot(data=comeS,mapping=aes(x=world,size=cost,y=probability)) + geom_point() + ylim(0,0.5) + facet_wrap(~p,labeller=labeller(p = facet_labs))+ ggtitle("I am coming to Northampton") + xlab("World") + ylab("Joint probability of perspective and world") + labs(size="Perspective cost")
+ggplot(data=comeS,mapping=aes(x=world,size=cost,y=probability)) + geom_point() + ylim(0,1) + facet_wrap(~p,labeller=labeller(p = facet_labs))+ ggtitle("I am coming to Northampton") + xlab("World") + ylab("Joint probability of perspective and world") + labs(size="Perspective cost")
 ggsave('comeStrueC.png')
 ```
 ```{r}
 comeA <- subset(comeA,perspective=='Sarah')
-ggplot(data=comeA,mapping=aes(x=world,size=cost,y=probability)) + ylim(0,0.5) + geom_point()+facet_wrap(~p,labeller=labeller(p = facet_labs))+ ggtitle("You are coming to Northampton") + xlab("World") + ylab("Joint probability of perspective and world") + labs(size="Perspective cost")  + guides(size=FALSE)
+ggplot(data=comeA,mapping=aes(x=world,size=cost,y=probability)) + ylim(0,1) + geom_point()+facet_wrap(~p,labeller=labeller(p = facet_labs))+ ggtitle("You are coming to Northampton") + xlab("World") + ylab("Joint probability of perspective and world") + labs(size="Perspective cost")  + guides(size=FALSE)
 ggsave('comeACP.png')
 ```
 
 ```{r}
 comeStrueP <- subset(comeS,perspective=='Jane' )
-ggplot(data=comeS,mapping=aes(x=world,size=cost,y=probability)) + geom_point() + ylim(0,0.5) + facet_wrap(~p,labeller=labeller(p = facet_labs))+ ggtitle("I am coming to Northampton") + xlab("World") + ylab("Joint probability of perspective and world") + labs(size="Perspective cost")  + guides(size=FALSE)
+ggplot(data=comeS,mapping=aes(x=world,size=cost,y=probability)) + geom_point() + ylim(0,1) + facet_wrap(~p,labeller=labeller(p = facet_labs))+ ggtitle("I am coming to Northampton") + xlab("World") + ylab("Joint probability of perspective and world") + labs(size="Perspective cost")  + guides(size=FALSE)
 ggsave('comeStruePC.png')
 ```
 ```{r}
-go <- subset(pairs,grepl('go',as.character(utterance,fixed=TRUE)))
-
-gotrue <- subset(go,probability >0)
 ggplot(data=gotrue,mapping=aes(x=world,size=cost,y=probability,shape=utterance)) + geom_point()+facet_wrap(~p,labeller=labeller(p = facet_labs)) + ggtitle("Go sentences") + xlab("World") + ylab("Joint probability of perspective and world") + labs(size="Perspective cost")
 ggsave("gotrueC.png")
 ```
 ```{r}
-gotrue05 <- subset(gotrue,cost==0.5)
 ggplot(data=gotrue05,mapping=aes(x=world,y=probability,shape=utterance)) + geom_point() +facet_wrap(~p,labeller=labeller(p = facet_labs)) + ggtitle("Go sentences") + xlab("World") + ylab("Joint probability of perspective and world")
 ggsave("gotrue05.png")
 ```
 
 ```{r}
-moveEtrue <- subset(moveE,probability >0)
-moveE05 <- subset(moveE,cost == 0.5)
-ggplot(data=moveE05,mapping=aes(x=world,shape=utterance,size=cost,y=probability)) + ylim(0,0.5) + geom_point() +facet_wrap(~p,labeller=labeller(p = facet_labs)) + ggtitle("Thera is going/coming to Northampton") + xlab("World") + ylab("Joint probability of perspective and world") + labs(shape="Utterance") + guides(size=FALSE) + theme(text=element_text(size=16))
-ggsave("moveEtrue05.png",width=14, height=7)
+ggplot(data=moveE05,mapping=aes(x=world,shape=utterance,size=cost,y=probability)) + ylim(0,1) + geom_point() +facet_wrap(~p,labeller=labeller(p = facet_labs)) + ggtitle("Thera is going/coming/walking to Northampton") + xlab("World") + ylab("Joint probability of perspective and world") + labs(shape="Utterance") + guides(size=FALSE) + theme(text=element_text(size=16))
+ggsave("moveEtrue05_nogop.png",width=14, height=7)
 ```
 ```{r}
-moveEC0 <- subset(moveE,cost==0)
 ggplot(data=moveEC0,mapping=aes(x=world,size=cost,shape=utterance,y=probability)) + geom_point() + facet_wrap(~p,labeller=labeller(p = facet_labs)) + ylim(0,0.5) + ggtitle("Thera is going/coming to Northampton") + xlab("World") + ylab("Joint probability of perspective and world") + labs(shape="Utterance",size="Cost") + guides(size=FALSE) + theme(text=element_text(size=12))
 ggsave("moveEtrueC0.png",width=10, height=4)
 ```

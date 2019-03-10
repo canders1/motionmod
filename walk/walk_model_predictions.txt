@@ -1,0 +1,28 @@
+In a walk/go/come model with anti-perspectival semantics for go:
++ If Thera is the mover:
+	- If the speaker but not the listener are in Noho:
+		"Thera is coming to Northampton" becomes the most likely sentence as a function of speaker-bias
+		"Thera is going" becomes less likely than "Thera is walking" as a function of speaker-bias
+	- If the speaker and listener are in Noho:
+		"Thera is coming" is likeliest
+	- If neither are in Noho:
+		"Thera is going" is much likelier than "Thera is walking"
+
+	- Marginalizing over perspective:
+		"Thera is coming" favors world in which both are at location
+		"Thera is going" favors world in which neither are
+		"Thera is walking" is equally likely in all worlds in which Thera is the mover
+
+In a model with plain semantics for go:
++ If Thera is the mover:
+	- If the speaker but not the listener are in Noho:
+		"Thera is coming to Northampton" becomes the most likely sentence as a function of speaker-bias
+		"Thera is going" is equally likely as "Thera is walking"
+	- If the speaker and listener are in Noho:
+		"Thera is coming" is likeliest
+	- If neither are in Noho:
+		"Thera is going" and "Thera is walking" are equally likely
+
+	- Marginalizing over perspective:
+		"Thera is coming" favors world in which both are at location
+		"Thera is going" and "Thera is walking" favor world in which neither are at location, but are almost as likely in all worlds in which Thera is the mover
