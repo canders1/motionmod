@@ -123,7 +123,6 @@ var newPragmaticListener = cache(function(utterance){
 });
 
 var literalSpeaker = cache(function(world,perspective){
-
 	Infer({method:'enumerate'}, function(){
 	var utterance = uttPrior();
 	var lit = literalListener(utterance,perspective).score(world);
