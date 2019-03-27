@@ -26,7 +26,7 @@ var perspectiveCost = function(perspective) {
 	if(perspective.holder === speaker) {
 	return 0 }
 	else {
-	return 1
+	return 1.0
 	}
 }
 
@@ -46,13 +46,16 @@ var uttPrior = function() {
 	return uniformDraw(utterances)};
 
 var gop_meaning = function(utterance, world, perspective){
-  utterance == 'Eliza is coming to Northampton' ? (world.moveElizaNoho && (((perspective.holder === speaker) && (world.locSarah === 'Noho'))||((perspective.holder === addressee) && (world.locJane === 'Noho')))):
-  utterance == 'You are coming to Northampton' ? (world.moveJaneNoho && (perspective.holder === speaker) && (world.locSarah === 'Noho')):
-  utterance == 'I am coming to Northampton' ? (world.moveSarahNoho && (perspective.holder === addressee) && (world.locJane === 'Noho')):
-  utterance == 'Eliza is going to Northampton' ? (world.moveElizaNoho && ((perspective.holder === speaker) && (world.locSarah === 'Amherst')||(perspective.holder === addressee && world.locJane === 'Amherst'))):
-  utterance == 'You are going to Northampton' ? (world.moveJaneNoho && ((perspective.holder === speaker) && (world.locSarah === 'Amherst')||(perspective.holder === addressee && world.locJane === 'Amherst'))):
-  utterance == 'I am going to Northampton' ? (world.moveSarahNoho && ((perspective.holder === speaker) && (world.locSarah === 'Amherst')||(perspective.holder === addressee && world.locJane === 'Amherst'))):
-  True
+  if ((utterance == 'Eliza is coming to Northampton' && (world.moveElizaNoho && (((perspective.holder === speaker) && (world.locSarah === 'Noho'))||((perspective.holder === addressee) && (world.locJane === 'Noho'))))) ||
+  (utterance == 'You are coming to Northampton' && (world.moveJaneNoho && (perspective.holder === speaker) && (world.locSarah === 'Noho'))) ||
+  (utterance == 'I am coming to Northampton' && (world.moveSarahNoho && (perspective.holder === addressee) && (world.locJane === 'Noho'))) ||
+  (utterance == 'Eliza is going to Northampton' && (world.moveElizaNoho && ((perspective.holder === speaker) && (world.locSarah === 'Amherst')||(perspective.holder === addressee && world.locJane === 'Amherst'))))||
+  (utterance == 'You are going to Northampton' && (world.moveJaneNoho && ((perspective.holder === speaker) && (world.locSarah === 'Amherst')||(perspective.holder === addressee && world.locJane === 'Amherst'))))||
+  (utterance == 'I am going to Northampton' && (world.moveSarahNoho && ((perspective.holder === speaker) && (world.locSarah === 'Amherst')||(perspective.holder === addressee && world.locJane === 'Amherst'))))){
+  	return 1
+  } else {
+  	return 0
+  }
 }
 
 var nogop_meaning = function(utterance, world, perspective){
@@ -77,7 +80,7 @@ var worldPrior = cache(function(){
 var literalListener = cache(function(utterance,perspective,world){
 	var wDist = worldPrior()
 	var wPrior = Math.exp(wDist.score(world))
-	var m = nogop_meaning(utterance, world, perspective)
+	var m = gop_meaning(utterance, world, perspective)
 	return wPrior*m
 });
 
@@ -87,7 +90,7 @@ var literalSpeakerDist = cache(function(world){
 		utterances);
 	var denotations = map(function(y)
 			{return [y[0],map(function(x)
-				{return [x,nogop_meaning(y[0],world,x)]},
+				{return [x,gop_meaning(y[0],world,x)]},
 			y[1])]},
 		pairs)
 	var truePairs = map(function(y){
@@ -157,17 +160,30 @@ var pragmaticListener = cache(function(utterance,perspective,world){
 	return wPrior*litSpeak
 });
 
-var printAll = function(worlds){
-  if (worlds.length == 0){
+var printAll = function(pairs){
+  if (pairs.length == 0){
     return
     }
   else {
-    console.log(worlds[0]);
-    console.log(JSON.stringify(Infer({method: 'MCMC',samples: 1000,lag:100,burn:100, model: function(){
-    	return pragmaticListener("Eliza is going to Northampton",perspectiveVals[1],worlds[0])}})));
-    printAll(worlds.slice(1))
+    var output = pragmaticListener(pairs[0][0],pairs[0][1],pairs[0][2]);
+    //console.log(output)
+    var world = JSON.stringify(pairs[0][2])
+    var persp = JSON.stringify(pairs[0][1])
+    var utt = JSON.stringify({utterance: pairs[0][0]})
+    var cropUtt = utt.slice(0,utt.length-1)
+    var cropPersp = persp.slice(1,persp.length-1)
+    var cropWorld = world.slice(1,world.length-1)
+    var cropOut = JSON.stringify({prob: output}).slice(1,output.length)
+    var combo = cropUtt.concat(",",cropPersp,",",cropWorld,",",cropOut)
+    console.log(combo)
+    printAll(pairs.slice(1))
     }
 }
-console.log(perspectiveVals[0]);
-printAll(worlds);
-//console.log(pragmaticListener("I am coming to Northampton",perspectiveVals[0],worlds[0]));
+var pairs = [].concat.apply([], [].concat.apply([], map(function(x){
+	return map(function(y){
+		return map(function(z){
+			return [x,y,z]},
+			worlds)},
+		perspectiveVals)},
+	utterances)));
+printAll(pairs);
