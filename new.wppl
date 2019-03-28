@@ -26,7 +26,7 @@ var perspectiveCost = function(perspective) {
 	if(perspective.holder === speaker) {
 	return 0 }
 	else {
-	return 1.0
+	return 0.75
 	}
 }
 
@@ -80,7 +80,7 @@ var worldPrior = cache(function(){
 var literalListener = cache(function(utterance,perspective,world){
 	var wDist = worldPrior()
 	var wPrior = Math.exp(wDist.score(world))
-	var m = gop_meaning(utterance, world, perspective)
+	var m = nogop_meaning(utterance, world, perspective)
 	return wPrior*m
 });
 
@@ -90,9 +90,10 @@ var literalSpeakerDist = cache(function(world){
 		utterances);
 	var denotations = map(function(y)
 			{return [y[0],map(function(x)
-				{return [x,gop_meaning(y[0],world,x)]},
+				{return [x,nogop_meaning(y[0],world,x)]},
 			y[1])]},
 		pairs)
+
 	var truePairs = map(function(y){
 		return [y[0],filter(function(x)
 			{return x[1]>0?true:false},
@@ -126,10 +127,10 @@ var literalSpeakerDist = cache(function(world){
 			return x[1]==p?true:false
 		},
 		utts)
-		if (utts.length == 0){
+		if (ps.length == 0){
 			return 0.0
 		}else{
-			return utts[0][2]
+			return ps[0][2]
 		}
 	}
 });
@@ -160,7 +161,7 @@ var pragmaticListener = cache(function(utterance,perspective,world){
 	return wPrior*litSpeak
 });
 
-var printAll = function(pairs){
+var printPragmaticAll = function(pairs){
   if (pairs.length == 0){
     return
     }
@@ -176,9 +177,22 @@ var printAll = function(pairs){
     var cropOut = JSON.stringify({prob: output}).slice(1,output.length)
     var combo = cropUtt.concat(",",cropPersp,",",cropWorld,",",cropOut)
     console.log(combo)
+    //var sample = JSON.stringify(Infer({method: 'MCMC',samples: 10000,lag:100,burn:100, model: function(){return pragmaticListener(pairs[0][0],pairs[0][1],pairs[0][2])}}));
+    printPragmaticAll(pairs.slice(1))
+    }
+}
+
+var printAll = function(pairs){
+  if (pairs.length == 0){
+    return
+    }
+  else {
+  	console.log(pairs[0][2])
+    console.log(literalSpeaker("I am coming to Northampton",{holder: speaker},pairs[0][2]))
     printAll(pairs.slice(1))
     }
 }
+
 var pairs = [].concat.apply([], [].concat.apply([], map(function(x){
 	return map(function(y){
 		return map(function(z){
@@ -186,4 +200,10 @@ var pairs = [].concat.apply([], [].concat.apply([], map(function(x){
 			worlds)},
 		perspectiveVals)},
 	utterances)));
-printAll(pairs);
+
+var worldpairs = [].concat.apply(map(function(x){
+	return ["I am coming to Northampton",{holder: speaker},x]},
+			worlds));
+
+//printAll(worldpairs)
+printPragmaticAll(pairs);
