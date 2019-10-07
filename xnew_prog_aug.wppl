@@ -43,6 +43,10 @@ var perspectiveSelect = {
 	'I am going to Northampton' : function(){ return {holder: addressee}},
 	'Thelma is coming to Northampton' : function(){ return uniformDraw(perspectives)},
 	'Thelma is going to Northampton' : function(){ return uniformDraw(perspectives)},
+  'I am walking to Northampton' : function(){ return uniformDraw(perspectives)},
+  'Thelma is walking to Northampton' : function(){ return uniformDraw(perspectives)},
+  'You are walking to Northampton' : function(){ return uniformDraw(perspectives)},
+  'NULL' : function(){ return uniformDraw(perspectives)},
 };
 
 var perspectiveCost = function(perspective) {
@@ -63,7 +67,11 @@ var utterances = [
 'Thelma is going to Northampton',
 'Thelma is coming to Northampton',
 'I am going to Northampton',
-'You are going to Northampton']
+'You are going to Northampton',
+'You are walking to Northampton',
+'I am walking to Northampton',
+'Thelma is walking to Northampton',
+'NULL']
 
 var uttPrior = function() {
 	return uniformDraw(utterances)
@@ -75,7 +83,12 @@ var gop_meaning = function(utterance, world, perspective){
   (utterance == 'I am coming to Northampton' && (world.moveSamNoho && (perspective.holder === addressee) && (world.locLucy === 'Noho'))) ||
   (utterance == 'Thelma is going to Northampton' && (world.moveThelmaNoho && ((perspective.holder === speaker) && (world.locSam === 'Amherst')||(perspective.holder === addressee && world.locLucy === 'Amherst'))))||
   (utterance == 'You are going to Northampton' && (world.moveLucyNoho && ((perspective.holder === speaker) && (world.locSam === 'Amherst')||(perspective.holder === addressee && world.locLucy === 'Amherst'))))||
-  (utterance == 'I am going to Northampton' && (world.moveSamNoho && ((perspective.holder === speaker) && (world.locSam === 'Amherst')||(perspective.holder === addressee && world.locLucy === 'Amherst'))))){
+  (utterance == 'I am going to Northampton' && (world.moveSamNoho && ((perspective.holder === speaker) && (world.locSam === 'Amherst')||(perspective.holder === addressee && world.locLucy === 'Amherst')))) ||
+  (utterance == 'I am walking to Northampton' && world.moveSamNoho) ||
+  (utterance == 'You are walking to Northampton' && world.moveLucyNoho) ||
+  (utterance == 'Thelma is walking to Northampton' && world.moveThelmaNoho) ||
+  (utterance == 'NULL')
+  ){
   	return 1
   } else {
   	return 0
@@ -88,7 +101,11 @@ var nogop_meaning = function(utterance, world, perspective){
   (utterance == 'I am coming to Northampton' && (world.moveSamNoho && (perspective.holder === addressee) && (world.locLucy === 'Noho'))) ||
   (utterance == 'Thelma is going to Northampton' && world.moveThelmaNoho) ||
   (utterance == 'You are going to Northampton' && world.moveLucyNoho) ||
-  (utterance == 'I am going to Northampton' && world.moveSamNoho)){
+  (utterance == 'I am walking to Northampton' && world.moveSamNoho) ||
+  (utterance == 'You are walking to Northampton' && world.moveLucyNoho) ||
+  (utterance == 'Thelma is walking to Northampton' && world.moveThelmaNoho) ||
+  (utterance == 'I am going to Northampton' && world.moveSamNoho) ||
+  (utterance == 'NULL')){
   	return 1
   } else {
   	return 0
@@ -96,7 +113,7 @@ var nogop_meaning = function(utterance, world, perspective){
 }
 
 var marg_perspective = function(utt,perspective){
-  var probs = map(function(w){nogop_meaning(utt,w,perspective)},worlds)
+  var probs = map(function(w){gop_meaning(utt,w,perspective)},worlds)
   return Math.sum(probs)
 }
 
@@ -104,7 +121,7 @@ var literalListener = function(utterance,perspective){
    return Infer({model: function(){
    condition(perspective)
    var world = worldPrior()
-   var meaning = nogop_meaning(utterance,world,perspective)
+   var meaning = gop_meaning(utterance,world,perspective)
    condition(meaning)
    return world
    }})
