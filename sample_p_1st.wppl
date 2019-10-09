@@ -134,11 +134,22 @@ var nogop_meaning = function(utterance, world, perspective){
   }
 }
 
+var goPrior = function(){
+  return uniformDraw([gop_meaning,nogop_meaning]);
+}
+
+
 var lookup_semantics = function(u,w,p){
   if(process.argv[4]=="gop"){
     return gop_meaning(u,w,p)
-  } else{
-    return nogop_meaning(u,w,p)
+  } 
+  else {
+    if(process.argv[4]=="prob"){
+      var meaning = goPrior()
+      return meaning(u,w,p)
+    } else{
+      return nogop_meaning(u,w,p)
+    }
   }
 }
 
@@ -191,5 +202,9 @@ var pragmaticSpeaker = function(w) {
 
 //console.log(utterances[0]);
 //display(stringify(pragmaticListener(utterances[0])));
-//printAll(worlds,literalSpeaker,cost_setting);
-printAll(utterances,pragmaticListener,cost_setting);
+//
+if(process.argv[5]=='speaker'){
+  printAll(worlds,literalSpeaker,cost_setting);
+  } else{
+  printAll(utterances,pragmaticListener,cost_setting);
+  }
