@@ -11,3 +11,5 @@ project/*
 *.jar
 
 *.class
+
+*.png
