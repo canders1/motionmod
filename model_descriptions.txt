@@ -8,6 +8,8 @@ includes 'walk' in utterance set
 takes cost setting as a cmdline arg
 takes gop or nogop as a cmdline arg
 takes 'speaker' as a cmdline arg to call Pragmatic Speaker instead of Pragmatic Listener
+Bash scripts for listener: run_nogop.sh, run_gop.sh, run_probgop.sh
+Bash script for speaker: run_speaker_all.sh
 
 Basic, sample perspective before utterance, just come/go:
 simple_p_1st.wppl
@@ -16,6 +18,8 @@ utterance set is only 'come'/'go'
 takes cost setting as a cmdline arg
 takes gop or nogop as a cmdline arg
 takes 'speaker' as a cmdline arg to call Pragmatic Speaker instead of Pragmatic Listener
+Bash script for listener: run_simple.sh
+Bash script for speaker: none
 
 Basic, heavily biased towards speaker perspective:
 irrational_speaker.wppl
@@ -24,6 +28,8 @@ perspective prior heavily weighted towards speaker (10:1)
 takes cost setting as a cmdline arg
 takes gop, nogop, or prob as a cmdline arg
 takes 'speaker' as a cmdline arg to call Pragmatic Speaker instead of Pragmatic Listener
+Bash script for listener: none
+Bash script for speaker: run_irr_speaker.sh
 
 Sampled perspective cost:
 sample_p_1st_ucost.wppl
@@ -32,6 +38,8 @@ Perspective cost is sampled within literalSpeaker
 includes 'walk' in utterance set
 takes gop or nogop as a cmdline arg
 takes 'speaker' as a cmdline arg to call Pragmatic Speaker instead of Pragmatic Listener
+Bash script for listener: run_ucost.sh
+Bash script for speaker: none
 
 Non-even world probabilities:
 noneven_p_1st.wppl
@@ -41,6 +49,8 @@ includes 'walk' in utterance set
 takes cost setting as a cmdline arg
 takes gop or nogop as a cmdline arg
 takes 'speaker' as a cmdline arg to call Pragmatic Speaker instead of Pragmatic Listener
+Bash script for listener: run_nonu.sh
+Bash script for speaker: none
 
 Old basic, just come/go:
 xnew.wppl
