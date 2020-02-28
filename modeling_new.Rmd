@@ -38,6 +38,14 @@ nogop.pairs <- read.csv('~/Documents/modeling/motionmod/aug_nogop.csv',header=TR
 prob.pairs <- read.csv('~/Documents/modeling/motionmod/aug_prob.csv',header=TRUE,col.names=n,comment.char = "#")
 gop.pairs <- read.csv('~/Documents/modeling/motionmod/aug_gop.csv',header=TRUE,col.names=n,comment.char = "#")
 pairs <- rbind(rbind(nogop.pairs,prob.pairs),gop.pairs)
+# To look at uneven distributions over worlds:
+#uneven.gop.pairs <- read.csv('~/Documents/modeling/motionmod/nonu_aug_gop.csv',header=TRUE,col.names=n,comment.char = "#")
+#pairs <- rbind(pairs,uneven.gop.pairs)
+# To look at uncertainty over cost:
+ucost.gop.pairs <- read.csv('~/Documents/modeling/motionmod/ucost_aug_gop.csv',header=TRUE,col.names=n,comment.char = "#")
+ucost.nogop.pairs <- read.csv('~/Documents/modeling/motionmod/ucost_aug_nogop.csv',header=TRUE,col.names=n,comment.char = "#")
+ucost.pairs <- rbind(ucost.gop.pairs,ucost.nogop.pairs)
+pairs <- rbind(pairs,ucost.pairs)
 ```
 
 ```{r}
@@ -68,7 +76,7 @@ facet_labs <- c(Lucy = "Perspective holder = Lucy", Sam = "Perspective holder = 
 
 ```{r}
 moveThelma <- subset(pairs, as.character(utterance)=='Thelma is coming to Northampton' | as.character(utterance)=='Thelma is going to Northampton' | as.character(utterance)=='Thelma is walking to Northampton')
-c05_moveThelma <- subset(moveThelma,cost==0.0)
+c05_moveThelma <- subset(moveThelma,cost==0.5)
 ggplot(data=c05_moveThelma,mapping=aes(x=perspective.and.world,y=probability,size=cost,shape=utterance,color=utterance)) + geom_point() + facet_wrap(c05_moveThelma$go.is.p)
 ggsave("Tmove_cost05.png",width=12, height=5)
 ```
