@@ -1,4 +1,0 @@
-Carolyn Jane Anderson (University of Massachusetts, Amherst)
-Brian W. Dillon (University of Massachusetts, Amherst)
- Guess Who's Coming (and Who's Going): Bringing Perspective to the Rational Speech Acts Framework
-We present a Rational Speech Acts approach to modeling how conversation participants reason about perspectival expressions. The interpretation of perspectival expressions, such as the motion verbs come and go, depends on the point-of-view from which they are evaluated. In order to interpret a perspectival expression, the listener must jointly reason about the speaker’s intended message and their choice of perspective. We describe an extension of the Rational Speech Acts model that incorporates perspective, and lay out three sets of predictions of the model relating to the semantics of go, the cost of non-speaker perspectives, and marginal inference over worlds.
