@@ -1,0 +1,59 @@
+var stringify = function(x){return JSON.stringify(x)}
+
+var printOne = function(x,f,c){
+  console.log("Cost: "+c)
+  console.log("Utterance: "+stringify(x));
+  console.log("Evidence: "+stringify(f(x)));
+  return
+}
+
+var printAll = function(arr,f,c){
+  map(function(x){printOne(x,f,c)},arr);
+  return
+}
+
+var candidates = ['C1','C2','C3','C4','C5','C6','C7','C8','C9','C10']
+
+var candProbs = [1,1,1,1,1,1,1,1,1,1];
+
+var candPrior = Categorical({vs: candidates, ps: candProbs});
+
+var schools = [
+'Bennington',
+'Middlebury',
+'Swarthmore',
+'Occidental',
+'Amherst',
+]
+
+var phoneInterview = function(){
+  return Infer({model: function(){
+  var interviews = map(function(x){sample(candPrior)},[1,2,3,4])
+  condition(interviews[0]!=interviews[1]!=interviews[2]!=interviews[3])
+  return(interviews)
+  }})
+};
+
+var filterInterview = function(c,interview){
+  var cInSet = filter(function(x){x==c},interview)
+  console.log(cInSet)
+  return cInSet.length==0
+}
+
+var totalInterviews = function(c){
+  return Infer({model: function(){
+  var interviews = map(function(s){filterInterview(c,phoneInterview())},schools)
+  return interviews
+     }})
+};
+
+//display(stringify(pragmaticListener(utterances[0])));
+//
+/*if(process.argv[5]=='speaker'){
+  printAll(worlds,literalSpeaker,cost_setting);
+  } else{
+  printAll(utterances,pragmaticListener,cost_setting);
+  }*/
+
+totalInterviews('C1');
+//totalInterviews(candidates[0],schools);

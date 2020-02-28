@@ -26,26 +26,10 @@ var worlds = [
 	{locSam: 'Noho', locLucy: 'Amherst', moveLucyNoho: false, moveSamNoho: false, moveThelmaNoho: true},
 	{locSam: 'Amherst', locLucy: 'Noho', moveLucyNoho: false, moveSamNoho: false, moveThelmaNoho: true},
 	{locSam: 'Amherst', locLucy: 'Noho', moveLucyNoho: false, moveSamNoho: true, moveThelmaNoho: false},
-  {locSam: 'Else', locLucy: 'Else', moveLucyNoho: false, moveSamNoho: false, moveThelmaNoho: false},
 	]
-
-var real_worlds = [
-  {locSam: 'Amherst', locLucy: 'Amherst', moveLucyNoho: true, moveSamNoho: false, moveThelmaNoho: false},
-  {locSam: 'Amherst', locLucy: 'Amherst', moveLucyNoho: false, moveSamNoho: false, moveThelmaNoho: true},
-  {locSam: 'Amherst', locLucy: 'Amherst', moveLucyNoho: false, moveSamNoho: true, moveThelmaNoho: false},
-  {locSam: 'Noho', locLucy: 'Noho', moveLucyNoho: false, moveSamNoho: false, moveThelmaNoho: true},
-  {locSam: 'Noho', locLucy: 'Amherst', moveLucyNoho: true, moveSamNoho: false, moveThelmaNoho: false},
-  {locSam: 'Noho', locLucy: 'Amherst', moveLucyNoho: false, moveSamNoho: false, moveThelmaNoho: true},
-  {locSam: 'Amherst', locLucy: 'Noho', moveLucyNoho: false, moveSamNoho: false, moveThelmaNoho: true},
-  {locSam: 'Amherst', locLucy: 'Noho', moveLucyNoho: false, moveSamNoho: true, moveThelmaNoho: false},
-  ]
 
 var worldPrior = function() {
 	return uniformDraw(worlds)
-}
-
-var realworldPrior = function() {
-  return uniformDraw(real_worlds)
 }
 
 var perspectives = [
@@ -53,20 +37,16 @@ var perspectives = [
 {holder: addressee}]
 
 var perspectiveSelect = {
-	'You are coming to Northampton' : function(){ return uniformDraw(perspectives)},
-	'You are going to Northampton' : function(){ return uniformDraw(perspectives)},
-	'I am coming to Northampton' : function(){ return uniformDraw(perspectives)},
-	'I am going to Northampton' : function(){ return uniformDraw(perspectives)},
+	'You are coming to Northampton' : function(){ return {holder: speaker}},
+	'You are going to Northampton' : function(){ return {holder: speaker}},
+	'I am coming to Northampton' : function(){ return {holder: addressee}},
+	'I am going to Northampton' : function(){ return {holder: addressee}},
 	'Thelma is coming to Northampton' : function(){ return uniformDraw(perspectives)},
 	'Thelma is going to Northampton' : function(){ return uniformDraw(perspectives)},
   'I am walking to Northampton' : function(){ return uniformDraw(perspectives)},
   'Thelma is walking to Northampton' : function(){ return uniformDraw(perspectives)},
   'You are walking to Northampton' : function(){ return uniformDraw(perspectives)},
   'NULL' : function(){ return uniformDraw(perspectives)},
-};
-
-var pPrior = function() {
-  return uniformDraw(perspectives)
 };
 
 var perspectiveCost = function(perspective) {
@@ -107,7 +87,7 @@ var gop_meaning = function(utterance, world, perspective){
   (utterance == 'I am walking to Northampton' && world.moveSamNoho) ||
   (utterance == 'You are walking to Northampton' && world.moveLucyNoho) ||
   (utterance == 'Thelma is walking to Northampton' && world.moveThelmaNoho) ||
-  (utterance == 'NULL') || (world.locLucy == 'Else')
+  (utterance == 'NULL')
   ){
   	return 1
   } else {
@@ -121,87 +101,54 @@ var nogop_meaning = function(utterance, world, perspective){
   (utterance == 'I am coming to Northampton' && (world.moveSamNoho && (perspective.holder === addressee) && (world.locLucy === 'Noho'))) ||
   (utterance == 'Thelma is going to Northampton' && world.moveThelmaNoho) ||
   (utterance == 'You are going to Northampton' && world.moveLucyNoho) ||
-  (utterance == 'I am going to Northampton' && world.moveSamNoho) ||
-  (utterance == 'Thelma is walking to Northampton' && world.moveThelmaNoho) ||
-  (utterance == 'You are walking to Northampton' && world.moveLucyNoho) ||
   (utterance == 'I am walking to Northampton' && world.moveSamNoho) ||
-  (utterance == 'NULL') || (world.locLucy == 'Else')
-  ){
+  (utterance == 'You are walking to Northampton' && world.moveLucyNoho) ||
+  (utterance == 'Thelma is walking to Northampton' && world.moveThelmaNoho) ||
+  (utterance == 'I am going to Northampton' && world.moveSamNoho) ||
+  (utterance == 'NULL')){
   	return 1
   } else {
   	return 0
   }
 }
 
-var lookup_semantics = function(u,w,p){
-  if(process.argv[4]=="gop"){
-    return gop_meaning(u,w,p)
-  } else{
-    return nogop_meaning(u,w,p)
-  }
+var goPrior = function(){
+  return uniformDraw([gop_meaning,nogop_meaning]);
 }
 
-var marg_perspective = function(utt){
-  var probs = map(function(p){
-    map(function(w){lookup_semantics(utt,w,p)},real_worlds)},perspectives)
-  var sums = map(function(arr){Math.sum(arr)},probs)
-  return Math.sum(sums)
+var marg_perspective = function(utt,perspective){
+  var gof = goPrior()
+  var probs = map(function(w){gof(utt,w,perspective)},worlds)
+  return Math.sum(probs)
 }
 
 var literalListener = function(utterance,perspective){
    return Infer({model: function(){
    condition(perspective)
-   var world = realworldPrior()
-   var meaning = lookup_semantics(utterance,world,perspective)
+   var world = worldPrior()
+   var gof = goPrior()
+   var meaning = gof(utterance,world,perspective)
    condition(meaning)
    return world
    }})
 };
 
-var possible = function(u,p){
-  console.log("U is:")
-  console.log(u)
-  console.log("P is:")
-  console.log(p)
-  var probs = map(function(w){lookup_semantics(u,w,p)},real_worlds)
-  console.log(probs)
-  var sum_prob = Math.sum(probs)
-  console.log(sum_prob)
-  return sum_prob > 0
-}
-
-var get_score = function(u,p,w){
-  if(possible(u,p)){
-    var utt = uttPrior()
-    var p = pPrior()
-    var margP = marg_perspective(utt)
-    return (literalListener(utt,p).score(w)*margP)-perspectiveCost(p)
-  } else {
-    return 0
-  }
-}
-
 var literalSpeaker = function(world) {
   return Infer({model: function(){
     var utt = uttPrior()
+    var pPrior = perspectiveSelect[utt]
     var p = pPrior()
-    console.log("utt is:")
-    console.log(utt)
-    console.log("p is:")
-    console.log(p)
-    var margP = marg_perspective(utt)
-    var s = get_score(utt,p,world)
-    console.log("S:")
-    console.log(s)
-    factor(s)
+    var margP = marg_perspective(utt,p)
+    factor(((literalListener(utt,p).score(world)*margP)-perspectiveCost(p)))
     return {utterance: utt,perspective: p}
   }})
 }
 
 var pragmaticListener = function(u) {
   return Infer({model: function(){
+    var pPrior = perspectiveSelect[u]
     var p = pPrior()
-    var w = realworldPrior()
+    var w = worldPrior()
     factor(literalSpeaker(w).score({utterance:u,perspective: p}))
     return {world: w,perspective: p}
   }})
@@ -210,6 +157,7 @@ var pragmaticListener = function(u) {
 var pragmaticSpeaker = function(w) {
   return Infer({model: function(){
     var utt = uttPrior()
+    var pPrior = perspectiveSelect[utt]
     var p = pPrior()
     factor((pragmaticListener(utt).score({world: w,perspective: p})-perspectiveCost(p)))
     return {utterance: utt,perspective: p}
@@ -220,5 +168,5 @@ var pragmaticSpeaker = function(w) {
 
 //console.log(utterances[0]);
 //display(stringify(pragmaticListener(utterances[0])));
-printAll(worlds,literalSpeaker,cost_setting);
-//printAll(utterances,pragmaticListener,cost_setting);
+
+printAll(utterances,pragmaticListener,cost_setting);

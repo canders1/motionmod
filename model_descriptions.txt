@@ -1,0 +1,72 @@
+Model descriptions:
+
+NEW DEFAULT:
+Basic, sample perspective before utterance:
+sample_p_1st.wppl
+defines a set of utterances consistent with each perspective and only samples from that set during the Pragmatic Speaker computation
+includes 'walk' in utterance set
+takes cost setting as a cmdline arg
+takes gop or nogop as a cmdline arg
+takes 'speaker' as a cmdline arg to call Pragmatic Speaker instead of Pragmatic Listener
+
+Basic, sample perspective before utterance, just come/go:
+simple_p_1st.wppl
+defines a set of utterances consistent with each perspective and only samples from that set during the Pragmatic Speaker computation
+utterance set is only 'come'/'go'
+takes cost setting as a cmdline arg
+takes gop or nogop as a cmdline arg
+takes 'speaker' as a cmdline arg to call Pragmatic Speaker instead of Pragmatic Listener
+
+Basic, heavily biased towards speaker perspective:
+irrational_speaker.wppl
+defines a set of utterances consistent with each perspective and only samples from that set during the Pragmatic Speaker computation
+perspective prior heavily weighted towards speaker (10:1)
+takes cost setting as a cmdline arg
+takes gop, nogop, or prob as a cmdline arg
+takes 'speaker' as a cmdline arg to call Pragmatic Speaker instead of Pragmatic Listener
+
+Sampled perspective cost:
+sample_p_1st_ucost.wppl
+defines a set of utterances consistent with each perspective and only samples from that set during the Pragmatic Speaker computation
+Perspective cost is sampled within literalSpeaker
+includes 'walk' in utterance set
+takes gop or nogop as a cmdline arg
+takes 'speaker' as a cmdline arg to call Pragmatic Speaker instead of Pragmatic Listener
+
+Non-even world probabilities:
+noneven_p_1st.wppl
+defines a set of utterances consistent with each perspective and only samples from that set during the Pragmatic Speaker computation
+Worlds are weighted to prefer speaker and listener in the same place
+includes 'walk' in utterance set
+takes cost setting as a cmdline arg
+takes gop or nogop as a cmdline arg
+takes 'speaker' as a cmdline arg to call Pragmatic Speaker instead of Pragmatic Listener
+
+Old basic, just come/go:
+xnew.wppl
+utterance set is only 'come'/'go'
+takes cost setting as a cmdline arg
+must comment or uncomment gop or nogop
+NOTE: method of dealing with inconsistent utterance/perspective pairs may be outdated
+
+Basic, including walk:
+xnew_prog_aug.wppl
+includes 'walk' in utterance set
+takes cost setting as a cmdline arg
+must comment or uncomment gop or nogop
+NOTE: method of dealing with inconsistent utterance/perspective pairs may be outdated
+
+Lexical uncertainty model:
+xnew_lexuncertain_aug.wppl
+lexical uncertainty over gop or nogop (uniform dist)
+includes 'walk' in utterance set
+takes cost setting as a cmdline arg
+NOTE: method of dealing with inconsistent utterance/perspective pairs may be outdated
+
+Basic, false world:
+xnew_aug.wppl
+includes a false world in the world set
+UNCLEAR IF THIS WORKS: method of dealing with inconsistent utterance/perspective pairs may not work
+includes 'walk' in utterance set
+takes cost setting as a cmdline arg
+must comment or uncomment gop or nogop
