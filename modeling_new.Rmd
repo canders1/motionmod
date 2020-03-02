@@ -39,7 +39,9 @@ n <- c("go.is.p","cost","utterance","perspective","locSam","locLucy","moveLucy",
 #datanm = "basic"
 #datanm = "basic_simple"
 #datanm = "sampled_pcost"
-datanm = "nonu_w"
+#datanm = "nonu_w"
+#datanm = "speaker_bias"
+datanm = "listener_cost"
 datad = paste0('img/',datanm,'_')
 ```
 
@@ -64,6 +66,16 @@ if(datanm == "nonu_w"){
   nogop_n = 'nonu_aug_nogop.csv'
   gop_n = 'nonu_aug_gop.csv'
   prob_n = 'nonu_aug_prob.csv'
+}
+if(datanm == "speaker_bias"){
+  nogop_n = 'speaker_bias_nogop.csv'
+  gop_n = 'speaker_bias_gop.csv'
+  prob_n = 'speaker_bias_prob.csv'
+}
+if(datanm == "listener_cost"){
+  nogop_n = 'lcost_nogop.csv'
+  gop_n = 'lcost_gop.csv'
+  prob_n = 'lcost_prob.csv'
 }
 ```
 
@@ -151,20 +163,17 @@ ggplot(data=pairs,mapping=aes(x=perspective.and.world,size=cost,y=probability)) 
 ```
 
 ```{r}
-#goThelmatrue <- subset(goThelma,probability >0)
 ggplot(data=goThelma,mapping=aes(x=world,size=cost,y=probability,shape=go.is.p,color=go.is.p)) + geom_point() +facet_wrap(~perspective,labeller=labeller(perspective = facet_labs)) + ylim(0,0.75) + ggtitle("Thelma is going to Northampton") + xlab("World") + ylab("Joint probability of perspective and world") + labs(size="Perspective cost") + theme(text=element_text(size=16))
 ggsave(paste0(datad,"goThelma.png"),width=12, height=5)
 ```
 
 ```{r}
-#comeTtrue <- subset(comeThelma,probability >0 )
 ggplot(data=comeThelma,mapping=aes(x=world,size=cost,y=probability,shape=go.is.p,color=go.is.p)) + geom_point() + ylim(0,0.75) + facet_wrap(~perspective,labeller=labeller(perspective = facet_labs))+ ggtitle("Thera is coming to Northampton") + xlab("World") + ylab("Joint probability of perspective and world") + labs(size="Perspective cost") + theme(text=element_text(size=16))
 ggsave(paste0(datad,'comeThelma.png'),width=12, height=5)
 ```
 
 ```{r}
 walkThelma <- subset(pairs, as.character(utterance)=='Thelma is walking to Northampton')
-#walkTtrue <- subset(walkThelma,probability >0 )
 ggplot(data=walkThelma,mapping=aes(x=world,size=cost,y=probability,shape=go.is.p,color=go.is.p)) + geom_point() + ylim(0,0.75) + facet_wrap(~perspective,labeller=labeller(perspective = facet_labs))+ ggtitle("Thera is walking to Northampton") + xlab("World") + ylab("Joint probability of perspective and world") + labs(size="Perspective cost") + theme(text=element_text(size=16))
 ggsave(paste0(datad,'walkThelma.png'),width=12, height=5)
 ```
