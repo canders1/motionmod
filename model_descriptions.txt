@@ -31,6 +31,16 @@ takes 'speaker' as a cmdline arg to call Pragmatic Speaker instead of Pragmatic 
 Bash script for listener: none
 Bash script for speaker: run_irr_speaker.sh
 
+Basic, listener perspective cost:
+lcost.wppl
+Perspective cost in listener as well as speaker
+defines a set of utterances consistent with each perspective and only samples from that set during the Pragmatic Speaker computation
+takes cost setting as a cmdline arg
+takes gop, nogop, or prob as a cmdline arg
+takes 'speaker' as a cmdline arg to call Pragmatic Speaker instead of Pragmatic Listener
+Bash script for listener: none
+Bash script for speaker: run_lcost.sh
+
 Sampled perspective cost:
 sample_p_1st_ucost.wppl
 defines a set of utterances consistent with each perspective and only samples from that set during the Pragmatic Speaker computation
