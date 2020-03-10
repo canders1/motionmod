@@ -1,5 +1,7 @@
 var cost_setting = process.argv[3];
 
+var list_cost = 0.25;
+
 var speaker = 'Sam';
 var addressee = 'Lucy';
 
@@ -57,7 +59,7 @@ var listenerPerspectiveCost = function(perspective) {
   if(perspective.holder === addressee) {
   return 0 }
   else {
-  return cost_setting
+  return list_cost
   }
 }
 

@@ -1,4 +1,4 @@
-for cost in 0.0 0.25 0.5 0.75 1
+for cost in 0.0 0.25 0.5 0.75 1 2 4 6 8 10
 do
 webppl sample_p_1st.wppl $cost 'prob' "speaker"> "speaker_aug_prob/prob_$cost.txt"
 webppl sample_p_1st.wppl $cost 'nogop' "speaker"> "speaker_aug_nogop/nogop_$cost.txt"

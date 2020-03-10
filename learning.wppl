@@ -1,0 +1,135 @@
+var cost_setting = process.argv[3];
+
+var stringify = function(x){return JSON.stringify(x)}
+
+var printOne = function(x,f,c){
+  console.log("Cost: "+c)
+  console.log("Utterance: "+stringify(x));
+  console.log("Evidence: "+stringify(f(x)));
+  return
+}
+
+var printAll = function(arr,f,c){
+  map(function(x){printOne(x,f,c)},arr);
+  return
+}
+
+var worlds = [
+  {locSam: 'Amherst', locLucy: 'Amherst', moveLucyNoho: true, moveSamNoho: false, moveThelmaNoho: false},
+  {locSam: 'Amherst', locLucy: 'Amherst', moveLucyNoho: false, moveSamNoho: false, moveThelmaNoho: true},
+  {locSam: 'Amherst', locLucy: 'Amherst', moveLucyNoho: false, moveSamNoho: true, moveThelmaNoho: false},
+  {locSam: 'Noho', locLucy: 'Noho', moveLucyNoho: false, moveSamNoho: false, moveThelmaNoho: true},
+  {locSam: 'Noho', locLucy: 'Amherst', moveLucyNoho: true, moveSamNoho: false, moveThelmaNoho: false},
+  {locSam: 'Noho', locLucy: 'Amherst', moveLucyNoho: false, moveSamNoho: false, moveThelmaNoho: true},
+  {locSam: 'Amherst', locLucy: 'Noho', moveLucyNoho: false, moveSamNoho: false, moveThelmaNoho: true},
+  {locSam: 'Amherst', locLucy: 'Noho', moveLucyNoho: false, moveSamNoho: true, moveThelmaNoho: false},
+  ]
+
+var worldPrior = function() {
+	return uniformDraw(worlds)
+}
+
+var utteranceCost = function(utterance) {
+	return 0
+}
+
+var utterances = [
+'You are coming to Northampton',
+'I am coming to Northampton',
+'Thelma is going to Northampton',
+'Thelma is coming to Northampton',
+'I am going to Northampton',
+'You are going to Northampton',
+'You are walking to Northampton',
+'I am walking to Northampton',
+'Thelma is walking to Northampton',
+//'NULL'
+]
+
+var uttPrior = function() {
+	return uniformDraw(utterances)
+};
+
+var get_meaning = function(utterance, world){
+  if ((utterance == 'Thelma is coming to Northampton' && world.moveThelmaNoho) ||
+   (utterance == 'You are coming to Northampton' && world.moveLucyNoho) ||
+  (utterance == 'I am coming to Northampton' && world.moveSamNoho) ||
+  (utterance == 'Thelma is going to Northampton' && world.moveThelmaNoho) ||
+  (utterance == 'You are going to Northampton' && world.moveLucyNoho) ||
+  (utterance == 'I am going to Northampton' && world.moveSamNoho) ||
+  (utterance == 'Thelma is walking to Northampton' && world.moveThelmaNoho) ||
+  (utterance == 'You are walking to Northampton' && world.moveLucyNoho) ||
+  (utterance == 'I am walking to Northampton' && world.moveSamNoho) ||
+  (utterance == 'NULL')
+  ){
+  	return 1
+  } else {
+  	return 0
+  }
+}
+
+var marg_perspective = function(utt,p){
+  var probs = map(function(w){get_meaning(utt,w)},worlds)
+  return Math.sum(probs)
+  //var sums = map(function(arr){Math.sum(arr)},probs)
+  //return Math.sum(sums)
+}
+
+var literalListener = function(utterance){
+   return Infer({model: function(){
+   var world = worldPrior()
+   var meaning = get_meaning(utterance,world)
+   condition(meaning)
+   return world
+   }})
+};
+
+var literalSpeaker = function(world) {
+  return Infer({model: function(){
+    var utt = uttPrior()
+    factor(literalListener(utt).score(world))
+    return {utterance: utt}
+  }})
+}
+
+var pragmaticListener = function(u) {
+  return Infer({model: function(){
+    var w = worldPrior()
+    factor(literalSpeaker(w).score({utterance:u}))
+    return {world: w}
+  }})
+}
+
+var run_generation = function(gen){
+  console.log("Gen "+stringify(gen))
+  var wObs = worldPrior()
+  console.log("Observed: "+stringify(wObs))
+  var poss_utterances = literalSpeaker(wObs)
+  var pMax = maxU(poss_utterances)
+  var actual_u = pMax['utterance']
+  console.log("Uttered: "+stringify(actual_u))
+  console.log("Interpretation: "+stringify(pragmaticListener(actual_u)))
+}
+
+var maxU = function(d){
+  var uts = d['params']['dist']
+  var keys = Object.keys(uts)
+  var us = map(function(k){uts[k]['val']['utterance']},keys)
+  var probs = map(function(k){uts[k]['prob']},keys)
+  var pairs = map2(function(x,y){return {'utterance' : x, 'prob':y}},us,probs)
+  var pMax = reduce(function(x,y){return x['prob']>y['prob']?x:y}, {'utterance' : '', 'prob': 0},pairs)
+  return pMax
+}
+
+//display(stringify(literalSpeaker(worlds[6])));
+
+//console.log(utterances[0]);
+//display(stringify(pragmaticListener(utterances[0])));
+//
+/*if(process.argv[5]=='speaker'){
+  printAll(worlds,literalSpeaker,cost_setting);
+  } else{
+  printAll(utterances,pragmaticListener,cost_setting);
+  }*/
+var gens = [1,2,3,4,5]
+map(function(g){run_generation(g)},gens)
