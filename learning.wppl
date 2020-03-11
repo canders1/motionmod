@@ -1,5 +1,3 @@
-var cost_setting = process.argv[3];
-
 var stringify = function(x){return JSON.stringify(x)}
 
 var printOne = function(x,f,c){
@@ -18,17 +16,19 @@ var worlds = [
   {"Major": "German", "School": "University of New Orleans", "Name": "Nancy", "Location Preference": "outdoor"},
   {"Major": "Astronomy", "School": "Franklin Pierce Law Center", "Name": "Nathan", "Location Preference": "outdoor"}, 
   {"Major": "German", "School": "State University of New York at Buffalo", "Name": "Daniel", "Location Preference": "outdoor"}, 
-  {"Major": "Adult & Continuing Education", "School": "Canisius College", "Name": "Gary", "Location Preference": "indoor"}, 
-  {"Major": "Veterinary Sciences", "School": "Marymount University", "Name": "Gary", "Location Preference": "outdoor"}, 
   {"Major": "Hispanic-American Studies", "School": "Franklin Pierce Law Center", "Name": "Gerald", "Location Preference": "outdoor"}, 
-  {"Major": "Electrical Engineering", "School": "University of Dallas", "Name": "Gary", "Location Preference": "outdoor"}, 
-  {"Major": "Astronomy", "School": "Saint Mary's College of California", "Name": "Nathan", "Location Preference": "outdoor"},
-  {"Major": "Ceramic Engineering", "Location Preference": "outdoor", "Name": "Nathan", "Company": "Commercial Metals Company"}, 
-  {"Major": "Social Work & Social Services", "Location Preference": "outdoor", "Name": "Mary", "Company": "Commercial Metals Company"}
+  //{"Major": "Ceramic Engineering", "Name": "Nathan", "Company": "Commercial Metals Company","Location Preference": "outdoor"}, 
+  //{"Major": "Adult & Continuing Education", "School": "Canisius College", "Name": "Gary", "Location Preference": "indoor"}, 
+  //{"Major": "Veterinary Sciences", "School": "Marymount University", "Name": "Gary", "Location Preference": "outdoor"}, 
+  //{"Major": "Electrical Engineering", "School": "University of Dallas", "Name": "Gary", "Location Preference": "outdoor"}, 
+  //{"Major": "Astronomy", "School": "Saint Mary's College of California", "Name": "Nathan", "Location Preference": "outdoor"},
+  //{"Major": "Social Work & Social Services", "Location Preference": "outdoor", "Name": "Mary", "Company": "Commercial Metals Company"}
   ]
 
-var worldPrior = function() {
-	return uniformDraw(worlds)
+var initWorldPriors = [1,1,1,1];
+
+var getWorldDist = function(worlds,worldPs) {
+	return Categorical({ps: worldPs,vs: worlds})
 }
 
 var utteranceCost = function(utterance) {
@@ -47,13 +47,13 @@ var utterances = [
 //'Their name is Gary',
 //'Their name is Gerald',
 //'Their name is Mary',
-//'They study German',
+'They study German',
 //'They study Astronomy',
 //'They study Veterinary Sciences',
 //'They study Engineering',
 //'They study a social science',
 //'They study a humanity',
-//'They study a science',
+'They study a science',
 'They like being outdoors',
 'They like being indoors',
 'NULL'
@@ -64,11 +64,13 @@ var uttPrior = function() {
 };
 
 var get_meaning = function(utterance, world){
-  if ((utterance == 'They are a student' && world["Company"] == null) ||
+  if ((utterance == 'They are a student' && world["Company"] == undefined) ||
    (utterance == 'They work' && world["Company"]) ||
    (utterance == 'They are female' && world["Name"] == 'Nancy' || world["Name"] == 'Mary') ||
    (utterance == 'They are male' && world["Name"] != 'Nancy' && world["Name"] != 'Mary') ||
    (utterance == 'Their name is Nathan' && world["Name"] == 'Nathan') ||
+   (utterance == 'They study German' && world["Major"] == 'German') ||
+   (utterance == 'They study a science' && ((world["Major"] == 'Ceramic Engineering') || (world["Major"] == 'Astronomy'))) ||
    (utterance == 'Their name starts with N' && world["Name"] == 'Nathan' || world["Name"] == 'Nancy') ||
    (utterance == 'They like being outdoors' && world["Location Preference"] == "outdoor") ||
    (utterance == 'They like being indoors' && world["Location Preference"] == "indoor") ||
@@ -80,47 +82,68 @@ var get_meaning = function(utterance, world){
 }
 }
 
-var marg_perspective = function(utt,p){
-  var probs = map(function(w){get_meaning(utt,w)},worlds)
-  return Math.sum(probs)
-  //var sums = map(function(arr){Math.sum(arr)},probs)
-  //return Math.sum(sums)
-}
-
-var literalListener = function(utterance){
+var literalListener = function(utterance,worldDist){
    return Infer({model: function(){
-   var world = worldPrior()
+   var world = sample(worldDist)
    var meaning = get_meaning(utterance,world)
    condition(meaning)
    return world
    }})
 };
 
-var literalSpeaker = function(world) {
+var literalSpeaker = function(world,worldDist) {
   return Infer({model: function(){
     var utt = uttPrior()
-    factor(literalListener(utt).score(world))
+    factor(literalListener(utt,worldDist).score(world))
     return {utterance: utt}
   }})
 }
 
-var pragmaticListener = function(u) {
+var pragmaticListener = function(u,worldDist) {
   return Infer({model: function(){
-    var w = worldPrior()
-    factor(literalSpeaker(w).score({utterance:u}))
+    var w = sample(worldDist)
+    factor(literalSpeaker(w,worldDist).score({utterance:u}))
     return {world: w}
   }})
 }
 
-var run_generation = function(gen){
+var run_generation = function(gen,worldPriorS,worldPriorL){
+  var worldDistS = getWorldDist(worlds,worldPriorS)
+  var worldDistL = getWorldDist(worlds,worldPriorL)
   console.log("Gen "+stringify(gen))
-  var wObs = worldPrior()
+  var wObs = sample(worldDistS)
   console.log("Observed: "+stringify(wObs))
-  var poss_utterances = literalSpeaker(wObs)
+  var poss_utterances = literalSpeaker(wObs,worldDistS)
+  var newWorldPriorS = wUpdate(worldPriorS,getWPosteriorsS(wObs,worlds),0.1)
   var pMax = maxU(poss_utterances)
   var actual_u = pMax['utterance']
   console.log("Uttered: "+stringify(actual_u))
-  console.log("Interpretation: "+stringify(pragmaticListener(actual_u)))
+  var interpretation = pragmaticListener(actual_u,worldDistL)
+  console.log("Interpretation: "+stringify(interpretation))
+  var worldPosteriorsL = getWPosteriorsL(interpretation,worlds)
+  var newWorldPriorL = wUpdate(worldPriorL,worldPosteriorsL,0.1)
+  return {sp: newWorldPriorS, lp: newWorldPriorL}
+}
+
+var getWPosteriorsS = function(w,worlds){
+  var posts = map(function(x){if(x==w){1}else{0}},worlds)
+  return posts
+}
+
+var getWPosteriorsL = function(interpretation,worlds){
+  var int = interpretation['params']['dist']
+  var keys = Object.keys(int)
+  var probs = map(function(k){int[k]['prob']},keys)
+  var ws= map(function(k){int[k]['val']['world']},keys)
+  var posts = map(function(x){if(ws.indexOf(x)!= -1){probs[ws.indexOf(x)]}else{0}},worlds)
+  return posts
+}
+
+var wUpdate = function(worldPriors,worldPosteriors,lr){
+  var updates = map2(function(post,prior){prior+(post*lr)},worldPosteriors,worldPriors)
+  var u_sum = sum(updates)
+  var updatedWorlds = map(function(u){u/u_sum},updates)
+  return updatedWorlds
 }
 
 var maxU = function(d){
@@ -133,15 +156,15 @@ var maxU = function(d){
   return pMax
 }
 
-//display(stringify(literalSpeaker(worlds[6])));
+var simulateSharedDist = function(n_gens,curr_n,sp,lp){
+  if(n_gens != curr_n){
+    var newPriors = run_generation(curr_n,sp,lp)
+    console.log("Speaker dist: " + newPriors['sp'])
+    console.log("Listener dist: " + newPriors['lp'])
+    simulateSharedDist(n_gens,curr_n+1,newPriors['sp'],newPriors['lp'])
+  } else {
+    return 
+  }
+}
 
-//console.log(utterances[0]);
-//display(stringify(pragmaticListener(utterances[0])));
-//
-/*if(process.argv[5]=='speaker'){
-  printAll(worlds,literalSpeaker,cost_setting);
-  } else{
-  printAll(utterances,pragmaticListener,cost_setting);
-  }*/
-var gens = [1,2,3,4,5]
-map(function(g){run_generation(g)},gens)
+simulateSharedDist(100,0,initWorldPriors,initWorldPriors)
