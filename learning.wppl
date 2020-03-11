@@ -15,14 +15,16 @@ var printAll = function(arr,f,c){
 }
 
 var worlds = [
-  {locSam: 'Amherst', locLucy: 'Amherst', moveLucyNoho: true, moveSamNoho: false, moveThelmaNoho: false},
-  {locSam: 'Amherst', locLucy: 'Amherst', moveLucyNoho: false, moveSamNoho: false, moveThelmaNoho: true},
-  {locSam: 'Amherst', locLucy: 'Amherst', moveLucyNoho: false, moveSamNoho: true, moveThelmaNoho: false},
-  {locSam: 'Noho', locLucy: 'Noho', moveLucyNoho: false, moveSamNoho: false, moveThelmaNoho: true},
-  {locSam: 'Noho', locLucy: 'Amherst', moveLucyNoho: true, moveSamNoho: false, moveThelmaNoho: false},
-  {locSam: 'Noho', locLucy: 'Amherst', moveLucyNoho: false, moveSamNoho: false, moveThelmaNoho: true},
-  {locSam: 'Amherst', locLucy: 'Noho', moveLucyNoho: false, moveSamNoho: false, moveThelmaNoho: true},
-  {locSam: 'Amherst', locLucy: 'Noho', moveLucyNoho: false, moveSamNoho: true, moveThelmaNoho: false},
+  {"Major": "German", "School": "University of New Orleans", "Name": "Nancy", "Location Preference": "outdoor"},
+  {"Major": "Astronomy", "School": "Franklin Pierce Law Center", "Name": "Nathan", "Location Preference": "outdoor"}, 
+  {"Major": "German", "School": "State University of New York at Buffalo", "Name": "Daniel", "Location Preference": "outdoor"}, 
+  {"Major": "Adult & Continuing Education", "School": "Canisius College", "Name": "Gary", "Location Preference": "indoor"}, 
+  {"Major": "Veterinary Sciences", "School": "Marymount University", "Name": "Gary", "Location Preference": "outdoor"}, 
+  {"Major": "Hispanic-American Studies", "School": "Franklin Pierce Law Center", "Name": "Gerald", "Location Preference": "outdoor"}, 
+  {"Major": "Electrical Engineering", "School": "University of Dallas", "Name": "Gary", "Location Preference": "outdoor"}, 
+  {"Major": "Astronomy", "School": "Saint Mary's College of California", "Name": "Nathan", "Location Preference": "outdoor"},
+  {"Major": "Ceramic Engineering", "Location Preference": "outdoor", "Name": "Nathan", "Company": "Commercial Metals Company"}, 
+  {"Major": "Social Work & Social Services", "Location Preference": "outdoor", "Name": "Mary", "Company": "Commercial Metals Company"}
   ]
 
 var worldPrior = function() {
@@ -34,16 +36,27 @@ var utteranceCost = function(utterance) {
 }
 
 var utterances = [
-'You are coming to Northampton',
-'I am coming to Northampton',
-'Thelma is going to Northampton',
-'Thelma is coming to Northampton',
-'I am going to Northampton',
-'You are going to Northampton',
-'You are walking to Northampton',
-'I am walking to Northampton',
-'Thelma is walking to Northampton',
-//'NULL'
+'They are a student',
+'They work',
+'They are female',
+'They are male',
+'Their name starts with N',
+//'Their name is Nancy',
+'Their name is Nathan',
+//'Their name is Daniel',
+//'Their name is Gary',
+//'Their name is Gerald',
+//'Their name is Mary',
+//'They study German',
+//'They study Astronomy',
+//'They study Veterinary Sciences',
+//'They study Engineering',
+//'They study a social science',
+//'They study a humanity',
+//'They study a science',
+'They like being outdoors',
+'They like being indoors',
+'NULL'
 ]
 
 var uttPrior = function() {
@@ -51,21 +64,20 @@ var uttPrior = function() {
 };
 
 var get_meaning = function(utterance, world){
-  if ((utterance == 'Thelma is coming to Northampton' && world.moveThelmaNoho) ||
-   (utterance == 'You are coming to Northampton' && world.moveLucyNoho) ||
-  (utterance == 'I am coming to Northampton' && world.moveSamNoho) ||
-  (utterance == 'Thelma is going to Northampton' && world.moveThelmaNoho) ||
-  (utterance == 'You are going to Northampton' && world.moveLucyNoho) ||
-  (utterance == 'I am going to Northampton' && world.moveSamNoho) ||
-  (utterance == 'Thelma is walking to Northampton' && world.moveThelmaNoho) ||
-  (utterance == 'You are walking to Northampton' && world.moveLucyNoho) ||
-  (utterance == 'I am walking to Northampton' && world.moveSamNoho) ||
-  (utterance == 'NULL')
-  ){
+  if ((utterance == 'They are a student' && world["Company"] == null) ||
+   (utterance == 'They work' && world["Company"]) ||
+   (utterance == 'They are female' && world["Name"] == 'Nancy' || world["Name"] == 'Mary') ||
+   (utterance == 'They are male' && world["Name"] != 'Nancy' && world["Name"] != 'Mary') ||
+   (utterance == 'Their name is Nathan' && world["Name"] == 'Nathan') ||
+   (utterance == 'Their name starts with N' && world["Name"] == 'Nathan' || world["Name"] == 'Nancy') ||
+   (utterance == 'They like being outdoors' && world["Location Preference"] == "outdoor") ||
+   (utterance == 'They like being indoors' && world["Location Preference"] == "indoor") ||
+   (utterance == 'NULL')
+   ){
   	return 1
-  } else {
-  	return 0
-  }
+} else {
+  return 0
+}
 }
 
 var marg_perspective = function(utt,p){
