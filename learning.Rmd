@@ -1,0 +1,26 @@
+---
+title: "modeling"
+author: "Carolyn Jane Anderson"
+date: "June 4, 2018"
+output: html_document
+---
+
+```{r}
+library(dplyr)
+library(ggplot2)
+```
+
+```{r}
+#import data
+n <- c("belief","gen","obs_major","obs_school","obs_name","obs_loc","obs_w","utterance","major", "school","name","loc","w","participant","prob")
+pairs <- read.csv('~/dissertation/modeling/motionmod/learning_test.tsv',header=FALSE,comment.char = "#",col.names=n,sep='\t')
+```
+
+```{r}
+pairs$prob <- as.numeric(as.character(pairs$prob))
+```
+
+```{r}
+ggplot(data=pairs,mapping=aes(x=gen,y=prob,shape=w,color=w)) + geom_point() + facet_wrap(belief~participant) + ylab("Posterior probability") + xlab("Name") + geom_path()
+#ggsave("test.png",width=12, height=5)
+```

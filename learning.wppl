@@ -107,11 +107,12 @@ var pragmaticListener = function(u,worldDist) {
   }})
 }
 
-var run_generation = function(gen,worldPriorS,worldPriorL){
+var run_generation = function(gen,speakerBeliefs,worldPriorS,worldPriorL){
+  var speakerBeliefWorlds = getWorldDist(worlds,speakerBeliefs)
   var worldDistS = getWorldDist(worlds,worldPriorS)
   var worldDistL = getWorldDist(worlds,worldPriorL)
   console.log("Gen "+stringify(gen))
-  var wObs = sample(worldDistS)
+  var wObs = sample(speakerBeliefWorlds)
   console.log("Observed: "+stringify(wObs))
   var poss_utterances = literalSpeaker(wObs,worldDistS)
   var newWorldPriorS = wUpdate(worldPriorS,getWPosteriorsS(wObs,worlds),0.1)
@@ -156,15 +157,19 @@ var maxU = function(d){
   return pMax
 }
 
-var simulateSharedDist = function(n_gens,curr_n,sp,lp){
+var simulateSharedDist = function(n_gens,curr_n,pref,spb,sp,lp){
   if(n_gens != curr_n){
-    var newPriors = run_generation(curr_n,sp,lp)
+    console.log("Belief: "+stringify(worlds[pref]))
+    var newPriors = run_generation(curr_n,spb,sp,lp)
     console.log("Speaker dist: " + newPriors['sp'])
     console.log("Listener dist: " + newPriors['lp'])
-    simulateSharedDist(n_gens,curr_n+1,newPriors['sp'],newPriors['lp'])
+    simulateSharedDist(n_gens,curr_n+1,pref,spb,newPriors['sp'],newPriors['lp'])
   } else {
     return 
   }
 }
 
-simulateSharedDist(100,0,initWorldPriors,initWorldPriors)
+simulateSharedDist(100,0,0,[5,1,1,1],initWorldPriors,initWorldPriors)
+simulateSharedDist(100,0,1,[1,5,1,1],initWorldPriors,initWorldPriors)
+simulateSharedDist(100,0,2,[1,1,5,1],initWorldPriors,initWorldPriors)
+simulateSharedDist(100,0,3,[1,1,1,5],initWorldPriors,initWorldPriors)

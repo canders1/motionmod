@@ -31,7 +31,9 @@ def main():
 	for l in data:
 		l = l.strip('\n')
 		pieces = l.split(' ')
-		if pieces[0]=="Gen":
+		if pieces[0]=="Belief:":
+			belief = parse_w(' '.join(pieces[1:]))
+		elif pieces[0]=="Gen":
 			gen = pieces[1]
 		elif pieces[0]=="Observed:":
 			obs_w = parse_w(' '.join(pieces[1:]))
@@ -46,8 +48,8 @@ def main():
 			speakPosts = parse_dist(speakPost)
 			listPosts = parse_dist(listPost)
 			for i,w in enumerate(worlds):
-				outlines.append([gen]+obs_w+[w_string(obs_w),utt]+w+[w_string(w),'speaker',speakPosts[i]])
-				outlines.append([gen]+obs_w+[w_string(obs_w),utt]+w+[w_string(w),'listener',listPosts[i]])
+				outlines.append([w_string(belief),gen]+obs_w+[w_string(obs_w),utt]+w+[w_string(w),'speaker',speakPosts[i]])
+				outlines.append([w_string(belief),gen]+obs_w+[w_string(obs_w),utt]+w+[w_string(w),'listener',listPosts[i]])
 		else:
 			pass
 	write_results(outlines,sys.argv[3])
