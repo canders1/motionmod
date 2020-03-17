@@ -36,10 +36,11 @@ n <- c("go","cost","utterance","perspective","locSam","locLucy","moveLucy", "mov
 ```
 
 ```{r}
-datanm = "basic"
+#datanm = "basic"
 #datanm = "basic_simple"
 #datanm = "sampled_pcost"
 #datanm = "nonu_w"
+datanm = "nonu_apart_w"
 #datanm = "speaker_bias"
 #datanm = "listener_cost"
 datad = paste0('img/',datanm,'_')
@@ -66,6 +67,11 @@ if(datanm == "nonu_w"){
   nogop_n = 'nonu_aug_nogop.csv'
   gop_n = 'nonu_aug_gop.csv'
   prob_n = 'nonu_aug_prob.csv'
+}
+if(datanm == "nonu_apart_w"){
+  nogop_n = 'nonu_apart_nogop.csv'
+  gop_n = 'nonu_apart_gop.csv'
+  prob_n = 'nonu_apart_prob.csv'
 }
 if(datanm == "speaker_bias"){
   nogop_n = 'speaker_bias_nogop.csv'

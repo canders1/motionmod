@@ -21,6 +21,16 @@ pairs$prob <- as.numeric(as.character(pairs$prob))
 ```
 
 ```{r}
-ggplot(data=pairs,mapping=aes(x=gen,y=prob,shape=w,color=w)) + geom_point() + facet_wrap(belief~participant) + ylab("Posterior probability") + xlab("Name") + geom_path()
+ggplot(data=pairs,mapping=aes(x=gen,y=prob,shape=w,color=w)) + geom_point() + facet_wrap(belief~participant) + ylab("Posterior probability") + xlab("Name") + geom_path() + labs(color="Name",shape="Name")
 #ggsave("test.png",width=12, height=5)
+```
+
+```{r}
+ggplot(data=subset(pairs,belief=="German_State_Daniel_outdoor"),mapping=aes(x=gen,y=prob,shape=name,color=name)) + geom_point() + facet_wrap(~participant) + ylab("Posterior probability") + xlab("Name") + geom_path() + labs(color="Person",shape="Person")
+ggsave("img/learn_daniel.png")
+```
+
+```{r}
+ggplot(data=subset(pairs,obs_w==belief),mapping=aes(x=utterance, fill=obs_name)) +geom_bar(position = "dodge") + labs(fill="Observation",x="Utterance",y="Count")
+ggsave("img/learn_utts.png")
 ```

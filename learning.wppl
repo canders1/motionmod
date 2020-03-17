@@ -37,7 +37,7 @@ var utteranceCost = function(utterance) {
 
 var utterances = [
 'They are a student',
-'They work',
+//'They work',
 'They are female',
 'They are male',
 'Their name starts with N',
@@ -55,7 +55,7 @@ var utterances = [
 //'They study a humanity',
 'They study a science',
 'They like being outdoors',
-'They like being indoors',
+//'They like being indoors',
 'NULL'
 ]
 
@@ -65,13 +65,13 @@ var uttPrior = function() {
 
 var get_meaning = function(utterance, world){
   if ((utterance == 'They are a student' && world["Company"] == undefined) ||
-   (utterance == 'They work' && world["Company"]) ||
-   (utterance == 'They are female' && world["Name"] == 'Nancy' || world["Name"] == 'Mary') ||
-   (utterance == 'They are male' && world["Name"] != 'Nancy' && world["Name"] != 'Mary') ||
+   //(utterance == 'They work' && world["Company"] != undefined) ||
+   (utterance == 'They are female' && (world["Name"] == 'Nancy' || world["Name"] == 'Mary')) ||
+   (utterance == 'They are male' && (world["Name"] != 'Nancy' && world["Name"] != 'Mary')) ||
    (utterance == 'Their name is Nathan' && world["Name"] == 'Nathan') ||
    (utterance == 'They study German' && world["Major"] == 'German') ||
    (utterance == 'They study a science' && ((world["Major"] == 'Ceramic Engineering') || (world["Major"] == 'Astronomy'))) ||
-   (utterance == 'Their name starts with N' && world["Name"] == 'Nathan' || world["Name"] == 'Nancy') ||
+   (utterance == 'Their name starts with N' && (world["Name"] == 'Nathan' || world["Name"] == 'Nancy')) ||
    (utterance == 'They like being outdoors' && world["Location Preference"] == "outdoor") ||
    (utterance == 'They like being indoors' && world["Location Preference"] == "indoor") ||
    (utterance == 'NULL')
@@ -136,7 +136,7 @@ var getWPosteriorsL = function(interpretation,worlds){
   var keys = Object.keys(int)
   var probs = map(function(k){int[k]['prob']},keys)
   var ws= map(function(k){int[k]['val']['world']},keys)
-  var posts = map(function(x){if(ws.indexOf(x)!= -1){probs[ws.indexOf(x)]}else{0}},worlds)
+  var posts = map(function(x){var idx = ws.indexOf(x); if(idx!= -1){return probs[idx]}else{return 0}},worlds)
   return posts
 }
 
@@ -169,7 +169,11 @@ var simulateSharedDist = function(n_gens,curr_n,pref,spb,sp,lp){
   }
 }
 
-simulateSharedDist(100,0,0,[5,1,1,1],initWorldPriors,initWorldPriors)
-simulateSharedDist(100,0,1,[1,5,1,1],initWorldPriors,initWorldPriors)
-simulateSharedDist(100,0,2,[1,1,5,1],initWorldPriors,initWorldPriors)
-simulateSharedDist(100,0,3,[1,1,1,5],initWorldPriors,initWorldPriors)
+console.log(worlds[0])
+console.log(get_meaning("Their name starts with N",worlds[0]))
+console.log(worlds[0]["Name"] == "Nancy")
+
+simulateSharedDist(50,0,0,[5,1,1,1],initWorldPriors,initWorldPriors)
+simulateSharedDist(50,0,1,[1,5,1,1],initWorldPriors,initWorldPriors)
+simulateSharedDist(50,0,2,[1,1,5,1],initWorldPriors,initWorldPriors)
+simulateSharedDist(50,0,3,[1,1,1,5],initWorldPriors,initWorldPriors)

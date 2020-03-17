@@ -37,10 +37,11 @@ n <- c("go","cost","utterance","perspective","locSam","locLucy","moveLucy", "mov
 ```
 
 ```{r}
-datanm = "speaker_basic"
+#datanm = "speaker_basic"
 #datanm = "speaker_basic_simple"
 #datanm = "speaker_sampled_pcost"
-#datanm = "speaker_nonu_w"
+datanm = "speaker_nonu_w"
+#datanm = "speaker_nonu_apart_w"
 #datanm = "speaker_speaker_bias"
 #datanm = "speaker_listener_cost"
 datad = paste0('img/',datanm,'_')
@@ -64,9 +65,14 @@ if(datanm == "speaker_sampled_pcost"){
   prob_n = 'speaker_ucost_aug_prob.csv'
 }
 if(datanm == "speaker_nonu_w"){
-  nogop_n = 'speaker_nonu_aug_nogop.csv'
-  gop_n = 'speaker_nonu_aug_gop.csv'
-  prob_n = 'speaker_nonu_aug_prob.csv'
+  nogop_n = 'speak_nonu_aug_nogop.csv'
+  gop_n = 'speak_nonu_aug_gop.csv'
+  prob_n = 'speak_nonu_aug_prob.csv'
+}
+if(datanm == "speaker_nonu_apart_w"){
+  nogop_n = 'speak_nonu_apart_nogop.csv'
+  gop_n = 'speak_nonu_apart_gop.csv'
+  prob_n = 'speak_nonu_apart_prob.csv'
 }
 if(datanm == "speaker_speaker_bias"){
   nogop_n = 'speaker_speaker_bias_nogop.csv'
@@ -121,7 +127,7 @@ facet_go_labs <- c(gop="Perspectival go",nogop="Plain go",prob="Lex. uncertain g
 
 ```{r}
 moveThelma <- subset(pairs, as.character(utterance)=='Thelma is coming to Northampton' | as.character(utterance)=='Thelma is going to Northampton' | as.character(utterance)=='Thelma is walking to Northampton')
-ggplot(data=moveThelma,mapping=aes(x=world,y=probability,size=cost,shape=utterance,color=perspective)) + geom_point() + facet_wrap(c1_moveThelma$go.is.p)
+ggplot(data=moveThelma,mapping=aes(x=world,y=probability,size=cost,shape=utterance,color=perspective)) + geom_point() + facet_wrap(moveThelma$go.is.p)
 ggsave(paste0(datad,"Tmove.png"),width=12, height=5)
 ```
 

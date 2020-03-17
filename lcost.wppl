@@ -1,6 +1,6 @@
 var cost_setting = process.argv[3];
 
-var list_cost = 0.25;
+var list_cost = cost_setting;
 
 var speaker = 'Sam';
 var addressee = 'Lucy';
@@ -185,7 +185,7 @@ var literalSpeaker = function(world) {
     var p = pPrior()
     var uttP = utteranceSelect[p.holder]
     var utt = uttP()
-    factor(literalListener(utt,p).score(world)-perspectiveCost(p))
+    factor(literalListener(utt,p).score(world))
     return {utterance: utt,perspective: p}
   }})
 }
@@ -196,15 +196,6 @@ var pragmaticListener = function(u) {
     var w = worldPrior()
     factor(literalSpeaker(w).score({utterance:u,perspective: p})-listenerPerspectiveCost(p))
     return {world: w,perspective: p}
-  }})
-}
-
-var pragmaticSpeaker = function(w) {
-  return Infer({model: function(){
-    var utt = uttPrior()
-    var p = pPrior()
-    factor((pragmaticListener(utt).score({world: w,perspective: p})-perspectiveCost(p)))
-    return {utterance: utt,perspective: p}
   }})
 }
 
