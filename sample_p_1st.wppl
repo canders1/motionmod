@@ -180,6 +180,16 @@ var literalSpeaker = function(world) {
   }})
 }
 
+var literalSpeakerNoCost = function(world) {
+  return Infer({model: function(){
+    var p = pPrior()
+    var uttP = utteranceSelect[p.holder]
+    var utt = uttP()
+    factor(literalListener(utt,p).score(world))
+    return {utterance: utt,perspective: p}
+  }})
+}
+
 var pragmaticListener = function(u) {
   return Infer({model: function(){
     var p = pPrior()
@@ -189,11 +199,38 @@ var pragmaticListener = function(u) {
   }})
 }
 
-var pragmaticSpeaker = function(w) {
+var pragmaticListenerNoCost = function(u) {
+  return Infer({model: function(){
+    var p = pPrior()
+    var w = worldPrior()
+    factor(literalSpeakerNoCost(w).score({utterance:u,perspective: p}))
+    return {world: w,perspective: p}
+  }})
+}
+
+var pragmaticSpeakerCost = function(w) {
+  return Infer({model: function(){
+    var utt = uttPrior()
+    var p = pPrior()
+    factor((pragmaticListenerNoCost(utt).score({world: w,perspective: p})-perspectiveCost(p)))
+    return {utterance: utt,perspective: p}
+  }})
+}
+
+var pragmaticSpeakerDoubleCost = function(w) {
   return Infer({model: function(){
     var utt = uttPrior()
     var p = pPrior()
     factor((pragmaticListener(utt).score({world: w,perspective: p})-perspectiveCost(p)))
+    return {utterance: utt,perspective: p}
+  }})
+}
+
+var pragmaticSpeakerEarlyCost = function(w) {
+  return Infer({model: function(){
+    var utt = uttPrior()
+    var p = pPrior()
+    factor((pragmaticListener(utt).score({world: w,perspective: p})))
     return {utterance: utt,perspective: p}
   }})
 }
@@ -206,5 +243,18 @@ var pragmaticSpeaker = function(w) {
 if(process.argv[5]=='speaker'){
   printAll(worlds,literalSpeaker,cost_setting);
   } else{
-  printAll(utterances,pragmaticListener,cost_setting);
+    if(process.argv[5]=='pragspeakerdouble'){
+      printAll(worlds,pragmaticSpeakerDoubleCost,cost_setting)
+    } else{
+      if(process.argv[5]=='pragspeakerearly'){
+        printAll(worlds,pragmaticSpeakerEarlyCost,cost_setting)
+      } else{
+        if(process.argv[5]=='pragspeaker'){
+          printAll(worlds,pragmaticSpeakerCost,cost_setting)
+
+        } else{
+          printAll(utterances,pragmaticListener,cost_setting);
+        }
+      }
+    }
   }

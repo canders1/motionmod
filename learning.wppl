@@ -17,15 +17,15 @@ var worlds = [
   {"Major": "Astronomy", "School": "Franklin Pierce Law Center", "Name": "Nathan", "Location Preference": "outdoor"}, 
   {"Major": "German", "School": "State University of New York at Buffalo", "Name": "Daniel", "Location Preference": "outdoor"}, 
   {"Major": "Hispanic-American Studies", "School": "Franklin Pierce Law Center", "Name": "Gerald", "Location Preference": "outdoor"}, 
-  //{"Major": "Ceramic Engineering", "Name": "Nathan", "Company": "Commercial Metals Company","Location Preference": "outdoor"}, 
-  //{"Major": "Adult & Continuing Education", "School": "Canisius College", "Name": "Gary", "Location Preference": "indoor"}, 
-  //{"Major": "Veterinary Sciences", "School": "Marymount University", "Name": "Gary", "Location Preference": "outdoor"}, 
-  //{"Major": "Electrical Engineering", "School": "University of Dallas", "Name": "Gary", "Location Preference": "outdoor"}, 
-  //{"Major": "Astronomy", "School": "Saint Mary's College of California", "Name": "Nathan", "Location Preference": "outdoor"},
-  //{"Major": "Social Work & Social Services", "Location Preference": "outdoor", "Name": "Mary", "Company": "Commercial Metals Company"}
+  {"Major": "Ceramic Engineering", "Company": "Commercial Metals Company","Name": "Nathan", "Location Preference": "outdoor"}, 
+  {"Major": "Adult & Continuing Education", "School": "Canisius College", "Name": "Gary", "Location Preference": "indoor"}, 
+  {"Major": "Veterinary Sciences", "School": "Marymount University", "Name": "Gary", "Location Preference": "outdoor"}, 
+  {"Major": "Electrical Engineering", "School": "University of Dallas", "Name": "Gary", "Location Preference": "outdoor"}, 
+  {"Major": "Astronomy", "School": "Saint Mary's College of California", "Name": "Nathan", "Location Preference": "outdoor"},
+  {"Major": "Social Work & Social Services", "Company": "Commercial Metals Company","Name": "Mary","Location Preference": "outdoor"}
   ]
 
-var initWorldPriors = [1,1,1,1];
+var initWorldPriors = [1,1,1,1,1,1,1,1,1,1];
 
 var getWorldDist = function(worlds,worldPs) {
 	return Categorical({ps: worldPs,vs: worlds})
@@ -37,25 +37,25 @@ var utteranceCost = function(utterance) {
 
 var utterances = [
 'They are a student',
-//'They work',
+'They work',
 'They are female',
 'They are male',
 'Their name starts with N',
 //'Their name is Nancy',
-'Their name is Nathan',
+//'Their name is Nathan',
 //'Their name is Daniel',
 //'Their name is Gary',
 //'Their name is Gerald',
 //'Their name is Mary',
-'They study German',
+//'They study German',
 //'They study Astronomy',
 //'They study Veterinary Sciences',
 //'They study Engineering',
-//'They study a social science',
-//'They study a humanity',
+'They study a social science',
+'They study a humanity',
 'They study a science',
 'They like being outdoors',
-//'They like being indoors',
+'They like being indoors',
 'NULL'
 ]
 
@@ -65,12 +65,14 @@ var uttPrior = function() {
 
 var get_meaning = function(utterance, world){
   if ((utterance == 'They are a student' && world["Company"] == undefined) ||
-   //(utterance == 'They work' && world["Company"] != undefined) ||
+   (utterance == 'They work' && world["Company"] != undefined) ||
    (utterance == 'They are female' && (world["Name"] == 'Nancy' || world["Name"] == 'Mary')) ||
    (utterance == 'They are male' && (world["Name"] != 'Nancy' && world["Name"] != 'Mary')) ||
    (utterance == 'Their name is Nathan' && world["Name"] == 'Nathan') ||
    (utterance == 'They study German' && world["Major"] == 'German') ||
-   (utterance == 'They study a science' && ((world["Major"] == 'Ceramic Engineering') || (world["Major"] == 'Astronomy'))) ||
+   (utterance == 'They study a science' && (world["Major"] == 'Ceramic Engineering' || world["Major"] == 'Astronomy' || world["Major"] == 'Electrical Engineering' || world["Major"] == "Veterinary Sciences")) ||
+   (utterance == 'They study a humanity' && (world["Major"] == "German" || world["Major"] == "Hispanic-American Studies")) ||
+   (utterance == 'They study a social science' && (world["Major"] == "Adult & Continuing Education" || world["Major"] == "Social Work & Social Services")) ||
    (utterance == 'Their name starts with N' && (world["Name"] == 'Nathan' || world["Name"] == 'Nancy')) ||
    (utterance == 'They like being outdoors' && world["Location Preference"] == "outdoor") ||
    (utterance == 'They like being indoors' && world["Location Preference"] == "indoor") ||
@@ -84,10 +86,10 @@ var get_meaning = function(utterance, world){
 
 var literalListener = function(utterance,worldDist){
    return Infer({model: function(){
-   var world = sample(worldDist)
-   var meaning = get_meaning(utterance,world)
+   var w = sample(worldDist)
+   var meaning = get_meaning(utterance,w)
    condition(meaning)
-   return world
+   return w
    }})
 };
 
@@ -103,11 +105,12 @@ var pragmaticListener = function(u,worldDist) {
   return Infer({model: function(){
     var w = sample(worldDist)
     factor(literalSpeaker(w,worldDist).score({utterance:u}))
-    return {world: w}
+    return w
   }})
 }
 
 var run_generation = function(gen,speakerBeliefs,worldPriorS,worldPriorL){
+  //Updates speaker's distribution with observed world
   var speakerBeliefWorlds = getWorldDist(worlds,speakerBeliefs)
   var worldDistS = getWorldDist(worlds,worldPriorS)
   var worldDistL = getWorldDist(worlds,worldPriorL)
@@ -126,6 +129,28 @@ var run_generation = function(gen,speakerBeliefs,worldPriorS,worldPriorL){
   return {sp: newWorldPriorS, lp: newWorldPriorL}
 }
 
+var run_generation2 = function(gen,speakerBeliefs,worldPriorS,worldPriorL){
+  //updates speaker's distribution according to literal listener's calculation
+  var speakerBeliefWorlds = getWorldDist(worlds,speakerBeliefs)
+  var worldDistS = getWorldDist(worlds,worldPriorS)
+  var worldDistL = getWorldDist(worlds,worldPriorL)
+  console.log("Gen "+stringify(gen))
+  var wObs = sample(speakerBeliefWorlds)
+  console.log("Observed: "+stringify(wObs))
+  var poss_utterances = literalSpeaker(wObs,worldDistS)
+  var pMax = maxU(poss_utterances)
+  var actual_u = pMax['utterance']
+  console.log("Uttered: "+stringify(actual_u))
+  var interpretation = pragmaticListener(actual_u,worldDistL)
+  var litListenerEst = literalListener(actual_u,worldDistS)
+  var litWorldPosteriors = getWPosteriorsL(litListenerEst,worlds)
+  var newWorldPriorS = wUpdate(worldPriorS,litWorldPosteriors,0.1)
+  console.log("Interpretation: "+stringify(interpretation))
+  var worldPosteriorsL = getWPosteriorsL(interpretation,worlds)
+  var newWorldPriorL = wUpdate(worldPriorL,worldPosteriorsL,0.1)
+  return {sp: newWorldPriorS, lp: newWorldPriorL}
+}
+
 var getWPosteriorsS = function(w,worlds){
   var posts = map(function(x){if(x==w){1}else{0}},worlds)
   return posts
@@ -135,7 +160,7 @@ var getWPosteriorsL = function(interpretation,worlds){
   var int = interpretation['params']['dist']
   var keys = Object.keys(int)
   var probs = map(function(k){int[k]['prob']},keys)
-  var ws= map(function(k){int[k]['val']['world']},keys)
+  var ws= map(function(k){int[k]['val']},keys)
   var posts = map(function(x){var idx = ws.indexOf(x); if(idx!= -1){return probs[idx]}else{return 0}},worlds)
   return posts
 }
@@ -160,7 +185,7 @@ var maxU = function(d){
 var simulateSharedDist = function(n_gens,curr_n,pref,spb,sp,lp){
   if(n_gens != curr_n){
     console.log("Belief: "+stringify(worlds[pref]))
-    var newPriors = run_generation(curr_n,spb,sp,lp)
+    var newPriors = run_generation2(curr_n,spb,sp,lp)
     console.log("Speaker dist: " + newPriors['sp'])
     console.log("Listener dist: " + newPriors['lp'])
     simulateSharedDist(n_gens,curr_n+1,pref,spb,newPriors['sp'],newPriors['lp'])
@@ -169,11 +194,13 @@ var simulateSharedDist = function(n_gens,curr_n,pref,spb,sp,lp){
   }
 }
 
-console.log(worlds[0])
-console.log(get_meaning("Their name starts with N",worlds[0]))
-console.log(worlds[0]["Name"] == "Nancy")
-
-simulateSharedDist(50,0,0,[5,1,1,1],initWorldPriors,initWorldPriors)
-simulateSharedDist(50,0,1,[1,5,1,1],initWorldPriors,initWorldPriors)
-simulateSharedDist(50,0,2,[1,1,5,1],initWorldPriors,initWorldPriors)
-simulateSharedDist(50,0,3,[1,1,1,5],initWorldPriors,initWorldPriors)
+simulateSharedDist(5,0,0,[100,1,1,1,1,1,1,1,1,1],initWorldPriors,initWorldPriors)
+simulateSharedDist(5,0,1,[1,100,1,1,1,1,1,1,1,1],initWorldPriors,initWorldPriors)
+simulateSharedDist(5,0,2,[1,1,100,1,1,1,1,1,1,1],initWorldPriors,initWorldPriors)
+simulateSharedDist(5,0,3,[1,1,1,100,1,1,1,1,1,1],initWorldPriors,initWorldPriors)
+simulateSharedDist(5,0,4,[1,1,1,1,100,1,1,1,1,1],initWorldPriors,initWorldPriors)
+simulateSharedDist(5,0,5,[1,1,1,1,1,100,1,1,1,1],initWorldPriors,initWorldPriors)
+simulateSharedDist(5,0,6,[1,1,1,1,1,1,100,1,1,1],initWorldPriors,initWorldPriors)
+simulateSharedDist(5,0,7,[1,1,1,1,1,1,1,100,1,1],initWorldPriors,initWorldPriors)
+simulateSharedDist(5,0,8,[1,1,1,1,1,1,1,1,100,1],initWorldPriors,initWorldPriors)
+simulateSharedDist(5,0,9,[1,1,1,1,1,1,1,1,1,100],initWorldPriors,initWorldPriors)

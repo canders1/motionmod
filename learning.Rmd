@@ -31,6 +31,11 @@ ggsave("img/learn_daniel.png")
 ```
 
 ```{r}
-ggplot(data=subset(pairs,obs_w==belief),mapping=aes(x=utterance, fill=obs_name)) +geom_bar(position = "dodge") + labs(fill="Observation",x="Utterance",y="Count")
+ggplot(data=subset(pairs,obs_w==belief),mapping=aes(x=utterance,fill=obs_name)) + geom_bar()+ labs(fill="Observation",x="Utterance",y="Gen") + theme(axis.text.x = element_text(angle = 90, hjust = 1))
+ggsave("img/learn_utts.png")
+```
+
+```{r}
+ggplot(data=subset(pairs,obs_w==belief),mapping=aes(y=utterance,x=gen,color=obs_w, group=obs_w,linetype=obs_w)) +geom_point() + geom_line()+ labs(fill="Observation",x="Generation",y="Utterance") + theme(axis.text.x = element_text(angle = 90, hjust = 1))
 ggsave("img/learn_utts.png")
 ```

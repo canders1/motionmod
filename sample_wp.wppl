@@ -7,13 +7,23 @@ var stringify = function(x){return JSON.stringify(x)}
 
 var printOne = function(x,f,c){
   console.log("Cost: "+c)
+  if(process.argv[5]=='speaker'){
+  console.log("Utterance: "+stringify(x[0]));
+  console.log("Perspective: "+stringify(x[1]));
+  console.log("Evidence: "+stringify(f(x[0],x[1])));
+} else {
   console.log("Utterance: "+stringify(x));
   console.log("Evidence: "+stringify(f(x)));
+}
   return
 }
 
 var printAll = function(arr,f,c){
+  if(process.argv[5]=='speaker'){
+  map(function(p){map(function(w){printOne([w,p],f,c)},arr[0])},arr[1]);
+  } else {
   map(function(x){printOne(x,f,c)},arr);
+}
   return
 }
 
@@ -36,14 +46,14 @@ var perspectives = [
 {holder: speaker},
 {holder: addressee}]
 
-/*var pPrior = function() {
+var utteranceSelect = {
+  'Lucy' : function(){ return uniformDraw(non_L_utterances)},
+  'Sam' : function(){ return uniformDraw(non_S_utterances)}
+};
+
+var pPrior = function() {
   return uniformDraw(perspectives)
-};*/
-
-var pProbs = [2,1];
-
-var pPrior = Categorical({vs: perspectives, ps: pProbs});
-
+};
 
 var perspectiveCost = function(perspective) {
 	if(perspective.holder === speaker) {
@@ -93,11 +103,6 @@ var non_L_utterances = [
 'Thelma is walking to Northampton',
 //'NULL'
 ]
-
-var utteranceSelect = {
-  'Lucy' : function(){ return uniformDraw(non_L_utterances)},
-  'Sam' : function(){ return uniformDraw(non_S_utterances)}
-};
 
 var uttPrior = function() {
 	return uniformDraw(utterances)
@@ -175,21 +180,20 @@ var literalListener = function(utterance,perspective){
    }})
 };
 
-var literalSpeaker = function(world) {
+var literalSpeaker = function(world,perspective) {
   return Infer({model: function(){
-    var p = sample(pPrior)
-    var uttP = utteranceSelect[p.holder]
+    var uttP = utteranceSelect[perspective.holder]
     var utt = uttP()
-    factor(literalListener(utt,p).score(world)-perspectiveCost(p))
-    return {utterance: utt,perspective: p}
+    factor(literalListener(utt,perspective).score(world)-perspectiveCost(perspective))
+    return {utterance: utt}
   }})
 }
 
 var pragmaticListener = function(u) {
   return Infer({model: function(){
-    var p = sample(pPrior)
+    var p = pPrior()
     var w = worldPrior()
-    factor(literalSpeaker(w).score({utterance:u,perspective: p}))
+    factor(literalSpeaker(w,p).score({utterance:u}))
     return {world: w,perspective: p}
   }})
 }
@@ -197,17 +201,21 @@ var pragmaticListener = function(u) {
 var pragmaticSpeaker = function(w) {
   return Infer({model: function(){
     var utt = uttPrior()
-    var p = sample(pPrior)
+    var p = pPrior()
     factor((pragmaticListener(utt).score({world: w,perspective: p})-perspectiveCost(p)))
     return {utterance: utt,perspective: p}
   }})
 }
 
+//display(stringify(literalSpeaker(worlds[6])));
+
 //console.log(utterances[0]);
 //display(stringify(pragmaticListener(utterances[0])));
 //
+//console.log(perspectives)
+//console.log(map2(function(w,p){return [w,p]},worlds,perspectives))
 if(process.argv[5]=='speaker'){
-  printAll(worlds,literalSpeaker,cost_setting);
+  printAll([worlds,perspectives],literalSpeaker,cost_setting);
   } else{
   printAll(utterances,pragmaticListener,cost_setting);
   }

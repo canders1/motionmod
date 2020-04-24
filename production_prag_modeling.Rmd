@@ -37,58 +37,34 @@ n <- c("go","cost","utterance","perspective","locSam","locLucy","moveLucy", "mov
 ```
 
 ```{r}
-#datanm = "speaker_basic"
-#datanm = "speaker_basic_simple"
-#datanm = "speaker_sampled_pcost"
-#datanm = "speaker_nonu_w"
-#datanm = "speaker_nonu_apart_w"
-#datanm = "speaker_speaker_bias"
-#datanm = "speaker_listener_cost"
-datanm = "speaker_sample_wp"
+#datanm = "lit_speaker"
+#datanm = "prag_speaker_early"
+#datanm = "prag_speaker"
+datanm = "prag_speaker_double"
 datad = paste0('img/',datanm,'_')
 ```
 
 ```{r}
 prob_pairs = TRUE
-if(datanm == "speaker_basic"){
+if(datanm == "lit_speaker"){
   nogop_n = 'speaker_aug_nogop.csv'
   gop_n = 'speaker_aug_gop.csv'
   prob_n = 'speaker_aug_prob.csv'
 }
-if(datanm == "speaker_basic_simple"){
-  nogop_n = 'speaker_simple_nogop.csv'
-  gop_n = 'speaker_simple_gop.csv'
-  prob_n = 'speaker_simple_prob.csv'
+if(datanm == "prag_speaker"){
+  nogop_n = 'pragspeaker_nogop.csv'
+  gop_n = 'pragspeaker_gop.csv'
+  prob_n = 'pragspeaker_prob.csv'
 }
-if(datanm == "speaker_sampled_pcost"){
-  nogop_n = 'speaker_ucost_aug_nogop.csv'
-  gop_n = 'speaker_ucost_aug_gop.csv'
-  prob_n = 'speaker_ucost_aug_prob.csv'
+if(datanm == "prag_speaker_early"){
+  nogop_n = 'pragspeaker_early_nogop.csv'
+  gop_n = 'pragspeaker_early_gop.csv'
+  prob_n = 'pragspeaker_early_prob.csv'
 }
-if(datanm == "speaker_nonu_w"){
-  nogop_n = 'speak_nonu_aug_nogop.csv'
-  gop_n = 'speak_nonu_aug_gop.csv'
-  prob_n = 'speak_nonu_aug_prob.csv'
-}
-if(datanm == "speaker_nonu_apart_w"){
-  nogop_n = 'speak_nonu_apart_nogop.csv'
-  gop_n = 'speak_nonu_apart_gop.csv'
-  prob_n = 'speak_nonu_apart_prob.csv'
-}
-if(datanm == "speaker_speaker_bias"){
-  nogop_n = 'irr_speaker_nogop.csv'
-  gop_n = 'irr_speaker_gop.csv'
-  prob_n = 'irr_speaker_prob.csv'
-}
-if(datanm == "speaker_sample_wp"){
-  nogop_n = 'speaker_sample_wp_nogop.csv'
-  gop_n = 'speaker_sample_wp_gop.csv'
-  prob_n = 'speaker_sample_wp_prob.csv'
-}
-if(datanm == "speaker_listener_cost"){
-  nogop_n = 'speaker_lcost_nogop.csv'
-  gop_n = 'speaker_lcost_gop.csv'
-  prob_n = 'speaker_lcost_prob.csv'
+if(datanm == "prag_speaker_double"){
+  nogop_n = 'pragspeaker_double_nogop.csv'
+  gop_n = 'pragspeaker_double_gop.csv'
+  prob_n = 'pragspeaker_double_prob.csv'
 }
 ```
 

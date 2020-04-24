@@ -13,81 +13,33 @@ library(ggplot2)
 ```{r}
 #import data
 get.number <- function(x) {
-  if(x=="N A S"){return("W1")}
+  if(x=="A A N"){return("W1")}
   else {
-  if(x=="A A S"){return("W2")}
+  if(x=="N A N"){return("W2")}
   else{
-  if(x=="A N L"){return("W3")}
-  else{
-  if(x=="A A L"){return("W4")}
-  else{
-  if(x=="N N T"){return("W5")}
-    else{
-  if(x=="A A T"){return("W6")}
-      else{
-  if(x=="N A T"){return("W7")}
-        else{
-  if(x=="A N T"){return("W8")}
-          else{
-  if(x=="E E T"){return("W9")}
-          else{cat("\nNOT FOUND")}}}}}}}}}
+  if(x=="E A N"){return("W3")}
+          else{cat(paste("\nNOT FOUND: ",x))}}}
 }
-n <- c("go","cost","utterance","perspective","locSam","locLucy","moveLucy", "moveSam","moveThelma","probability")
+n <- c("go","cost","utterance","perspective","locSam","locLucy","destThelma","probability")
 ```
 
 ```{r}
-#datanm = "basic"
-#datanm = "basic_simple"
-#datanm = "sampled_pcost"
-#datanm = "nonu_w"
-#datanm = "nonu_apart_w"
-#datanm = "speaker_bias"
-datanm = "sample_wp"
-#datanm = "listener_cost"
+#datanm = "ex1"
+datanm = "ex2"
 datad = paste0('img/',datanm,'_')
 ```
 
 ```{r}
 prob_pairs = TRUE
-if(datanm == "basic"){
-  nogop_n = 'aug_nogop.csv'
-  gop_n = 'aug_gop.csv'
-  prob_n = 'aug_prob.csv'
+if(datanm == "ex1"){
+  nogop_n = 'ex1_nogop.csv'
+  gop_n = 'ex1_gop.csv'
+  prob_n = 'ex1_prob.csv'
 }
-if(datanm == "basic_simple"){
-  nogop_n = 'simple_nogop.csv'
-  gop_n = 'simple_gop.csv'
-  prob_n = 'simple_prob.csv'
-}
-if(datanm == "sampled_pcost"){
-  nogop_n = 'ucost_aug_nogop.csv'
-  gop_n = 'ucost_aug_gop.csv'
-  prob_n = 'ucost_aug_prob.csv'
-}
-if(datanm == "nonu_w"){
-  nogop_n = 'nonu_aug_nogop.csv'
-  gop_n = 'nonu_aug_gop.csv'
-  prob_n = 'nonu_aug_prob.csv'
-}
-if(datanm == "nonu_apart_w"){
-  nogop_n = 'nonu_apart_nogop.csv'
-  gop_n = 'nonu_apart_gop.csv'
-  prob_n = 'nonu_apart_prob.csv'
-}
-if(datanm == "speaker_bias"){
-  nogop_n = 'speaker_bias_nogop.csv'
-  gop_n = 'speaker_bias_gop.csv'
-  prob_n = 'speaker_bias_prob.csv'
-}
-if(datanm == "sample_wp"){
-  nogop_n = 'sample_wp_nogop.csv'
-  gop_n = 'sample_wp_gop.csv'
-  prob_n = 'sample_wp_prob.csv'
-}
-if(datanm == "listener_cost"){
-  nogop_n = 'lcost_nogop.csv'
-  gop_n = 'lcost_gop.csv'
-  prob_n = 'lcost_prob.csv'
+if(datanm == "ex2"){
+  nogop_n = 'ex2_nogop.csv'
+  gop_n = 'ex2_gop.csv'
+  prob_n = 'ex2_prob.csv'
 }
 ```
 
@@ -109,15 +61,12 @@ pairs$go.is.p <- factor(pairs$go.is.p, levels=c('gop','nogop','prob'))
 
 ```{r}
 pairs$probability <- as.numeric(as.character(pairs$probability))
-pairs <- pairs %>% rowwise() %>% mutate(mover=ifelse(moveSam=='true',"S",ifelse(moveLucy=='true',"L","T")))
+pairs <- pairs %>% rowwise() %>% mutate(wn = paste(substr(toString(locSam),1,1),paste(substr(toString(locLucy),1,1),substr(toString(destThelma),1,1))),
+                                        world1=paste("T to",substr(toString(destThelma),1,1)))
 
-pairs <- pairs %>% rowwise() %>% mutate(world=paste("L in",substr(toString(locLucy),1,1),"\n S in",substr(toString(locSam),1,1)))
-```
-
-```{r}
-pairs <- pairs %>% rowwise() %>% mutate(world1=paste(substr(toString(locLucy),1,1),substr(toString(locSam),1,1),substr(toString(mover),1,1)))
-pairs <- pairs %>% rowwise() %>% mutate(worldNum = get.number(world1))
-pairs <- pairs %>% rowwise() %>% mutate(world=paste(world,"\n",worldNum))
+pairs <- pairs %>% rowwise() %>% mutate(world2=paste("L in",substr(toString(locLucy),1,1),"\n S in",substr(toString(locSam),1,1)))
+pairs <- pairs %>% rowwise() %>% mutate(world=paste(world1,"\n",world2))
+pairs <- pairs %>% rowwise() %>% mutate(worldNum = get.number(wn))
 ```
 
 ```{r}
@@ -133,7 +82,7 @@ facet_go_labs <- c(gop="Perspectival go",nogop="Plain go",prob="Lex. uncertain g
 
 
 ```{r}
-moveThelma <- subset(pairs, as.character(utterance)=='Thelma is coming to Northampton' | as.character(utterance)=='Thelma is going to Northampton' | as.character(utterance)=='Thelma is walking to Northampton')
+moveThelma <- subset(pairs, grepl('Thelma',utterance,fixed=TRUE))
 c05_moveThelma <- subset(moveThelma,cost==0.5)
 ggplot(data=c05_moveThelma,mapping=aes(x=perspective.and.world,y=probability,size=cost,shape=utterance,color=utterance)) + geom_point() + facet_wrap(c05_moveThelma$go.is.p, labeller=as_labeller(facet_go_labs)) + ylab("Posterior probability") + xlab("Perspective/world pair")+
     theme(legend.position="bottom", legend.direction="vertical") + guides(size = FALSE)
@@ -148,7 +97,7 @@ ggsave(paste0(datad,"Tmove05_noprob.png"),width=12, height=5)
 ```
 
 ```{r}
-pmarg_moveThelma <- subset(p_marginals, as.character(utterance)=='Thelma is coming to Northampton' | as.character(utterance)=='Thelma is going to Northampton' | as.character(utterance)=='Thelma is walking to Northampton' | as.character(utterance)=='NULL')
+pmarg_moveThelma <- subset(p_marginals, grepl('Thelma',utterance,fixed=TRUE))
 #pmarg_zeromoveThelma <- subset(pmarg_moveThelma,cost==0.00)
 ggplot(data=pmarg_moveThelma,mapping=aes(x=world,y=marg.prob,size=cost, shape=utterance,color=utterance)) + geom_point() + facet_wrap(pmarg_moveThelma$go.is.p, labeller=as_labeller(facet_go_labs)) + ylab("Marginal posterior probability") + xlab("World")+
     theme(legend.position="bottom", legend.direction="vertical")
@@ -163,7 +112,7 @@ ggsave(paste0(datad,"pmarg_Tmove_noprob.png"),width=12, height=5)
 ```
 
 ```{r}
-wmarg_moveThelma <- subset(w_marginals, as.character(utterance)=='Thelma is coming to Northampton' | as.character(utterance)=='Thelma is going to Northampton' | as.character(utterance)=='Thelma is walking to Northampton' | as.character(utterance)=='NULL')
+wmarg_moveThelma <- subset(w_marginals, grepl('Thelma',utterance,fixed=TRUE))
 ggplot(data=wmarg_moveThelma,mapping=aes(x=utterance,y=marg.prob,size=cost,shape=perspective)) + geom_point() + facet_wrap(wmarg_moveThelma$go.is.p, labeller=as_labeller(facet_go_labs))+ theme(axis.text.x = element_text(angle = 90)) + ylab("Marginal posterior probability") + xlab("Utterance")
 ggsave(paste0(datad,"wmarg_Tmove.png"),width=12, height=5)
 ```
