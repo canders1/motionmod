@@ -8,7 +8,7 @@ output: html_document
 ```{r}
 library(dplyr)
 library(ggplot2)
-source("../../../coding/wellesley_palette.R")
+#source("../../../coding/wellesley_palette.R")
 ```
 
 ```{r}
@@ -32,6 +32,25 @@ get.number <- function(x) {
           else{
   if(x=="E E T"){return("W9")}
           else{cat("\nNOT FOUND")}}}}}}}}}
+}
+
+get.label <- function(x) {
+  if(x=="N A S"){return("Listener")}
+  else {
+  if(x=="A A S"){return("None")}
+  else{
+  if(x=="A N L"){return("Speaker")}
+  else{
+  if(x=="A A L"){return("None")}
+  else{
+  if(x=="N N T"){return("Both")}
+    else{
+  if(x=="A A T"){return("None")}
+      else{
+  if(x=="N A T"){return("Listener")}
+        else{
+  if(x=="A N T"){return("Speaker")}
+          else{cat("\nNOT FOUND")}}}}}}}}
 }
 
 n <- c("go","cost","utterance","perspective","locSam","locLucy","moveLucy", "moveSam","moveThelma","probability")
@@ -91,7 +110,8 @@ pairs <- pairs %>% rowwise() %>% mutate(world=paste("L in",substr(toString(locLu
 
 ```{r}
 pairs <- pairs %>% rowwise() %>% mutate(world1=paste(substr(toString(locLucy),1,1),substr(toString(locSam),1,1),substr(toString(mover),1,1)))
-pairs <- pairs %>% rowwise() %>% mutate(worldNum = get.number(world1))
+pairs <- pairs %>% rowwise() %>% mutate(worldNum = get.number(world1),
+                                        Condition = get.label(world1))
 pairs <- pairs %>% rowwise() %>% mutate(world=paste(world,"\n",worldNum))
 ```
 
@@ -133,14 +153,41 @@ ggsave(paste0(datad,"Tmove_cost0_noprob.pdf"),width=12, height=5)
 
 ```{r}
 pmarg_moveThelma <- subset(p_marginals, as.character(utterance)=='Thelma is coming to Northampton' | as.character(utterance)=='Thelma is going to Northampton' | as.character(utterance)=='Thelma is walking to Northampton' | as.character(utterance)=='NULL')
-ggplot(data=pmarg_moveThelma,mapping=aes(x=world,y=marg.prob,size=cost,color=utterance,shape=utterance)) + geom_point() + facet_wrap(~go.is.p,labeller=as_labeller(facet_go_labs)) + labs(size="Cost",color="Utterance",shape="Utterance") + scale_color_wellesley(palette = "main")
+ggplot(data=pmarg_moveThelma,mapping=aes(x=world,y=marg.prob,size=cost,color=utterance,shape=utterance)) + geom_point() + facet_wrap(~go.is.p,labeller=as_labeller(facet_go_labs)) + labs(size="Cost",color="Utterance",shape="Utterance")
 ggsave(paste0(datad,"pmarg_Tmove.pdf"),width=12, height=5)
 ```
 
 ```{r}
 pmarg_moveThelma_noprob <- subset(pmarg_moveThelma,go.is.p!='prob')
-ggplot(data=pmarg_moveThelma_noprob,mapping=aes(x=world,y=marg.prob,size=cost,color=utterance,shape=utterance)) + geom_point() + facet_wrap(~go.is.p,labeller=as_labeller(facet_go_labs)) + labs(size="Cost",color="Utterance",shape="Utterance") + scale_color_wellesley(palette = "main")
+ggplot(data=pmarg_moveThelma_noprob,mapping=aes(x=world,y=marg.prob,size=cost,color=utterance,shape=utterance)) + geom_point() + facet_wrap(~go.is.p,labeller=as_labeller(facet_go_labs)) + labs(size="Cost",color="Utterance",shape="Utterance") 
 ggsave(paste0(datad,"pmarg_Tmove_noprob.pdf"),width=12, height=5)
+```
+
+```{r}
+
+f <- function(x) {
+  r <- quantile(x, probs = c(0, 0, 0.5, 1, 1))
+  names(r) <- c("ymin", "lower", "middle", "upper", "ymax")
+  r
+}
+
+f2 <- function(x) {
+  r <- quantile(x, probs = c(0, 0.5, 1))
+  names(r) <- c("ymin", "y", "ymax")
+  r
+}
+
+pmarg_moveThelma_nogop <- subset(subset(pmarg_moveThelma,go.is.p=='nogop'),cost < 1.1)
+pmarg_moveThelma_nogop$Condition <- factor(pmarg_moveThelma_nogop$Condition,levels = c("Both", "Speaker", "Listener", "None"))
+
+ggplot(data=pmarg_moveThelma_nogop,aes(x=utterance,y=marg.prob,color=utterance)) + stat_summary(fun.data = f2, geom="crossbar") + facet_wrap(~Condition, nrow = 1) + ylim(0,1) + ylab("Marginal probability: p(u|w)") + scale_x_discrete(name ="Utterance", labels=c("Thelma is coming to Northampton" = "Come", "Thelma is going to Northampton" = "Go", "Thelma is walking to Northampton" = "Walk")) + theme(legend.position="none")
+ggsave(paste0(datad,"pmarg_Tmove_nogop.pdf"),height=3,width=12)
+
+pmarg_moveThelma_gop <- subset(subset(pmarg_moveThelma,go.is.p=='gop'),cost < 1.1)
+pmarg_moveThelma_gop$Condition <- factor(pmarg_moveThelma_gop$Condition,levels = c("Both", "Speaker", "Listener", "None"))
+
+ggplot(data=pmarg_moveThelma_gop,aes(x=utterance,y=marg.prob,color=utterance)) + stat_summary(fun.data = f2, geom="crossbar") + facet_wrap(~Condition, nrow = 1) + ylim(0,1) + ylab("Marginal probability: p(u|w)") + scale_x_discrete(name ="Utterance", labels=c("Thelma is coming to Northampton" = "Come", "Thelma is going to Northampton" = "Go", "Thelma is walking to Northampton" = "Walk")) + theme(legend.position="none")
+ggsave(paste0(datad,"pmarg_Tmove_gop.pdf"),height=3,width=12)
 ```
 
 ```{r}

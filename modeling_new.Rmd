@@ -32,6 +32,26 @@ get.number <- function(x) {
   if(x=="E E T"){return("W9")}
           else{cat("\nNOT FOUND")}}}}}}}}}
 }
+
+get.label <- function(x) {
+  if(x=="N A S"){return("Listener")}
+  else {
+  if(x=="A A S"){return("None")}
+  else{
+  if(x=="A N L"){return("Speaker")}
+  else{
+  if(x=="A A L"){return("None")}
+  else{
+  if(x=="N N T"){return("Both")}
+    else{
+  if(x=="A A T"){return("None")}
+      else{
+  if(x=="N A T"){return("Listener")}
+        else{
+  if(x=="A N T"){return("Speaker")}
+          else{cat("\nNOT FOUND")}}}}}}}}
+}
+
 n <- c("go","cost","utterance","perspective","locSam","locLucy","moveLucy", "moveSam","moveThelma","probability")
 ```
 
@@ -116,7 +136,8 @@ pairs <- pairs %>% rowwise() %>% mutate(world=paste("L in",substr(toString(locLu
 
 ```{r}
 pairs <- pairs %>% rowwise() %>% mutate(world1=paste(substr(toString(locLucy),1,1),substr(toString(locSam),1,1),substr(toString(mover),1,1)))
-pairs <- pairs %>% rowwise() %>% mutate(worldNum = get.number(world1))
+pairs <- pairs %>% rowwise() %>% mutate(worldNum = get.number(world1),
+                                        Condition = get.label(world1))
 pairs <- pairs %>% rowwise() %>% mutate(world=paste(world,"\n",worldNum))
 ```
 
@@ -150,76 +171,131 @@ ggsave(paste0(datad,"Tmove05_noprob.pdf"),width=12, height=5)
 ```{r}
 pmarg_moveThelma <- subset(p_marginals, as.character(utterance)=='Thelma is coming to Northampton' | as.character(utterance)=='Thelma is going to Northampton' | as.character(utterance)=='Thelma is walking to Northampton' | as.character(utterance)=='NULL')
 #pmarg_zeromoveThelma <- subset(pmarg_moveThelma,cost==0.00)
-ggplot(data=pmarg_moveThelma,mapping=aes(x=world,y=marg.prob,size=cost, shape=utterance,color=utterance)) + geom_point() + facet_wrap(pmarg_moveThelma$go.is.p, labeller=as_labeller(facet_go_labs)) + ylab("Marginal posterior probability") + xlab("World")+
-    theme(legend.position="bottom", legend.direction="vertical")
+ggplot(data=pmarg_moveThelma,mapping=aes(x=Condition,y=marg.prob,size=cost, shape=utterance,color=utterance)) + geom_point() + facet_wrap(pmarg_moveThelma$go.is.p, labeller=as_labeller(facet_go_labs)) + ylab("Marginal posterior probability") + xlab("Condition")+
+    theme(legend.position="bottom", legend.direction="vertical") + ylim(0,1)
 ggsave(paste0(datad,"pmarg_Tmove.pdf"),width=12, height=5)
 ```
 
 ```{r}
 pmarg_moveThelma_noprob <- subset(pmarg_moveThelma,grepl('prob',go.is.p,fixed=TRUE)==FALSE)
-ggplot(data=pmarg_moveThelma_noprob,mapping=aes(x=world,y=marg.prob,size=cost, shape=utterance,color=utterance)) + geom_point() + facet_wrap(pmarg_moveThelma_noprob$go.is.p, labeller=as_labeller(facet_go_labs)) + ylab("Marginal posterior probability of world") + xlab("World") 
+ggplot(data=pmarg_moveThelma_noprob,mapping=aes(x=Condition,y=marg.prob,size=cost, shape=utterance,color=utterance)) + geom_point() + facet_wrap(pmarg_moveThelma_noprob$go.is.p, labeller=as_labeller(facet_go_labs)) + ylab("Marginal posterior probability of world") + xlab("Condition") + ylim(0,1)
 #+    theme(legend.position="bottom", legend.direction="vertical")
 ggsave(paste0(datad,"pmarg_Tmove_noprob.pdf"),width=12, height=5)
 ```
 
 ```{r}
+pmarg_moveThelma$Condition <- factor(pmarg_moveThelma$Condition,levels = c("Both", "Speaker", "Listener", "None"))
+pmarg_moveThelma_nogop <- subset(pmarg_moveThelma,go.is.p=='nogop')
+pmarg_moveThelma_gop <- subset(pmarg_moveThelma,go.is.p=='gop')
+
+f2 <- function(x) {
+  r <- quantile(x, probs = c(0, 0.5, 1))
+  names(r) <- c("ymin", "y", "ymax")
+  r
+}
+
+ggplot(data=pmarg_moveThelma_noprob,mapping=aes(x=Condition,y=marg.prob,shape=utterance,color=utterance)) + stat_summary(fun.data = f2, geom="crossbar") + facet_wrap(~go.is.p*utterance) + ylab("Marginal posterior probability: p(w|u)") + xlab("Condition") + ylim(0,1) + theme(legend.position="none")
+ggsave(paste0(datad,"pmarg_Tmove_noprob_new.pdf"),height=3,width=12)
+
+ggplot(data=pmarg_moveThelma_nogop,mapping=aes(x=Condition,y=marg.prob,shape=utterance,color=utterance)) + stat_summary(fun.data = f2, geom="crossbar") + facet_wrap(~utterance) + ylab("Marginal posterior probability: p(w|u)") + xlab("Condition") + ylim(0,1) + theme(legend.position="none")
+ggsave(paste0(datad,"pmarg_Tmove_nogop.pdf"),height=3,width=12)
+
+ggplot(data=pmarg_moveThelma_gop,mapping=aes(x=Condition,y=marg.prob,shape=utterance,color=utterance)) + stat_summary(fun.data = f2, geom="crossbar") + facet_wrap(~utterance) + ylab("Marginal posterior probability: p(w|u)") + xlab("Condition") + ylim(0,1) + theme(legend.position="none")
+ggsave(paste0(datad,"pmarg_Tmove_gop.pdf"),height=3,width=12)
+```
+
+```{r}
+moveThelma_noprob <- subset(moveThelma,go.is.p!='prob')
+moveT0_noprob <- subset(moveThelma_noprob,cost == 0.0)
+ggplot(data=moveT0_noprob,mapping=aes(x=Condition,shape=utterance,size=cost,y=probability,color=utterance)) + geom_point() +facet_wrap(go.is.p~perspective,labeller=labeller(perspective = facet_labs,go.is.p=facet_go_labs)) + ggtitle("Thelma is in motion to Northampton") + xlab("Condition") + ylab("Joint probability of perspective and world") + labs(shape="Utterance",color="Utterance") + guides(size=FALSE) + ylim(0,1)
+ggsave(paste0(datad,"moveThelma0_noprob.pdf"),width=14, height=7)
+```
+
+```{r}
+moveThelma_noprob <- subset(moveThelma,go.is.p!='prob')
+moveT0_noprob <- subset(moveThelma_noprob,cost == 0.0)
+ggplot(data=moveT0_noprob,mapping=aes(x=Condition,y=probability,fill=utterance)) + geom_col(position="dodge")  +facet_wrap(go.is.p~perspective,labeller=labeller(perspective = facet_labs,go.is.p=facet_go_labs)) + ggtitle("Thelma is in motion to Northampton") + xlab("Condition") + ylab("Joint probability of perspective and world") + labs(fill="Utterance") + guides(size=FALSE) + ylim(0,1)
+ggsave(paste0(datad,"moveThelma0_noprob2.pdf"))
+```
+
+
+```{r}
+moveS <- subset(pairs,moveSam=='true')
+moveS0 <- subset(moveS,cost == 0.0)
+moveS0_noprob <- subset(moveS0,go.is.p!='prob')
+ggplot(data=moveS0_noprob,mapping=aes(x=Condition,shape=utterance,size=cost,y=probability,color=utterance)) + geom_point() +facet_wrap(go.is.p~perspective,labeller=labeller(perspective = facet_labs,go.is.p=facet_go_labs)) + ggtitle("I am in motion to Northampton") + xlab("Condition") + ylab("Posterior probability") + ylim(0,1)+ labs(color="Utterance",shape="Utterance") + guides(size=FALSE) + theme(text=element_text(size=16)) 
+ggsave(paste0(datad,"moveS0_noprob.pdf"),width=14, height=7)
+```
+
+```{r}
+ggplot(data=moveS0_noprob,mapping=aes(x=Condition,y=probability,fill=utterance)) + geom_col(position="dodge") +facet_wrap(go.is.p~perspective,labeller=labeller(perspective = facet_labs,go.is.p=facet_go_labs)) + ggtitle("I am in motion to Northampton") + xlab("Condition") + ylab("Posterior probability") + ylim(0,1)+ labs(fill="Utterance") + guides(size=FALSE) + theme(text=element_text(size=12)) 
+ggsave(paste0(datad,"moveS0_noprob2.pdf"))
+```
+
+```{r}
 wmarg_moveThelma <- subset(w_marginals, as.character(utterance)=='Thelma is coming to Northampton' | as.character(utterance)=='Thelma is going to Northampton' | as.character(utterance)=='Thelma is walking to Northampton' | as.character(utterance)=='NULL')
-ggplot(data=wmarg_moveThelma,mapping=aes(x=utterance,y=marg.prob,size=cost,shape=perspective)) + geom_point() + facet_wrap(wmarg_moveThelma$go.is.p, labeller=as_labeller(facet_go_labs))+ theme(axis.text.x = element_text(angle = 90)) + ylab("Marginal posterior probability") + xlab("Utterance")
+ggplot(data=wmarg_moveThelma,mapping=aes(x=utterance,y=marg.prob,size=cost,shape=perspective)) + geom_point() + facet_wrap(wmarg_moveThelma$go.is.p, labeller=as_labeller(facet_go_labs))+ theme(axis.text.x = element_text(angle = 90)) + ylab("Marginal posterior probability") + xlab("Utterance") + ylim(0,1)
 ggsave(paste0(datad,"wmarg_Tmove.pdf"),width=12, height=5)
 ```
 
 ```{r}
 wmarg_moveThelma_noprob <- subset(wmarg_moveThelma, go.is.p!='prob')
-ggplot(data=wmarg_moveThelma_noprob,mapping=aes(x=perspective,y=marg.prob,size=cost,shape=utterance, color=utterance, group=utterance)) + geom_point(position = position_dodge(width=1)) + facet_wrap(~go.is.p, labeller=as_labeller(facet_go_labs))+ theme(axis.text.x = element_text(angle = 90)) + ylab("Marginal posterior probability of perspective") + xlab("Utterance")
+ggplot(data=wmarg_moveThelma_noprob,mapping=aes(x=perspective,y=marg.prob,size=cost,shape=utterance, color=utterance, group=utterance)) + geom_point(position = position_dodge(width=1)) + facet_wrap(~go.is.p, labeller=as_labeller(facet_go_labs))+ theme(axis.text.x = element_text(angle = 90)) + ylab("Marginal posterior probability of perspective") + xlab("Utterance") + ylim(0,1)
 ggsave(paste0(datad,"wmarg2_Tmove_noprob.pdf"),width=12, height=5)
+```
+```{r}
+facet_ugo_labs <- c(gop="Perspectival go",nogop="Plain go",prob="Lex. uncertain go",`Thelma is going to Northampton`="Going",`Thelma is coming to Northampton`="Coming",`Thelma is walking to Northampton`="Walking")
+wmarg_moveThelma_noprob <- subset(wmarg_moveThelma, go.is.p!='prob')
+ggplot(data=wmarg_moveThelma_noprob,mapping=aes(x=perspective,y=marg.prob,size=cost,shape=utterance, color=utterance, group=utterance)) + geom_point(position = position_dodge(width=1)) + facet_wrap(~go.is.p*utterance, labeller=as_labeller(facet_ugo_labs))+ theme(axis.text.x = element_text(angle = 90)) + ylab("Marginal posterior probability of perspective") + xlab("Utterance") + ylim(0,1) + guides(color=FALSE,shape=FALSE) + labs(size="Perspective cost")
+ggsave(paste0(datad,"wmarg2_Tmove_noprob2.pdf"),width=12, height=5)
 ```
 
 ```{r}
 pmarg_c05_moveThelma <- subset(pmarg_moveThelma,cost==0.5)
-ggplot(data=pmarg_c05_moveThelma,mapping=aes(x=world,y=marg.prob,color=utterance,shape=utterance)) + geom_point() + facet_wrap(pmarg_c05_moveThelma$go.is.p, labeller=as_labeller(facet_go_labs)) + ylab("Marginal posterior probability") + xlab("World")+
-    theme(legend.position="bottom", legend.direction="vertical")
+ggplot(data=pmarg_c05_moveThelma,mapping=aes(x=Condition,y=marg.prob,color=utterance,shape=utterance)) + geom_point() + facet_wrap(pmarg_c05_moveThelma$go.is.p, labeller=as_labeller(facet_go_labs)) + ylab("Marginal posterior probability") + xlab("Condition")+
+    theme(legend.position="bottom", legend.direction="vertical") + ylim(0,1)
 ggsave(paste0(datad,"pmarg_c05_Tmove.pdf"),width=12, height=5)
 ```
 
 
 ```{r}
 wmarg_c05_moveThelma <- subset(wmarg_moveThelma,cost==0.5)
-ggplot(data=wmarg_c05_moveThelma,mapping=aes(x=utterance,y=marg.prob,color=perspective,shape=perspective)) + geom_point() + facet_wrap(wmarg_c05_moveThelma$go.is.p, labeller=as_labeller(facet_go_labs)) + theme(axis.text.x = element_text(angle = 90)) + ylab("Marginal posterior probability") + xlab("Utterance")
+ggplot(data=wmarg_c05_moveThelma,mapping=aes(x=utterance,y=marg.prob,color=perspective,shape=perspective)) + geom_point() + facet_wrap(wmarg_c05_moveThelma$go.is.p, labeller=as_labeller(facet_go_labs)) + theme(axis.text.x = element_text(angle = 90)) + ylab("Marginal posterior probability") + xlab("Utterance") + ylim(0,1)
 ggsave(paste0(datad,"wmarg_c05_Tmove.pdf"),width=12, height=5)
 ```
 
 
 ```{r}
-ggplot(data=moveThelma,mapping=aes(x=perspective.and.world,y=probability,shape=utterance,color=go.is.p)) + geom_point()+ facet_wrap(~cost) + ylab("Posterior probability") + xlab("World/perspective pair")
+ggplot(data=moveThelma,mapping=aes(x=perspective.and.world,y=probability,shape=utterance,color=go.is.p)) + geom_point()+ facet_wrap(~cost) + ylab("Posterior probability") + xlab("World/perspective pair") + ylim(0,1)
 ```
 
 ```{r}
 comeThelma <- subset(pairs, as.character(utterance)=='Thelma is coming to Northampton')
-ggplot(data=comeThelma,mapping=aes(x=perspective.and.world,size=cost,y=probability)) + geom_point() + facet_wrap(comeThelma$go.is.p, labeller=as_labeller(facet_go_labs)) + ylab("Posterior probability") + xlab("World/perspective pair")
+ggplot(data=comeThelma,mapping=aes(x=perspective.and.world,size=cost,y=probability)) + geom_point() + facet_wrap(comeThelma$go.is.p, labeller=as_labeller(facet_go_labs)) + ylab("Posterior probability") + xlab("World/perspective pair") + ylim(0,1)
 ```
 
 ```{r}
 goThelma <- subset(pairs, as.character(utterance)=='Thelma is going to Northampton')
-ggplot(data=goThelma,mapping=aes(x=perspective.and.world,size=cost,y=probability)) + geom_point()  + facet_wrap(goThelma$go.is.p, labeller=as_labeller(facet_go_labs)) + ylab("Posterior probability") + xlab("World/perspective pair")
+ggplot(data=goThelma,mapping=aes(x=perspective.and.world,size=cost,y=probability)) + geom_point()  + facet_wrap(goThelma$go.is.p, labeller=as_labeller(facet_go_labs)) + ylab("Posterior probability") + xlab("World/perspective pair") + ylim(0,1)
 ```
 
 ```{r}
-ggplot(data=pairs,mapping=aes(x=perspective.and.world,size=cost,y=probability)) + geom_point() + facet_wrap(~utterance)  + facet_wrap(pairs$go.is.p, labeller=as_labeller(facet_go_labs)) + ylab("Posterior probability") + xlab("World/perspective pair")
+ggplot(data=pairs,mapping=aes(x=perspective.and.world,size=cost,y=probability)) + geom_point() + facet_wrap(~utterance)  + facet_wrap(pairs$go.is.p, labeller=as_labeller(facet_go_labs)) + ylab("Posterior probability") + xlab("World/perspective pair") + ylim(0,1)
 ```
 
 ```{r}
-ggplot(data=goThelma,mapping=aes(x=world,size=cost,y=probability,shape=go.is.p,color=go.is.p)) + geom_point() +facet_wrap(~perspective,labeller=labeller(perspective = facet_labs)) + ylim(0,0.75) + ggtitle("Thelma is going to Northampton") + xlab("World") + ylab("Joint probability of perspective and world") + labs(size="Perspective cost") + theme(text=element_text(size=16)) 
+ggplot(data=goThelma,mapping=aes(x=Condition,size=cost,y=probability,shape=go.is.p,color=go.is.p)) + geom_point() +facet_wrap(~perspective,labeller=labeller(perspective = facet_labs)) + ggtitle("Thelma is going to Northampton") + xlab("Condition") + ylab("Joint probability of perspective and world") + labs(size="Perspective cost") + theme(text=element_text(size=16)) + ylim(0,1)
 ggsave(paste0(datad,"goThelma.pdf"),width=12, height=5)
 ```
 
 ```{r}
-ggplot(data=comeThelma,mapping=aes(x=world,size=cost,y=probability,shape=go.is.p,color=go.is.p)) + geom_point() + ylim(0,0.75) + facet_wrap(~perspective,labeller=labeller(perspective = facet_labs))+ ggtitle("Thelma is coming to Northampton") + xlab("World") + ylab("Joint probability of perspective and world") + labs(size="Perspective cost") + theme(text=element_text(size=16))
+ggplot(data=comeThelma,mapping=aes(x=Condition,size=cost,y=probability,shape=go.is.p,color=go.is.p)) + geom_point() + ylim(0,1) + facet_wrap(~perspective,labeller=labeller(perspective = facet_labs))+ ggtitle("Thelma is coming to Northampton") + xlab("Condition") + ylab("Joint probability of perspective and world") + labs(size="Perspective cost") + theme(text=element_text(size=16))
 ggsave(paste0(datad,'comeThelma.pdf'),width=12, height=5)
 ```
 
 ```{r}
 walkThelma <- subset(pairs, as.character(utterance)=='Thelma is walking to Northampton')
-ggplot(data=walkThelma,mapping=aes(x=world,size=cost,y=probability,shape=go.is.p,color=go.is.p)) + geom_point() + ylim(0,0.75) + facet_wrap(~perspective,labeller=labeller(perspective = facet_labs))+ ggtitle("Thelma is walking to Northampton") + xlab("World") + ylab("Joint probability of perspective and world") + labs(size="Perspective cost") + theme(text=element_text(size=16))
+ggplot(data=walkThelma,mapping=aes(x=Condition,size=cost,y=probability,shape=go.is.p,color=go.is.p)) + geom_point() + ylim(0,1) + facet_wrap(~perspective,labeller=labeller(perspective = facet_labs))+ ggtitle("Thelma is walking to Northampton") + xlab("Condition") + ylab("Joint probability of perspective and world") + labs(size="Perspective cost") + theme(text=element_text(size=16))
 ggsave(paste0(datad,'walkThelma.pdf'),width=12, height=5)
 ```
 
@@ -227,58 +303,47 @@ ggsave(paste0(datad,'walkThelma.pdf'),width=12, height=5)
 ```{r}
 go <- subset(pairs,grepl('go',as.character(utterance,fixed=TRUE)))
 gotrue <- subset(go,probability >0)
-ggplot(data=gotrue,mapping=aes(x=world,size=cost,y=probability,shape=utterance,color=go.is.p,pattern=go.is.p)) + geom_point()+facet_wrap(~perspective,labeller=labeller(perspective = facet_labs)) + ggtitle("Go sentences") + xlab("World") + ylab("Joint probability of perspective and world") + labs(size="Perspective cost") +
-    theme(legend.position="bottom", legend.direction="vertical")
+ggplot(data=gotrue,mapping=aes(x=Condition,size=cost,y=probability,shape=utterance,color=go.is.p,pattern=go.is.p)) + geom_point()+facet_wrap(~perspective,labeller=labeller(perspective = facet_labs)) + ggtitle("Go sentences") + xlab("Condition") + ylab("Joint probability of perspective and world") + labs(size="Perspective cost") +
+    theme(legend.position="bottom", legend.direction="vertical")+ ylim(0,1)
 ggsave(paste0(datad,"gotrue.pdf"))
 ```
 ```{r}
 gotrue05 <- subset(gotrue,cost==0.5)
-ggplot(data=gotrue05,mapping=aes(x=world,y=probability,shape=utterance,color=go.is.p)) + geom_point() +facet_wrap(~perspective,labeller=labeller(perspective = facet_labs)) + ggtitle("Go sentences") + xlab("World") + ylab("Joint probability of perspective and world")+
-    theme(legend.position="bottom", legend.direction="vertical")
+ggplot(data=gotrue05,mapping=aes(x=Condition,y=probability,shape=utterance,color=go.is.p)) + geom_point() +facet_wrap(~perspective,labeller=labeller(perspective = facet_labs)) + ggtitle("Go sentences") + xlab("Condition") + ylab("Joint probability of perspective and world")+
+    theme(legend.position="bottom", legend.direction="vertical") + ylim(0,1)
 ggsave(paste0(datad,"gotrue05.pdf"))
 ```
 
 ```{r}
 moveThelmatrue <- subset(moveThelma,probability >0)
 moveT05 <- subset(moveThelma,cost == 0.5)
-ggplot(data=moveT05,mapping=aes(x=world,shape=utterance,size=cost,y=probability,color=go.is.p)) + ylim(0,0.75) + geom_point() +facet_wrap(~perspective,labeller=labeller(perspective = facet_labs)) + ggtitle("Thelma is in motion to Northampton") + xlab("World") + ylab("Joint probability of perspective and world") + labs(shape="Utterance") + guides(size=FALSE) + theme(text=element_text(size=16))+
-    theme(legend.position="bottom", legend.direction="vertical")
+ggplot(data=moveT05,mapping=aes(x=Condition,shape=utterance,size=cost,y=probability,color=go.is.p)) + geom_point() +facet_wrap(~perspective,labeller=labeller(perspective = facet_labs)) + ggtitle("Thelma is in motion to Northampton") + xlab("Condition") + ylab("Joint probability of perspective and world") + labs(shape="Utterance") + guides(size=FALSE) + theme(text=element_text(size=16))+
+    theme(legend.position="bottom", legend.direction="vertical")+ ylim(0,1)
 ggsave(paste0(datad,"moveThelma05.pdf"),width=14, height=7)
 ```
 
-```{r}
-moveThelma_noprob <- subset(moveThelma,go.is.p!='prob')
-moveT0_noprob <- subset(moveThelma_noprob,cost == 0.0)
-ggplot(data=moveT0_noprob,mapping=aes(x=world,shape=utterance,size=cost,y=probability,color=utterance)) + geom_point() +facet_wrap(go.is.p~perspective,labeller=labeller(perspective = facet_labs,go.is.p=facet_go_labs)) + ggtitle("Thelma is in motion to Northampton") + xlab("World") + ylab("Joint probability of perspective and world") + labs(shape="Utterance",color="Utterance") + guides(size=FALSE)
-ggsave(paste0(datad,"moveThelma0_noprob.pdf"),width=14, height=7)
-```
+
 
 ```{r}
 moveS <- subset(pairs,moveSam=='true')
 moveS05 <- subset(moveS,cost == 0.5)
-ggplot(data=moveS05,mapping=aes(x=world,shape=utterance,size=cost,y=probability,color=go.is.p)) + geom_point() +facet_wrap(~perspective,labeller=labeller(perspective = facet_labs)) + ggtitle("I am in motion to Northampton") + xlab("World") + ylab("Posterior probability") + labs(shape="Utterance") + guides(size=FALSE) + theme(text=element_text(size=16))+
+ggplot(data=moveS05,mapping=aes(x=Condition,shape=utterance,size=cost,y=probability,color=go.is.p)) + geom_point() +facet_wrap(~perspective,labeller=labeller(perspective = facet_labs)) + ggtitle("I am in motion to Northampton") + xlab("Condition") + ylab("Posterior probability") + labs(shape="Utterance") + guides(size=FALSE) + theme(text=element_text(size=16))+ ylim(0,1) +
     theme(legend.position="bottom", legend.direction="vertical") + scale_color_discrete(name='Go semantics',labels=facet_go_labs)
 ggsave(paste0(datad,"moveS05.pdf"),width=14, height=7)
 ```
 
-```{r}
-moveS0 <- subset(moveS,cost == 0.0)
-moveS0_noprob <- subset(moveS0,go.is.p!='prob')
-ggplot(data=moveS0_noprob,mapping=aes(x=world,shape=utterance,size=cost,y=probability,color=utterance)) + geom_point() +facet_wrap(go.is.p~perspective,labeller=labeller(perspective = facet_labs,go.is.p=facet_go_labs)) + ggtitle("I am in motion to Northampton") + xlab("World") + ylab("Posterior probability") + labs(color="Utterance",shape="Utterance") + guides(size=FALSE) + theme(text=element_text(size=16)) 
-ggsave(paste0(datad,"moveS0_noprob.pdf"),width=14, height=7)
-```
 
 ```{r}
 moveL <- subset(pairs,moveLucy=='true')
 moveL0 <- subset(moveL,cost == 0.0)
 moveL0_noprob <- subset(moveL0,go.is.p!='prob')
-ggplot(data=moveL0_noprob,mapping=aes(x=world,shape=utterance,size=cost,y=probability,color=utterance)) + geom_point() +facet_wrap(go.is.p~perspective,labeller=labeller(perspective = facet_labs,go.is.p=facet_go_labs)) + ggtitle("You are in motion to Northampton") + xlab("World") + ylab("Posterior probability") + labs(color="Utterance",shape="Utterance") + guides(size=FALSE) + theme(text=element_text(size=16))
+ggplot(data=moveL0_noprob,mapping=aes(x=Condition,shape=utterance,size=cost,y=probability,color=utterance)) + geom_point() +facet_wrap(go.is.p~perspective,labeller=labeller(perspective = facet_labs,go.is.p=facet_go_labs)) + ggtitle("You are in motion to Northampton") + xlab("Condition") + ylab("Posterior probability") + labs(color="Utterance",shape="Utterance") + guides(size=FALSE) + theme(text=element_text(size=16)) + ylim(0,1)
 ggsave(paste0(datad,"moveL0_noprob.pdf"),width=14, height=7)
 ```
 
 ```{r}
 moveTC0 <- subset(moveThelma,cost==0)
-ggplot(data=moveTC0,mapping=aes(x=world,size=cost,shape=utterance,y=probability,color=go.is.p)) + geom_point() + facet_wrap(~perspective,labeller=labeller(perspective = facet_labs)) + ylim(0,0.5) + ggtitle("Thelma is in motion to Northampton") + xlab("World") + ylab("Joint probability of perspective and world") + labs(shape="Utterance",size="Cost") + guides(size=FALSE) + theme(text=element_text(size=12)) +
+ggplot(data=moveTC0,mapping=aes(x=Condition,size=cost,shape=utterance,y=probability,color=go.is.p)) + geom_point() + facet_wrap(~perspective,labeller=labeller(perspective = facet_labs)) + ggtitle("Thelma is in motion to Northampton") + xlab("Condition") + ylab("Joint probability of perspective and world") + ylim(0,1)+ labs(shape="Utterance",size="Cost") + guides(size=FALSE) + theme(text=element_text(size=12)) +
     theme(legend.position="bottom", legend.direction="vertical")
 ggsave(paste0(datad,"moveThelmaC0.pdf"),width=10, height=4)
 ```
