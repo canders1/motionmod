@@ -142,6 +142,11 @@ pmarg_moveThelma_noprob <- subset(pmarg_moveThelma,grepl('prob',go.is.p,fixed=TR
 ggplot(data=pmarg_moveThelma_nogop,mapping=aes(x=world,y=marg.prob,color=utterance)) + stat_summary(fun.data = f2, geom="crossbar") + facet_wrap(~utterance, labeller=as_labeller(facet_u_labs)) + ylab("Marginal posterior probability of world") + xlab("World") + guides(color=FALSE) + ylim(0,1)+ theme(text=element_text(size=16)) 
 #+    theme(legend.position="bottom", legend.direction="vertical")
 ggsave(paste0(datad,"pmarg_Tmove_nogop.pdf"),width=14, height=5)
+
+pmarg_moveThelma_nogop0 <- subset(pmarg_moveThelma_nogop,cost==0)
+ggplot(data=pmarg_moveThelma_nogop0,mapping=aes(x=world,y=marg.prob,fill=utterance)) + geom_col() + facet_wrap(~utterance, labeller=as_labeller(facet_u_labs)) + ylab("Marginal posterior probability of world") + xlab("World") + guides(color=FALSE) + ylim(0,1)+ theme(text=element_text(size=14)) + guides(fill=FALSE)
+#+    theme(legend.position="bottom", legend.direction="vertical")
+ggsave(paste0(datad,"pmarg_Tmove_nogop0.pdf"),width=14, height=5)
 ```
 
 ```{r}
@@ -159,11 +164,11 @@ ggsave(paste0(datad,"wmarg2_Tmove_noprob.pdf"),width=12, height=5)
 wmarg_moveThelma_c0 <- subset(wmarg_moveThelma, cost==0)
 wmarg_moveThelma_c0_noprob <- subset(wmarg_moveThelma_c0, go.is.p!='prob')
 facet_ugo_labs <- c(gop="Perspectival go",nogop="Plain go",prob="Lex. uncertain go",`Thelma is going to Northampton`="Going",`Thelma is coming to Northampton`="Coming",`Thelma is walking to Northampton`="Walking")
-ggplot(data=wmarg_moveThelma_c0_noprob,mapping=aes(x=perspective,y=marg.prob,fill=utterance, group=utterance)) + geom_col(position="dodge") + facet_wrap(~go.is.p*utterance, labeller=as_labeller(facet_ugo_labs))+ theme(axis.text.x = element_text(angle = 90)) + ylab("Marginal posterior probability of perspective") + xlab("Utterance")
+ggplot(data=wmarg_moveThelma_c0_noprob,mapping=aes(x=perspective,y=marg.prob,fill=utterance, group=utterance)) + geom_col(position="dodge") + facet_wrap(~go.is.p*utterance, labeller=as_labeller(facet_ugo_labs))+ theme(axis.text.x = element_text(size=14)) + ylab("Marginal posterior probability of perspective") + xlab("Utterance") + guides(fill=FALSE)
 ggsave(paste0(datad,"wmarg2_Tmove_noprob_c0.pdf"),width=12, height=5)
 
 wmarg_moveThelma_c0_nogop <- subset(wmarg_moveThelma_c0, go.is.p=='nogop')
-ggplot(data=wmarg_moveThelma_c0_nogop,mapping=aes(x=perspective,y=marg.prob,fill=utterance, group=utterance)) + geom_col(position="dodge") + facet_wrap(~go.is.p*utterance, labeller=as_labeller(facet_ugo_labs))+ theme(axis.text.x = element_text(angle = 90)) + ylab("Marginal posterior probability of perspective") + xlab("Utterance")
+ggplot(data=wmarg_moveThelma_c0_nogop,mapping=aes(x=perspective,y=marg.prob,fill=utterance, group=utterance)) + geom_col(position="dodge") + facet_wrap(~go.is.p*utterance, labeller=as_labeller(facet_ugo_labs))+ theme(axis.text.x = element_text(size=14)) + ylab("Marginal posterior probability of perspective") + xlab("Utterance") + guides(fill=FALSE)
 ggsave(paste0(datad,"wmarg2_Tmove_nogop_c0.pdf"),width=12, height=5)
 ```
 

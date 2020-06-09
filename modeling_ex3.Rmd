@@ -170,6 +170,9 @@ ggsave(paste0(datad,"pmarg_Imove_gop.pdf"))
 
 ggplot(data=pmarg_moveThelma_noprob,aes(x=utterance,y=marg.prob,color=utterance)) + stat_summary(fun.data = f2, geom="crossbar") + facet_wrap(~Condition*go.is.p) + ylim(0,1) + ylab("Marginal probability: p(u|w)") + scale_x_discrete(name ="Utterance", labels=c("I am coming to Northampton" = "Come", "I am going to Northampton" = "Go", "I am walking to Northampton" = "Walk")) + theme(legend.position="none")
 ggsave(paste0(datad,"pmarg_Imove_gop.pdf"))
+
+ggplot(data=subset(pmarg_moveThelma_nogop,cost==0|cost==1|cost==0.5),mapping=aes(x=utterance,y=marg.prob,fill=cost,group=cost)) + geom_col(position="dodge") + facet_wrap(~Condition) + ylab("Marginal posterior probability: p(u|w)") + xlab("Condition") + ylim(0,1) + theme(legend.position="none",text=element_text(size=14)) + scale_fill_gradient(trans = 'reverse') + scale_x_discrete(name ="Utterance", labels=c("I am coming to Northampton" = "Come", "I am going to Northampton" = "Go", "I am walking to Northampton" = "Walk"))
+ggsave(paste0(datad,"pmarg_Imove_nogop_new.pdf"),height=4,width=12)
 ```
 
 ```{r}

@@ -183,11 +183,19 @@ pmarg_moveThelma_nogop$Condition <- factor(pmarg_moveThelma_nogop$Condition,leve
 ggplot(data=pmarg_moveThelma_nogop,aes(x=utterance,y=marg.prob,color=utterance)) + stat_summary(fun.data = f2, geom="crossbar") + facet_wrap(~Condition, nrow = 1) + ylim(0,1) + ylab("Marginal probability: p(u|w)") + scale_x_discrete(name ="Utterance", labels=c("Thelma is coming to Northampton" = "Come", "Thelma is going to Northampton" = "Go", "Thelma is walking to Northampton" = "Walk")) + theme(legend.position="none")
 ggsave(paste0(datad,"pmarg_Tmove_nogop.pdf"),height=3,width=12)
 
+ggplot(data=subset(pmarg_moveThelma_nogop,cost==0|cost==1|cost==0.5),aes(x=utterance,y=marg.prob,fill=cost,group=cost)) + geom_col(position="dodge") + facet_wrap(~Condition, nrow = 1) + ylim(0,1) + ylab("Marginal probability: p(u|w)") + scale_x_discrete(name ="Utterance", labels=c("Thelma is coming to Northampton" = "Come", "Thelma is going to Northampton" = "Go", "Thelma is walking to Northampton" = "Walk")) + theme(legend.position="none",text=element_text(size=14))
+ggsave(paste0(datad,"pmarg_Tmove_nogop_new.pdf"),height=3,width=12)
+```
+
+```{r}
 pmarg_moveThelma_gop <- subset(subset(pmarg_moveThelma,go.is.p=='gop'),cost < 1.1)
 pmarg_moveThelma_gop$Condition <- factor(pmarg_moveThelma_gop$Condition,levels = c("Both", "Speaker", "Listener", "None"))
 
 ggplot(data=pmarg_moveThelma_gop,aes(x=utterance,y=marg.prob,color=utterance)) + stat_summary(fun.data = f2, geom="crossbar") + facet_wrap(~Condition, nrow = 1) + ylim(0,1) + ylab("Marginal probability: p(u|w)") + scale_x_discrete(name ="Utterance", labels=c("Thelma is coming to Northampton" = "Come", "Thelma is going to Northampton" = "Go", "Thelma is walking to Northampton" = "Walk")) + theme(legend.position="none")
 ggsave(paste0(datad,"pmarg_Tmove_gop.pdf"),height=3,width=12)
+
+ggplot(data=subset(pmarg_moveThelma_gop,cost==0|cost==1|cost==0.5),aes(x=utterance,y=marg.prob,fill=cost,group=cost)) + geom_col(position="dodge") + facet_wrap(~Condition, nrow = 1) + ylim(0,1) + ylab("Marginal probability: p(u|w)") + scale_x_discrete(name ="Utterance", labels=c("Thelma is coming to Northampton" = "Come", "Thelma is going to Northampton" = "Go", "Thelma is walking to Northampton" = "Walk")) + theme(legend.position="none",text=element_text(size=14))
+ggsave(paste0(datad,"pmarg_Tmove_gop_new.pdf"),height=3,width=12)
 ```
 
 ```{r}
