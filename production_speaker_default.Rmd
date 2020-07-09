@@ -1,0 +1,60 @@
+---
+title: "speaker default"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+Condition <- c("Both","Speaker","Listener","None")
+utterances <- c("Thelma is walking to Northampton","Thelma is coming to Northampton","Thelma is going to Northampton")
+# Coming
+marg.prob <- c(0.75,0.75,0.0,0.0)
+utterance <- c("Thelma is coming to Northampton","Thelma is coming to Northampton","Thelma is coming to Northampton","Thelma is coming to Northampton")
+coming <- cbind(Condition,marg.prob,utterance)
+
+# Going
+marg.prob <- c(0.0,0.0,0.75,0.75)
+utterance <- c("Thelma is going to Northampton","Thelma is going to Northampton","Thelma is going to Northampton","Thelma is going to Northampton")
+going <- cbind(Condition,marg.prob,utterance)
+
+# Walking
+marg.prob <- c(0.25,0.25,0.25,0.25)
+utterance <- c("Thelma is walking to Northampton","Thelma is walking to Northampton","Thelma is walking to Northampton","Thelma is walking to Northampton")
+walking <- cbind(Condition,marg.prob,utterance)
+
+pmarg <- data.frame(rbind(coming,going,walking),as.factor=FALSE)
+```
+
+```{r}
+pmarg$marg.prob <- as.numeric(as.character(pmarg$marg.prob))
+pmarg$Condition <- factor(pmarg$Condition,levels = c("Both", "Speaker", "Listener", "None"))
+ggplot(data=pmarg,aes(x=utterance,y=marg.prob)) + geom_col(position="dodge") + facet_wrap(~Condition, nrow = 1) + ylim(0,1) + ylab("Marginal probability: p(u|w)") + scale_x_discrete(name ="Utterance", labels=c("Thelma is coming to Northampton" = "Come", "Thelma is going to Northampton" = "Go", "Thelma is walking to Northampton" = "Walk")) + theme(legend.position="none",text=element_text(size=17))
+ggsave("img/production_speaker_default_slides.pdf",height=3,width=12)
+```
+
+```{r}
+#Harris & Potts (2009) results for slides
+
+#Embedded
+Perspective <- c("Subject","Speaker","Both")
+Response <-c(110,9,9)
+Condition <- c("Embedded","Embedded","Embedded")
+embedded <- cbind(Condition,Perspective,Response)
+
+#Embedded
+Perspective <- c("Subject","Speaker","Both")
+Response <-c(87,32,9)
+Condition <- c("Unembedded","Unembedded","Unembedded")
+unembedded <- cbind(Condition,Perspective,Response)
+
+data <- data.frame(rbind(embedded,unembedded))
+```
+
+```{r}
+data$Response <- as.numeric(as.character(data$Response))
+ggplot(data=data,aes(x=Perspective,y=Response)) + geom_col(position="dodge") + facet_wrap(~Condition, nrow = 1) + ylab("Responses") + scale_x_discrete(name ="Perspective", labels=c("Thelma is coming to Northampton" = "Come", "Thelma is going to Northampton" = "Go", "Thelma is walking to Northampton" = "Walk")) + theme(legend.position="none",text=element_text(size=17))
+ggsave("img/harris_slides.pdf",height=3,width=12)
+```

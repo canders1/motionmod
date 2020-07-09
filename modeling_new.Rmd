@@ -62,9 +62,10 @@ n <- c("go","cost","utterance","perspective","locSam","locLucy","moveLucy", "mov
 #datanm = "sampled_pcost"
 #datanm = "nonu_w"
 #datanm = "nonu_apart_w"
-datanm = "speaker_bias"
+#datanm = "speaker_bias"
 #datanm = "sample_wp"
 #datanm = "listener_cost"
+datanm = "speaker_default"
 datad = paste0('img/',datanm,'_')
 ```
 
@@ -109,6 +110,11 @@ if(datanm == "listener_cost"){
   nogop_n = 'lcost_nogop.csv'
   gop_n = 'lcost_gop.csv'
   prob_n = 'lcost_prob.csv'
+}
+if(datanm == "speaker_default"){
+  nogop_n = 'speaker_default_nogop.csv'
+  gop_n = 'speaker_default_gop.csv'
+  prob_n = 'speaker_default_prob.csv'
 }
 ```
 
@@ -226,6 +232,16 @@ ggsave(paste0(datad,"pmarg_Tmove_gop_new.pdf"),height=3,width=12)
 
 ggplot(data=subset(pmarg_moveThelma_prob,cost==0|cost==1|cost==0.5),mapping=aes(x=Condition,y=marg.prob,shape=utterance,fill=cost,group=cost)) + geom_col(position="dodge") + facet_wrap(~utterance) + ylab("Marginal posterior probability: p(w|u)") + xlab("Condition") + ylim(0,1) + theme(legend.position="none",text=element_text(size=12)) + scale_fill_gradient(trans = 'reverse')
 ggsave(paste0(datad,"pmarg_Tmove_prob_new.pdf"),height=3,width=12)
+```
+```{r}
+ggplot(data=subset(pmarg_moveThelma_nogop,cost==0|cost==1|cost==0.5),mapping=aes(x=Condition,y=marg.prob,shape=utterance,fill=cost,group=cost)) + geom_col(position="dodge") + facet_wrap(~utterance) + ylab("Marginal posterior probability: p(w|u)") + xlab("Condition") + ylim(0,1) + theme(legend.position="none",text=element_text(size=20)) + scale_fill_gradient(trans = 'reverse')
+ggsave(paste0(datad,"pmarg_Tmove_nogop_slides.pdf"),height=5,width=12)
+```
+
+```{r}
+ggplot(data=subset(pmarg_moveThelma_gop,cost==0|cost==1|cost==0.5),mapping=aes(x=Condition,y=marg.prob,shape=utterance,fill=cost,group=cost)) + geom_col(position="dodge") + facet_wrap(~utterance) + ylab("Marginal posterior probability: p(w|u)") + xlab("Condition") + ylim(0,1) + theme(legend.position="none",text=element_text(size=20)) + scale_fill_gradient(trans = 'reverse') + scale_fill_gradient(low = "#00ADB1",
+  high = "#2C2551")
+ggsave(paste0(datad,"pmarg_Tmove_gop_slides.pdf"),height=5,width=12)
 ```
 
 

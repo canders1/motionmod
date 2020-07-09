@@ -57,10 +57,10 @@ n <- c("go","cost","utterance","perspective","locSam","locLucy","moveLucy", "mov
 ```
 
 ```{r}
-#datanm = "lit_speaker"
+datanm = "lit_speaker"
 #datanm = "prag_speaker_early"
 #datanm = "prag_speaker"
-datanm = "prag_speaker_double"
+#datanm = "prag_speaker_double"
 datad = paste0('img/',datanm,'_')
 ```
 
@@ -89,9 +89,9 @@ if(datanm == "prag_speaker_double"){
 ```
 
 ```{r}
-prob.pairs <- read.csv(prob_n,header=TRUE,col.names=n,comment.char = "#")
-nogop.pairs <- read.csv(nogop_n,header=TRUE,col.names=n,comment.char = "#")
-gop.pairs <- read.csv(gop_n,header=TRUE,col.names=n,comment.char = "#")
+prob.pairs <- read.csv(prob_n,header=FALSE,col.names=n,comment.char = "#")
+nogop.pairs <- read.csv(nogop_n,header=FALSE,col.names=n,comment.char = "#")
+gop.pairs <- read.csv(gop_n,header=FALSE,col.names=n,comment.char = "#")
 pairs <- rbind(rbind(nogop.pairs,prob.pairs),gop.pairs)
 pairs <- pairs %>% mutate(go.is.p = ifelse(grepl('prob',go,fixed=TRUE),
                                            'prob',
