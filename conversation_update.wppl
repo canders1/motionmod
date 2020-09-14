@@ -1,7 +1,21 @@
-// UTILITIES
+// COMMAND LINE ARGS
+
+var world_sampling = process.argv[1]
+var cg_shared = process.argv[2]
+var n_moves = process.argv[3]
+
+// PRINT UTILITIES
 
 //prints json objects
 var stringify = function(x){return JSON.stringify(x)}
+
+var printU = function(u){
+  console.log("Utterance: "+stringify(u));
+}
+
+var printW = function(w){
+  console.log("World: "+stringify(w));
+}
 
 //prints cost, utterance, evidence pairs
 var printOne = function(x,f,c){
@@ -17,6 +31,43 @@ var printAll = function(arr,f,c){
   return
 }
 
+// PROB UTILITIES
+
+// returns the most likely utterance from distribution d
+var maxU = function(d){
+  var uts = d['params']['dist']
+  var keys = Object.keys(uts)
+  var us = map(function(k){uts[k]['val']['utterance']},keys)
+  var probs = map(function(k){uts[k]['prob']},keys)
+  var pairs = map2(function(x,y){return {'utterance' : x, 'prob':y}},us,probs)
+  var pMax = reduce(function(x,y){return x['prob']>y['prob']?x:y}, {'utterance' : '', 'prob': 0},pairs)
+  return pMax
+}
+
+// retrieves the posterior distribution
+var getPosteriors = function(interpretation,worlds){
+  var int = interpretation['params']['dist']
+  var keys = Object.keys(int)
+  var probs = map(function(k){int[k]['prob']},keys)
+  var ws= map(function(k){int[k]['val']},keys)
+  var posts = map(function(x){var idx = ws.indexOf(x); if(idx!= -1){return probs[idx]}else{return 0}},worlds)
+  return posts
+}
+
+// calculates an posterior distribution over worlds where the prior is updated according to a learning rate
+var wUpdate = function(worldPriors,worldPosteriors,lr){
+  var updates = map2(function(post,prior){prior+(post*lr)},worldPosteriors,worldPriors)
+  var u_sum = sum(updates)
+  var updatedWorlds = map(function(u){u/u_sum},updates)
+  return updatedWorlds
+}
+
+// returns a posterior distribution where world w has all of the probability weight
+var getWPosteriorsS = function(w,worlds){
+  var posts = map(function(x){if(x==w){1}else{0}},worlds)
+  return posts
+}
+
 // DISTRIBUTIONS
 
 // world set
@@ -25,12 +76,12 @@ var worlds = [
   {"Major": "Astronomy", "School": "Franklin Pierce Law Center", "Name": "Nathan", "Location Preference": "outdoor"}, 
   {"Major": "German", "School": "State University of New York at Buffalo", "Name": "Daniel", "Location Preference": "outdoor"}, 
   {"Major": "Hispanic-American Studies", "School": "Franklin Pierce Law Center", "Name": "Gerald", "Location Preference": "outdoor"}, 
-  {"Major": "Ceramic Engineering", "Company": "Commercial Metals Company","Name": "Nathan", "Location Preference": "outdoor"}, 
+  /*{"Major": "Ceramic Engineering", "Company": "Commercial Metals Company","Name": "Nathan", "Location Preference": "outdoor"}, 
   {"Major": "Adult & Continuing Education", "School": "Canisius College", "Name": "Gary", "Location Preference": "indoor"}, 
   {"Major": "Veterinary Sciences", "School": "Marymount University", "Name": "Gary", "Location Preference": "outdoor"}, 
   {"Major": "Electrical Engineering", "School": "University of Dallas", "Name": "Gary", "Location Preference": "outdoor"}, 
   {"Major": "Astronomy", "School": "Saint Mary's College of California", "Name": "Nathan", "Location Preference": "outdoor"},
-  {"Major": "Social Work & Social Services", "Company": "Commercial Metals Company","Name": "Mary","Location Preference": "outdoor"}
+  {"Major": "Social Work & Social Services", "Company": "Commercial Metals Company","Name": "Mary","Location Preference": "outdoor"}*/
   ]
 
 // world priors
@@ -44,7 +95,7 @@ var getWorldDist = function(worlds,worldPs) {
 // utterance set
 var utterances = [
 'They are a student',
-'They work',
+//'They work',
 'They are female',
 'They are male',
 'Their name starts with N',
@@ -58,11 +109,11 @@ var utterances = [
 //'They study Astronomy',
 //'They study Veterinary Sciences',
 //'They study Engineering',
-'They study a social science',
+//'They study a social science',
 'They study a humanity',
 'They study a science',
 'They like being outdoors',
-'They like being indoors',
+//'They like being indoors',
 'NULL'
 ]
 
@@ -125,70 +176,61 @@ var pragmaticSpeaker = function(world,worldDist) {
 var pragmaticListener = function(u,worldDist) {
   return Infer({model: function(){
     var w = sample(worldDist)
-    factor(literalSpeaker(w,worldDist).score({utterance:u}))
+    factor(pragmaticSpeaker(w,worldDist).score({utterance:u}))
     return w
   }})
 }
 
 // CONTEXT UPDATE 
 
-// calculates an update to the speaker's distribution according to the literal listener's calculation
-var run_generation = function(gen,speakerBeliefs,worldPriorS,worldPriorL){
-  //updates speaker's distribution according to literal listener's calculation
-  var speakerBeliefWorlds = getWorldDist(worlds,speakerBeliefs)
-  var worldDistS = getWorldDist(worlds,worldPriorS)
-  var worldDistL = getWorldDist(worlds,worldPriorL)
-  console.log("Gen "+stringify(gen))
-  var wObs = sample(speakerBeliefWorlds)
-  console.log("Observed: "+stringify(wObs))
-  var poss_utterances = literalSpeaker(wObs,worldDistS)
-  var pMax = maxU(poss_utterances)
-  var actual_u = pMax['utterance']
-  console.log("Uttered: "+stringify(actual_u))
-  var interpretation = pragmaticListener(actual_u,worldDistL)
-  var litListenerEst = literalListener(actual_u,worldDistS)
-  var litWorldPosteriors = getWPosteriorsL(litListenerEst,worlds)
-  var newWorldPriorS = wUpdate(worldPriorS,litWorldPosteriors,0.1)
-  console.log("Interpretation: "+stringify(interpretation))
-  var worldPosteriorsL = getWPosteriorsL(interpretation,worlds)
-  var newWorldPriorL = wUpdate(worldPriorL,worldPosteriorsL,0.1)
-  return {sp: newWorldPriorS, lp: newWorldPriorL}
+//initialize distributions
+// currently assumes CG is shared and starts out with uniform priors
+
+var init_distributions = function(speaker_priors,listener_priors,world_set){
+  var all_priors = {speaker_beliefs: getWorldDist(world_set,speaker_priors),
+    listener_beliefs: getWorldDist(world_set,listener_priors),
+    cg: getWorldDist(world_set,map(function(x){1},world_set))}
+  return all_priors
 }
 
-// returns a posterior distribution where world w has all of the probability weight
-var getWPosteriorsS = function(w,worlds){
-  var posts = map(function(x){if(x==w){1}else{0}},worlds)
-  return posts
+// simulate a speaker observation by sampling a world
+// currently assumes worlds are sampled in proportion to their probability in speaker belief dist.
+
+var sample_world = function(speaker_priors){
+  return sample(speaker_priors)
 }
 
-// retrieves the posterior distribution of worlds post-RSA calculation
-var getWPosteriorsL = function(interpretation,worlds){
-  var int = interpretation['params']['dist']
-  var keys = Object.keys(int)
-  var probs = map(function(k){int[k]['prob']},keys)
-  var ws= map(function(k){int[k]['val']},keys)
-  var posts = map(function(x){var idx = ws.indexOf(x); if(idx!= -1){return probs[idx]}else{return 0}},worlds)
-  return posts
+//speaker calculates which utterance to select
+
+var pick_utterance = function(w,cg){
+  var u = maxU(pragmaticSpeaker(w,cg))["utterance"];
+  printU(u);
+  return u
 }
 
-// calculates an posterior distribution over worlds where the prior is updated according to a learning rate
-var wUpdate = function(worldPriors,worldPosteriors,lr){
-  var updates = map2(function(post,prior){prior+(post*lr)},worldPosteriors,worldPriors)
-  var u_sum = sum(updates)
-  var updatedWorlds = map(function(u){u/u_sum},updates)
-  return updatedWorlds
+// listener interprets utterance (also: speaker models listener interpreting utterance)
+
+var interpret_utterance = function(u,cg){
+  var posteriors = getPosteriors(pragmaticListener(u,cg),cg['params']['vs']);
+  printW(posteriors);
+  return posteriors;
 }
 
-// returns the most likely utterance from distribution d
-var maxU = function(d){
-  var uts = d['params']['dist']
-  var keys = Object.keys(uts)
-  var us = map(function(k){uts[k]['val']['utterance']},keys)
-  var probs = map(function(k){uts[k]['prob']},keys)
-  var pairs = map2(function(x,y){return {'utterance' : x, 'prob':y}},us,probs)
-  var pMax = reduce(function(x,y){return x['prob']>y['prob']?x:y}, {'utterance' : '', 'prob': 0},pairs)
-  return pMax
+// update CG with interpretation of utterance
+// currently assumes a shared CG and a fixed learning rate
+
+var update_cg = function(cg,posteriors,lr){
+  var cg_priors = cg['params']['ps'];
+  var cg_worlds = cg['params']['vs'];
+  var updates = map2(function(post,prior){prior+(post*lr)},posteriors,cg_priors);
+  console.log(updates);
+  var norm_term = sum(updates);
+  var cg_posts = map(function(u){u/norm_term},updates);
+  console.log(cg_posts);
+  return getWorldDist(cg_worlds,cg_posts)
 }
+
+//TO DO: fix below
 
 // runs n steps in a conversation where listener and speaker have shared priors
 var simulateSharedDist = function(n_gens,curr_n,pref,spb,sp,lp){
@@ -203,13 +245,15 @@ var simulateSharedDist = function(n_gens,curr_n,pref,spb,sp,lp){
   }
 }
 
-simulateSharedDist(5,0,0,[100,1,1,1,1,1,1,1,1,1],initWorldPriors,initWorldPriors)
-simulateSharedDist(5,0,1,[1,100,1,1,1,1,1,1,1,1],initWorldPriors,initWorldPriors)
-simulateSharedDist(5,0,2,[1,1,100,1,1,1,1,1,1,1],initWorldPriors,initWorldPriors)
-simulateSharedDist(5,0,3,[1,1,1,100,1,1,1,1,1,1],initWorldPriors,initWorldPriors)
-simulateSharedDist(5,0,4,[1,1,1,1,100,1,1,1,1,1],initWorldPriors,initWorldPriors)
-simulateSharedDist(5,0,5,[1,1,1,1,1,100,1,1,1,1],initWorldPriors,initWorldPriors)
-simulateSharedDist(5,0,6,[1,1,1,1,1,1,100,1,1,1],initWorldPriors,initWorldPriors)
-simulateSharedDist(5,0,7,[1,1,1,1,1,1,1,100,1,1],initWorldPriors,initWorldPriors)
-simulateSharedDist(5,0,8,[1,1,1,1,1,1,1,1,100,1],initWorldPriors,initWorldPriors)
-simulateSharedDist(5,0,9,[1,1,1,1,1,1,1,1,1,100],initWorldPriors,initWorldPriors)
+// RUN CALL
+
+var initial_dists = init_distributions([10,1,1,1],[1,1,1,10],worlds);
+var cg = initial_dists['cg']
+console.log(cg['params']['vs']);
+var sampled_w = sample_world(initial_dists['speaker_beliefs']);
+console.log(sampled_w);
+var selected_u = pick_utterance(sampled_w,cg)
+console.log(selected_u);
+var int_posteriors = interpret_utterance(selected_u,cg);
+update_cg(cg,int_posteriors,0.05);
+//simulateSharedDist(5,0,0,[100,1,1,1,1,1,1,1,1,1],initWorldPriors,initWorldPriors)
