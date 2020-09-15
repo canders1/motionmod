@@ -33,6 +33,33 @@ var printAll = function(arr,f,c){
 
 // PROB UTILITIES
 
+// returns a normalized probability distribution from a webppl distribution object
+var normalizeDistProbs = function(dist){
+  var prob_weights = dist['params']['ps']
+  var prob_sum = sum(prob_weights)
+  var probs = map(function(x){x/prob_sum},prob_weights);
+  return probs
+}
+
+// returns a normalized probability distribution from an array of probability weights
+var normalizeProbs = function(weights){
+  var prob_sum = sum(weights)
+  var probs = map(function(x){x/prob_sum},weights);
+  return probs
+}
+
+// returns the entropy of a distribution
+var findEntropy = function(dist){
+  var probs = normalizeDistProbs(dist);
+  console.log(probs);
+  var log_probs = map(function(x){Math.log2(x)},probs);
+  console.log(log_probs);
+  var prob_products = map2(function(x,y){x*y},probs,log_probs);
+  console.log(prob_products);
+  var prob_sum = sum(prob_products);
+  return -prob_sum
+}
+
 // returns the most likely utterance from distribution d
 var maxU = function(d){
   var uts = d['params']['dist']
@@ -222,11 +249,8 @@ var interpret_utterance = function(u,cg){
 var update_cg = function(cg,posteriors,lr){
   var cg_priors = cg['params']['ps'];
   var cg_worlds = cg['params']['vs'];
-  var updates = map2(function(post,prior){prior+(post*lr)},posteriors,cg_priors);
-  console.log(updates);
-  var norm_term = sum(updates);
-  var cg_posts = map(function(u){u/norm_term},updates);
-  console.log(cg_posts);
+  var updated_weights = map2(function(post,prior){prior+(post*lr)},posteriors,cg_priors);
+  var cg_posts = normalizeProbs(updated_weights);
   return getWorldDist(cg_worlds,cg_posts)
 }
 
@@ -245,15 +269,38 @@ var simulateSharedDist = function(n_gens,curr_n,pref,spb,sp,lp){
   }
 }
 
+var runConversation = function(n_gens,cg,speaker_beliefs,listener_beliefs){
+  console.log("Speaker beliefs: ")
+  console.log(speaker_beliefs['params']['ps']);
+  console.log("Listener beliefs: ")
+  console.log(listener_beliefs['params']['ps']);
+  return runConversationHelper(0,n_gens,cg,speaker_beliefs,listener_beliefs);
+}
+
+var runConversationHelper = function(curr_gen,n_gens,cg,speaker_beliefs,listener_beliefs){
+  if (curr_gen == n_gens){
+    console.log("Final Common Ground: ")
+    console.log(cg['params']['ps']);
+    return
+  } else {
+    console.log("Generation "+curr_gen);
+    console.log("Current Common Ground: ");
+    console.log(cg['params']['ps']);
+    var sampled_w = sample_world(speaker_beliefs);
+    console.log("Observed world:");
+    console.log(sampled_w);
+    var selected_u = pick_utterance(sampled_w,cg)
+    console.log(selected_u);
+    var int_posteriors = interpret_utterance(selected_u,cg);
+    var new_cg = update_cg(cg,int_posteriors,0.05);
+    runConversationHelper(curr_gen+1,n_gens,new_cg,speaker_beliefs,listener_beliefs);
+  }
+}
+
 // RUN CALL
 
 var initial_dists = init_distributions([10,1,1,1],[1,1,1,10],worlds);
-var cg = initial_dists['cg']
-console.log(cg['params']['vs']);
-var sampled_w = sample_world(initial_dists['speaker_beliefs']);
-console.log(sampled_w);
-var selected_u = pick_utterance(sampled_w,cg)
-console.log(selected_u);
-var int_posteriors = interpret_utterance(selected_u,cg);
-update_cg(cg,int_posteriors,0.05);
-//simulateSharedDist(5,0,0,[100,1,1,1,1,1,1,1,1,1],initWorldPriors,initWorldPriors)
+var cg = initial_dists['cg'];
+var speaker_beliefs = initial_dists['speaker_beliefs'];
+var listener_beliefs = initial_dists['listener_beliefs'];
+runConversation(3,cg,speaker_beliefs,listener_beliefs);
