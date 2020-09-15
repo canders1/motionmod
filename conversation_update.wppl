@@ -265,6 +265,16 @@ var sample_world = function(speaker_priors,cg,worlds,sampler){
     console.log(biggest_diff);
     return worlds[biggest_diff];
   }
+  if (sampler.threshold !== undefined){
+    var threshold = sampler.threshold;
+    var speaker_worlds = speaker_priors['params']['vs'];
+    var speaker_probs = normalizeProbs(speaker_priors['params']['ps']);
+    var prob_pairs = map2(function(x,y){return {w: x, prob: y}},speaker_worlds,speaker_probs);
+    var above_threshold = filter(function(x){x['prob'] > threshold},prob_pairs);
+    var thresh_worlds = map(function(x){return x['w']},above_threshold);
+    var thresh_probs = map(function(x){return x['prob']},above_threshold);
+    return sample(getWorldDist(thresh_worlds,thresh_probs));
+  }
 }
 
 //speaker calculates which utterance to select
@@ -347,4 +357,4 @@ var initial_dists = init_distributions([10,1,1,1],[1,1,1,10],worlds);
 var cg = initial_dists['cg'];
 var speaker_beliefs = initial_dists['speaker_beliefs'];
 var listener_beliefs = initial_dists['listener_beliefs'];
-runConversation(5,cg,speaker_beliefs,listener_beliefs,'weighted');
+runConversation(5,cg,speaker_beliefs,listener_beliefs,{threshold: 0.3});
