@@ -33,6 +33,38 @@ var printAll = function(arr,f,c){
 
 // PROB UTILITIES
 
+// argmax
+
+var argmax  = function(arr){
+  var init = { currentIndex: arr.length-1, maxIndex: 0, maxValue: arr[0] };
+  var a = reduce(function(elt, acc) {
+    if (elt > acc.maxValue) {
+      return { currentIndex: acc.currentIndex - 1, maxIndex: acc.currentIndex, maxValue: elt };
+    }
+    else {
+       return { currentIndex: acc.currentIndex - 1, maxIndex: acc.maxIndex, maxValue: acc.maxValue };
+    }
+  }, init, arr);
+return a.maxIndex;
+};
+
+// returns the index of the probability in array 1 with the greatest positive difference from array 2 (it is higher in arr 1 than arr 2)
+var getHighestDiffProb = function(a1,a2){
+  var probDiffs = map2(function(p1,p2){p1-p2},a1,a2);
+  var maxDiffIdx = argmax(probDiffs);
+  return maxDiffIdx;
+}
+
+// returns the index of the probability in Dist. 1 with the greatest positive difference from Dist. 2 (it is higher in Dist. 1 than Dist. 2)
+var getHighestDiffDist = function(d1,d2){
+  var a1 = normalizeDistProbs(d1);
+  var a2 = normalizeDistProbs(d2);
+  var probDiffs = map2(function(p1,p2){p1-p2},a1,a2);
+  var maxDiffIdx = argmax(probDiffs);
+  return maxDiffIdx;
+}
+
+
 // returns a normalized probability distribution from a webppl distribution object
 var normalizeDistProbs = function(dist){
   var prob_weights = dist['params']['ps']
@@ -223,8 +255,16 @@ var init_distributions = function(speaker_priors,listener_priors,world_set){
 // simulate a speaker observation by sampling a world
 // currently assumes worlds are sampled in proportion to their probability in speaker belief dist.
 
-var sample_world = function(speaker_priors){
-  return sample(speaker_priors)
+var sample_world = function(speaker_priors,cg,worlds,sampler){
+  console.log(sampler);
+  if (sampler == 'weighted') {
+    return sample(speaker_priors);
+  }
+  if (sampler == 'difference'){
+    var biggest_diff = getHighestDiffDist(speaker_priors,cg);
+    console.log(biggest_diff);
+    return worlds[biggest_diff];
+  }
 }
 
 //speaker calculates which utterance to select
@@ -269,15 +309,15 @@ var simulateSharedDist = function(n_gens,curr_n,pref,spb,sp,lp){
   }
 }
 
-var runConversation = function(n_gens,cg,speaker_beliefs,listener_beliefs){
+var runConversation = function(n_gens,cg,speaker_beliefs,listener_beliefs,sampler){
   console.log("Speaker beliefs: ")
   console.log(speaker_beliefs['params']['ps']);
   console.log("Listener beliefs: ")
   console.log(listener_beliefs['params']['ps']);
-  return runConversationHelper(0,n_gens,cg,speaker_beliefs,listener_beliefs);
+  return runConversationHelper(0,n_gens,cg,speaker_beliefs,listener_beliefs,sampler);
 }
 
-var runConversationHelper = function(curr_gen,n_gens,cg,speaker_beliefs,listener_beliefs){
+var runConversationHelper = function(curr_gen,n_gens,cg,speaker_beliefs,listener_beliefs,sampler){
   if (curr_gen == n_gens){
     console.log("Final Common Ground: ")
     console.log(cg['params']['ps']);
@@ -286,21 +326,25 @@ var runConversationHelper = function(curr_gen,n_gens,cg,speaker_beliefs,listener
     console.log("Generation "+curr_gen);
     console.log("Current Common Ground: ");
     console.log(cg['params']['ps']);
-    var sampled_w = sample_world(speaker_beliefs);
+    var world_set = cg['params']['vs'];
+    console.log(world_set);
+    var sampled_w = sample_world(speaker_beliefs,cg,world_set,sampler);
     console.log("Observed world:");
     console.log(sampled_w);
     var selected_u = pick_utterance(sampled_w,cg)
     console.log(selected_u);
     var int_posteriors = interpret_utterance(selected_u,cg);
     var new_cg = update_cg(cg,int_posteriors,0.05);
-    runConversationHelper(curr_gen+1,n_gens,new_cg,speaker_beliefs,listener_beliefs);
+    runConversationHelper(curr_gen+1,n_gens,new_cg,listener_beliefs,speaker_beliefs,sampler);
   }
 }
 
 // RUN CALL
 
+//console.log(argmax([10, 30, 20, 10]));
+//console.log(getHighestDiffProb([0.1,0.2,0.3,0.4],[0.01,0.1,0.1,0.15]));
 var initial_dists = init_distributions([10,1,1,1],[1,1,1,10],worlds);
 var cg = initial_dists['cg'];
 var speaker_beliefs = initial_dists['speaker_beliefs'];
 var listener_beliefs = initial_dists['listener_beliefs'];
-runConversation(3,cg,speaker_beliefs,listener_beliefs);
+runConversation(5,cg,speaker_beliefs,listener_beliefs,'weighted');
