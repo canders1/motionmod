@@ -31,6 +31,20 @@ var printAll = function(arr,f,c){
   return
 }
 
+//prints information about a generation in a csv-friendly format
+var printGeneration = function(genObj){
+  var worlds = genObj['cg']['params']['vs'];
+  var cg = normalizeProbs(genObj['cg']['params']['ps']);
+  var speaker = normalizeProbs(genObj['speaker_beliefs']['params']['ps']);
+  var listener = normalizeProbs(genObj['listener_beliefs']['params']['ps']);
+  var prefix = genObj['curr_gen']+','+genObj['sampler']['name']+','+genObj['sampled_w']['Index']+','+genObj['selected_u'];
+  var cg_worlds = map2(function(x,y){var cgWorld = {cgProb: y}; return Object.assign(cgWorld,x)},worlds,cg);
+  var belief_pairs = map2(function(x,y){return {speaker: x, listener: y}},speaker,listener);
+  var world_pairs = map2(function(x,y){return Object.assign(x,y)},cg_worlds,belief_pairs);
+  var print_pairs = map(function(x){console.log(reduce(function(x,y){y+x},prefix,map(function(y){','+y},Object.values(x))))},world_pairs);
+  return
+}
+
 // PROB UTILITIES
 
 // argmax
@@ -127,20 +141,26 @@ var getWPosteriorsS = function(w,worlds){
   return posts
 }
 
+// SAMPLERS
+
+var thresholded_sampler = {name: 'threshold', threshold: 0.3};
+var weighted_sampler = {name: 'weighted'};
+var difference_sampler = {name: 'difference'};
+
 // DISTRIBUTIONS
 
 // world set
 var worlds = [
-  {"Major": "German", "School": "University of New Orleans", "Name": "Nancy", "Location Preference": "outdoor"},
-  {"Major": "Astronomy", "School": "Franklin Pierce Law Center", "Name": "Nathan", "Location Preference": "outdoor"}, 
-  {"Major": "German", "School": "State University of New York at Buffalo", "Name": "Daniel", "Location Preference": "outdoor"}, 
-  {"Major": "Hispanic-American Studies", "School": "Franklin Pierce Law Center", "Name": "Gerald", "Location Preference": "outdoor"}, 
-  /*{"Major": "Ceramic Engineering", "Company": "Commercial Metals Company","Name": "Nathan", "Location Preference": "outdoor"}, 
-  {"Major": "Adult & Continuing Education", "School": "Canisius College", "Name": "Gary", "Location Preference": "indoor"}, 
-  {"Major": "Veterinary Sciences", "School": "Marymount University", "Name": "Gary", "Location Preference": "outdoor"}, 
-  {"Major": "Electrical Engineering", "School": "University of Dallas", "Name": "Gary", "Location Preference": "outdoor"}, 
-  {"Major": "Astronomy", "School": "Saint Mary's College of California", "Name": "Nathan", "Location Preference": "outdoor"},
-  {"Major": "Social Work & Social Services", "Company": "Commercial Metals Company","Name": "Mary","Location Preference": "outdoor"}*/
+  {"Index": 0, "Major": "German", "School": "University of New Orleans", "Name": "Nancy", "Location Preference": "outdoor"},
+  {"Index": 1,"Major": "Astronomy", "School": "Franklin Pierce Law Center", "Name": "Nathan", "Location Preference": "outdoor"}, 
+  {"Index": 2,"Major": "German", "School": "State University of New York at Buffalo", "Name": "Daniel", "Location Preference": "outdoor"}, 
+  {"Index": 3,"Major": "Hispanic-American Studies", "School": "Franklin Pierce Law Center", "Name": "Gerald", "Location Preference": "outdoor"}, 
+  /*{"Index": 4, "Major": "Ceramic Engineering", "Company": "Commercial Metals Company","Name": "Nathan", "Location Preference": "outdoor"}, 
+  {"Index": 5, "Major": "Adult & Continuing Education", "School": "Canisius College", "Name": "Gary", "Location Preference": "indoor"}, 
+  {"Index": 6, "Major": "Veterinary Sciences", "School": "Marymount University", "Name": "Gary", "Location Preference": "outdoor"}, 
+  {"Index": 7, "Major": "Electrical Engineering", "School": "University of Dallas", "Name": "Gary", "Location Preference": "outdoor"}, 
+  {"Index": 8, "Major": "Astronomy", "School": "Saint Mary's College of California", "Name": "Nathan", "Location Preference": "outdoor"},
+  {"Index": 9, "Major": "Social Work & Social Services", "Company": "Commercial Metals Company","Name": "Mary","Location Preference": "outdoor"}*/
   ]
 
 // world priors
@@ -256,16 +276,14 @@ var init_distributions = function(speaker_priors,listener_priors,world_set){
 // currently assumes worlds are sampled in proportion to their probability in speaker belief dist.
 
 var sample_world = function(speaker_priors,cg,worlds,sampler){
-  console.log(sampler);
-  if (sampler == 'weighted') {
+  if (sampler['name'] == 'weighted') {
     return sample(speaker_priors);
   }
-  if (sampler == 'difference'){
+  if (sampler['name'] == 'difference'){
     var biggest_diff = getHighestDiffDist(speaker_priors,cg);
-    console.log(biggest_diff);
     return worlds[biggest_diff];
   }
-  if (sampler.threshold !== undefined){
+  if (sampler['name'] == 'threshold'){
     var threshold = sampler.threshold;
     var speaker_worlds = speaker_priors['params']['vs'];
     var speaker_probs = normalizeProbs(speaker_priors['params']['ps']);
@@ -281,7 +299,6 @@ var sample_world = function(speaker_priors,cg,worlds,sampler){
 
 var pick_utterance = function(w,cg){
   var u = maxU(pragmaticSpeaker(w,cg))["utterance"];
-  printU(u);
   return u
 }
 
@@ -289,7 +306,6 @@ var pick_utterance = function(w,cg){
 
 var interpret_utterance = function(u,cg){
   var posteriors = getPosteriors(pragmaticListener(u,cg),cg['params']['vs']);
-  printW(posteriors);
   return posteriors;
 }
 
@@ -320,41 +336,39 @@ var simulateSharedDist = function(n_gens,curr_n,pref,spb,sp,lp){
 }
 
 var runConversation = function(n_gens,cg,speaker_beliefs,listener_beliefs,sampler){
-  console.log("Speaker beliefs: ")
-  console.log(speaker_beliefs['params']['ps']);
-  console.log("Listener beliefs: ")
-  console.log(listener_beliefs['params']['ps']);
-  return runConversationHelper(0,n_gens,cg,speaker_beliefs,listener_beliefs,sampler);
+  var genObj = {curr_gen: 0, speaker_beliefs: speaker_beliefs, sampled_w: {Index: -1}, listener_beliefs: listener_beliefs, cg: cg, sampler: sampler};
+  printGeneration(genObj);
+  return runConversationHelper(1,n_gens,cg,speaker_beliefs,listener_beliefs,sampler);
 }
 
 var runConversationHelper = function(curr_gen,n_gens,cg,speaker_beliefs,listener_beliefs,sampler){
-  if (curr_gen == n_gens){
-    console.log("Final Common Ground: ")
-    console.log(cg['params']['ps']);
+  if (curr_gen == n_gens+1){
     return
   } else {
-    console.log("Generation "+curr_gen);
+    /*console.log("Generation "+curr_gen);
     console.log("Current Common Ground: ");
-    console.log(cg['params']['ps']);
+    console.log(cg['params']['ps']);*/
     var world_set = cg['params']['vs'];
-    console.log(world_set);
     var sampled_w = sample_world(speaker_beliefs,cg,world_set,sampler);
-    console.log("Observed world:");
-    console.log(sampled_w);
+    /*console.log("Observed world:");
+    console.log(sampled_w);*/
     var selected_u = pick_utterance(sampled_w,cg)
-    console.log(selected_u);
+    //console.log(selected_u);
     var int_posteriors = interpret_utterance(selected_u,cg);
     var new_cg = update_cg(cg,int_posteriors,0.05);
+    var genObj = {curr_gen: curr_gen, speaker_beliefs: speaker_beliefs, listener_beliefs: listener_beliefs, 
+      sampled_w: sampled_w, selected_u: selected_u, cg: new_cg, sampler: sampler};
+    printGeneration(genObj);
     runConversationHelper(curr_gen+1,n_gens,new_cg,listener_beliefs,speaker_beliefs,sampler);
   }
 }
 
 // RUN CALL
 
-//console.log(argmax([10, 30, 20, 10]));
-//console.log(getHighestDiffProb([0.1,0.2,0.3,0.4],[0.01,0.1,0.1,0.15]));
+//log format of output
+console.log('generation,sampler,sampled_w_idx,selected_u,speaker_belief,listener_belief,location_pref,name,school/company,major,w_idx,cg_prob');
 var initial_dists = init_distributions([10,1,1,1],[1,1,1,10],worlds);
 var cg = initial_dists['cg'];
 var speaker_beliefs = initial_dists['speaker_beliefs'];
 var listener_beliefs = initial_dists['listener_beliefs'];
-runConversation(5,cg,speaker_beliefs,listener_beliefs,{threshold: 0.3});
+runConversation(5,cg,speaker_beliefs,listener_beliefs,difference_sampler);
