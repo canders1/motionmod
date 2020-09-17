@@ -259,25 +259,33 @@ var pragmaticListener = function(u,worldDist) {
 //initialize distributions
 // currently assumes CG is shared and starts out with uniform priors
 
-var init_distributions = function(speaker_priors,listener_priors,world_set){
-  var all_priors = {speaker_beliefs: getWorldDist(world_set,speaker_priors),
-    listener_beliefs: getWorldDist(world_set,listener_priors),
-    cg: getWorldDist(world_set,map(function(x){1},world_set))}
-  return all_priors
+var init_distributions = function(a_priors,b_priors,world_set,shared){
+  var a_beliefs = getWorldDist(world_set,a_priors);
+  var b_beliefs = getWorldDist(world_set,b_priors);
+  if (shared == 'shared'){
+    var cg = getWorldDist(world_set,map(function(x){1},world_set));
+    var all_priors = {a_beliefs: a_beliefs, b_beliefs: b_beliefs, cg: cg };
+    return all_priors;
+  } else{
+    var cg_a = getWorldDist(world_set,map(function(x){1},world_set));
+    var cg_b = getWorldDist(world_set,map(function(x){1},world_set));
+    var all_priors = {a_beliefs: a_beliefs, b_beliefs: b_beliefs, cg_a: cg_a, cg_b: cg_b };
+    return all_priors;
+  };
 }
 
 // simulate a speaker observation by sampling a world
 // currently assumes worlds are sampled in proportion to their probability in speaker belief dist.
 
 var sample_world = function(speaker_priors,cg,worlds,sampler){
-  if (sampler['name'] == 'weighted') {
+  if (sampler['name'] == 'weighted') { //sample a world according to its probability in speaker belief dist.
     return sample(speaker_priors);
   }
-  if (sampler['name'] == 'difference'){
+  if (sampler['name'] == 'difference'){ //sample a world based on the greatest potential probability gain
     var biggest_diff = getHighestDiffDist(speaker_priors,cg);
     return worlds[biggest_diff];
   }
-  if (sampler['name'] == 'threshold'){
+  if (sampler['name'] == 'threshold'){ //sample a world according to its probability, omitting low probability worlds
     var threshold = sampler.threshold;
     var speaker_worlds = speaker_priors['params']['vs'];
     var speaker_probs = normalizeProbs(speaker_priors['params']['ps']);
@@ -314,17 +322,19 @@ var update_cg = function(cg,posteriors,lr){
   return getWorldDist(cg_worlds,cg_posts)
 }
 
-//TO DO: fix below
+//Simulate a conversation where participants have direct access to a shared Common Ground
 
-var runConversation = function(n_gens,cg,speaker_beliefs,listener_beliefs,sampler){
+var runSharedConversation = function(n_gens,cg,speaker_beliefs,listener_beliefs,sampler){
   var genObj = {curr_gen: 0, speaker_beliefs: speaker_beliefs, sampled_w: {Index: -1}, listener_beliefs: listener_beliefs, cg: cg, sampler: sampler};
   printGeneration(genObj);
-  return runConversationHelper(1,n_gens,cg,speaker_beliefs,listener_beliefs,sampler);
+  return runSharedConversationHelper(1,n_gens,cg,speaker_beliefs,listener_beliefs,sampler);
 }
 
-var runConversationHelper = function(curr_gen,n_gens,cg,speaker_beliefs,listener_beliefs,sampler){
+var runSharedConversationHelper = function(curr_gen,n_gens,cg,speaker_beliefs,listener_beliefs,sampler){
   if (curr_gen == n_gens+1){
-    return
+    var genObj = {curr_gen: curr_gen, speaker_beliefs: speaker_beliefs, listener_beliefs: listener_beliefs, 
+      cg: cg, sampler: sampler};
+    return genObj;
   } else {
     var world_set = cg['params']['vs'];
     var sampled_w = sample_world(speaker_beliefs,cg,world_set,sampler);
@@ -334,7 +344,7 @@ var runConversationHelper = function(curr_gen,n_gens,cg,speaker_beliefs,listener
     var genObj = {curr_gen: curr_gen, speaker_beliefs: speaker_beliefs, listener_beliefs: listener_beliefs, 
       sampled_w: sampled_w, selected_u: selected_u, cg: new_cg, sampler: sampler};
     printGeneration(genObj);
-    runConversationHelper(curr_gen+1,n_gens,new_cg,listener_beliefs,speaker_beliefs,sampler);
+    runSharedConversationHelper(curr_gen+1,n_gens,new_cg,listener_beliefs,speaker_beliefs,sampler);
   }
 }
 
@@ -349,11 +359,17 @@ var main = function(){
 
   //log format of output
   console.log('generation,sampler,sampled_w_idx,selected_u,speaker_belief,listener_belief,location_pref,name,school/company,major,w_idx,cg_prob');
-  var initial_dists = init_distributions([10,1,1,1],[1,1,1,10],worlds);
-  var cg = initial_dists['cg'];
-  var speaker_beliefs = initial_dists['speaker_beliefs'];
-  var listener_beliefs = initial_dists['listener_beliefs'];
-  runConversation(n_moves,cg,speaker_beliefs,listener_beliefs,world_sampler);
+  var initial_dists = init_distributions([10,1,1,1],[1,1,1,10],worlds,cg_shared);
+  var a_beliefs = initial_dists['a_beliefs'];
+  var b_beliefs = initial_dists['b_beliefs'];
+  if (cg_shared == 'shared'){
+    var cg = initial_dists['cg'];
+    runSharedConversation(n_moves,cg,a_beliefs,b_beliefs,world_sampler);
+  } else{
+    var cg_a = initial_dists['cg_a'];
+    var cg_b = initial_dists['cg_b'];
+    runApproxConversation(n_moves,cg_a,cg_b,a_beliefs,b_beliefs,world_sampler);
+  }
 };
 
 // COMMAND LINE ARGS
