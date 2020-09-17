@@ -27,15 +27,24 @@ var printAll = function(arr,f,c){
 
 //prints information about a generation in a csv-friendly format
 var printGeneration = function(genObj){
-  var worlds = genObj['cg']['params']['vs'];
-  var cg = normalizeProbs(genObj['cg']['params']['ps']);
+  var worlds = genObj['speaker_beliefs']['params']['vs'];
   var speaker = normalizeProbs(genObj['speaker_beliefs']['params']['ps']);
   var listener = normalizeProbs(genObj['listener_beliefs']['params']['ps']);
-  var prefix = genObj['curr_gen']+','+genObj['sampler']['name']+','+genObj['sampled_w']['Index']+','+genObj['selected_u'];
-  var cg_worlds = map2(function(x,y){var cgWorld = {cgProb: y}; return Object.assign(cgWorld,x)},worlds,cg);
+  var prefix = genObj['cg_type']+','+genObj['curr_gen']+','+genObj['sampler']['name']+','+genObj['sampled_w']['Index']+','+genObj['selected_u'];
   var belief_pairs = map2(function(x,y){return {speaker: x, listener: y}},speaker,listener);
-  var world_pairs = map2(function(x,y){return Object.assign(x,y)},cg_worlds,belief_pairs);
-  var print_pairs = map(function(x){console.log(reduce(function(x,y){y+x},prefix,map(function(y){','+y},Object.values(x))))},world_pairs);
+  if (genObj['cg_type'] == 'shared'){
+    var cg = normalizeProbs(genObj['cg']['params']['ps']);
+    var cg_worlds = map2(function(x,y){var cgWorld = {cgProb: y}; return Object.assign(cgWorld,x)},worlds,cg);
+    var world_pairs = map2(function(x,y){return Object.assign(x,y)},cg_worlds,belief_pairs);
+    var print_pairs = map(function(x){console.log(reduce(function(x,y){y+x},prefix,map(function(y){','+y},Object.values(x))))},world_pairs);
+  } else {
+    var cg_speaker = normalizeProbs(genObj['cg_speaker']['params']['ps']);
+    var cg_listener = normalizeProbs(genObj['cg_listener']['params']['ps']);
+    var cg_pairs = map2(function(x,y){return {cg_speaker_prob: x, cg_listener_prob: y}},cg_speaker,cg_listener);
+    var cg_worlds = map2(function(x,y){return Object.assign(y,x)},worlds,cg_pairs);
+    var world_pairs = map2(function(x,y){return Object.assign(x,y)},cg_worlds,belief_pairs);
+    var print_pairs = map(function(x){console.log(reduce(function(x,y){y+x},prefix,map(function(y){','+y},Object.values(x))))},world_pairs);
+  }
   return
 }
 
@@ -324,29 +333,58 @@ var update_cg = function(cg,posteriors,lr){
 
 //Simulate a conversation where participants have direct access to a shared Common Ground
 
-var runSharedConversation = function(n_gens,cg,speaker_beliefs,listener_beliefs,sampler){
-  var genObj = {curr_gen: 0, speaker_beliefs: speaker_beliefs, sampled_w: {Index: -1}, listener_beliefs: listener_beliefs, cg: cg, sampler: sampler};
+var runSharedFixedConversation = function(n_gens,cg,speaker_beliefs,listener_beliefs,sampler,lr_set){
+  var genObj = {cg_type: 'shared', curr_gen: 0, speaker_beliefs: speaker_beliefs, sampled_w: {Index: -1}, listener_beliefs: listener_beliefs, cg: cg, sampler: sampler, lr: lr_set['lr']};
   printGeneration(genObj);
-  return runSharedConversationHelper(1,n_gens,cg,speaker_beliefs,listener_beliefs,sampler);
+  return runSharedFixedConversationHelper(1,n_gens,cg,speaker_beliefs,listener_beliefs,sampler, lr_set);
 }
 
-var runSharedConversationHelper = function(curr_gen,n_gens,cg,speaker_beliefs,listener_beliefs,sampler){
+var runSharedFixedConversationHelper = function(curr_gen,n_gens,cg,speaker_beliefs,listener_beliefs,sampler,lr_set){
+  var lr = lr_set['lr'];
   if (curr_gen == n_gens+1){
-    var genObj = {curr_gen: curr_gen, speaker_beliefs: speaker_beliefs, listener_beliefs: listener_beliefs, 
-      cg: cg, sampler: sampler};
+    var genObj = {cg_type: 'shared', curr_gen: curr_gen, speaker_beliefs: speaker_beliefs, listener_beliefs: listener_beliefs, 
+      cg: cg, sampler: sampler, lr: lr};
     return genObj;
   } else {
     var world_set = cg['params']['vs'];
     var sampled_w = sample_world(speaker_beliefs,cg,world_set,sampler);
     var selected_u = pick_utterance(sampled_w,cg)
     var int_posteriors = interpret_utterance(selected_u,cg);
-    var new_cg = update_cg(cg,int_posteriors,0.05);
-    var genObj = {curr_gen: curr_gen, speaker_beliefs: speaker_beliefs, listener_beliefs: listener_beliefs, 
-      sampled_w: sampled_w, selected_u: selected_u, cg: new_cg, sampler: sampler};
+    var new_cg = update_cg(cg,int_posteriors,lr);
+    var genObj = {cg_type: 'shared', curr_gen: curr_gen, speaker_beliefs: speaker_beliefs, listener_beliefs: listener_beliefs, 
+      sampled_w: sampled_w, selected_u: selected_u, cg: new_cg, sampler: sampler, lr: lr};
     printGeneration(genObj);
-    runSharedConversationHelper(curr_gen+1,n_gens,new_cg,listener_beliefs,speaker_beliefs,sampler);
+    runSharedFixedConversationHelper(curr_gen+1,n_gens,new_cg,listener_beliefs,speaker_beliefs,sampler,lr_set);
   }
 }
+
+var runApproxFixedConversation = function(n_gens,cg_a,cg_b,a_beliefs,b_beliefs,sampler,lr_set){
+  var genObj = {cg_type: 'approx', curr_gen: 0, speaker_beliefs: a_beliefs, sampled_w: {Index: -1}, listener_beliefs: b_beliefs, cg_speaker: cg_a, cg_listener: cg_b, sampler: sampler, lr: lr_set['lr']};
+  printGeneration(genObj);
+  return runApproxFixedConversationHelper(1,n_gens,cg_a,cg_b,a_beliefs,b_beliefs,sampler,lr_set);
+}
+
+var runApproxFixedConversationHelper = function(curr_gen,n_gens,cg_speaker,cg_listener,speaker_beliefs,listener_beliefs,sampler,lr_set){
+  var lr = lr_set['lr'];
+  if (curr_gen == n_gens+1){
+    var genObj = {cg_type: 'approx', curr_gen: curr_gen, speaker_beliefs: speaker_beliefs, listener_beliefs: listener_beliefs, 
+      cg_speaker: cg_speaker, cg_listener: cg_listener, sampler: sampler, lr: lr};
+    return genObj;
+  } else {
+    var world_set = speaker_beliefs['params']['vs'];
+    var sampled_w = sample_world(speaker_beliefs,cg_speaker,world_set,sampler);
+    var selected_u = pick_utterance(sampled_w,cg_speaker);
+    var int_posteriors_speaker = interpret_utterance(selected_u,cg_speaker);
+    var int_posteriors_listener = interpret_utterance(selected_u,cg_listener);
+    var new_cg_speaker = update_cg(cg_speaker,int_posteriors_speaker,lr);
+    var new_cg_listener = update_cg(cg_listener,int_posteriors_listener,lr);
+    var genObj = {cg_type: 'approx', curr_gen: curr_gen, speaker_beliefs: speaker_beliefs, listener_beliefs: listener_beliefs, 
+      sampled_w: sampled_w, selected_u: selected_u, cg_speaker: new_cg_speaker, cg_listener: new_cg_listener, sampler: sampler, lr: lr};
+    printGeneration(genObj);
+    runApproxFixedConversationHelper(curr_gen+1,n_gens,new_cg_listener,new_cg_speaker,listener_beliefs,speaker_beliefs,sampler,lr_set);
+  }
+}
+
 
 // RUN CALL
 
@@ -362,13 +400,14 @@ var main = function(){
   var initial_dists = init_distributions([10,1,1,1],[1,1,1,10],worlds,cg_shared);
   var a_beliefs = initial_dists['a_beliefs'];
   var b_beliefs = initial_dists['b_beliefs'];
+  var lr_set = {lr: 0.05};
   if (cg_shared == 'shared'){
     var cg = initial_dists['cg'];
-    runSharedConversation(n_moves,cg,a_beliefs,b_beliefs,world_sampler);
+    runSharedFixedConversation(n_moves,cg,a_beliefs,b_beliefs,world_sampler,lr_set);
   } else{
     var cg_a = initial_dists['cg_a'];
     var cg_b = initial_dists['cg_b'];
-    runApproxConversation(n_moves,cg_a,cg_b,a_beliefs,b_beliefs,world_sampler);
+    runApproxFixedConversation(n_moves,cg_a,cg_b,a_beliefs,b_beliefs,world_sampler,lr_set);
   }
 };
 
