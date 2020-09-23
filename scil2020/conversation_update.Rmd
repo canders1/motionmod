@@ -1,0 +1,19 @@
+---
+title: "conversation update"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+```
+
+```{r}
+#import data
+n <- c("receiveTime", "participant", "controller", "item", "element", "type", "group", "question", "answer","correct","time")
+pairs <- read.csv('~/dissertation/modeling/scil2020/test.tsv',header=TRUE,comment.char = "#")
+```
+
+```{r}
+
+```
