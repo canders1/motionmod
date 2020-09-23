@@ -255,10 +255,10 @@ var pragmaticSpeaker = function(world,worldDist) {
 }
 
 // pragmatic listener: p(w|u) \propto p(u|w)p(w) where p(u|w) is given by pragmaticSpeaker
-var pragmaticListener = function(u,worldDist) {
+var pragmaticListener = function(u,worldDist_s,worldDist_l) {
   return Infer({model: function(){
-    var w = sample(worldDist)
-    factor(pragmaticSpeaker(w,worldDist).score({utterance:u}))
+    var w = sample(worldDist_l)
+    factor(pragmaticSpeaker(w,worldDist_s).score({utterance:u}))
     return w
   }})
 }
@@ -316,7 +316,12 @@ var pick_utterance = function(w,cg){
 // listener interprets utterance (also: speaker models listener interpreting utterance)
 
 var interpret_utterance = function(u,cg){
-  var posteriors = getPosteriors(pragmaticListener(u,cg),cg['params']['vs']);
+  var posteriors = getPosteriors(pragmaticListener(u,cg,cg),cg['params']['vs']);
+  return posteriors;
+}
+
+var interpret_utterance_listener = function(u,cg_s,cg_l){
+  var posteriors = getPosteriors(pragmaticListener(u,cg_s,cg_l),cg_s['params']['vs']);
   return posteriors;
 }
 
@@ -362,11 +367,31 @@ var runSharedFixedConversationHelper = function(speaker,curr_gen,n_gens,cg,speak
 var runApproxFixedConversation = function(n_gens,cg_a,cg_b,a_beliefs,b_beliefs,sampler,lr_set){
   var genObj = {speaker: "n/a", cg_type: 'approx', curr_gen: 0, speaker_beliefs: a_beliefs, sampled_w: {Index: -1}, listener_beliefs: b_beliefs, cg_speaker: cg_a, cg_listener: cg_b, sampler: sampler, lr: lr_set['lr']};
   printGeneration(genObj);
+  /*console.log("In parent run conversation function");
+  console.log("cg_a");
+  console.log(cg_a);
+  console.log("cg_b");
+  console.log(cg_b);
+  console.log("speaker beliefs");
+  console.log(a_beliefs);
+  console.log("listener beliefs");
+  console.log(b_beliefs);*/
   return runApproxFixedConversationHelper("a",1,n_gens,cg_a,cg_b,a_beliefs,b_beliefs,sampler,lr_set);
 }
 
 var runApproxFixedConversationHelper = function(speaker,curr_gen,n_gens,cg_speaker,cg_listener,speaker_beliefs,listener_beliefs,sampler,lr_set){
   var lr = lr_set['lr'];
+  /*console.log("In child run conversation function");
+  console.log("Generation: "+curr_gen);
+  console.log("Current speaker: "+speaker);
+  console.log("cg_speaker");
+  console.log(cg_speaker);
+  console.log("cg_listener");
+  console.log(cg_listener);
+  console.log("speaker beliefs");
+  console.log(speaker_beliefs);
+  console.log("listener beliefs");
+  console.log(listener_beliefs);*/
   if (curr_gen == n_gens+1){
     var genObj = {speaker: speaker, cg_type: 'approx', curr_gen: curr_gen, speaker_beliefs: speaker_beliefs, listener_beliefs: listener_beliefs, 
       cg_speaker: cg_speaker, cg_listener: cg_listener, sampler: sampler, lr: lr};
@@ -375,8 +400,8 @@ var runApproxFixedConversationHelper = function(speaker,curr_gen,n_gens,cg_speak
     var world_set = speaker_beliefs['params']['vs'];
     var sampled_w = sample_world(speaker_beliefs,cg_speaker,world_set,sampler);
     var selected_u = pick_utterance(sampled_w,cg_speaker);
-    var int_posteriors_speaker = interpret_utterance(selected_u,cg_speaker);
-    var int_posteriors_listener = interpret_utterance(selected_u,cg_listener);
+    var int_posteriors_speaker = interpret_utterance(selected_u,cg_speaker); //speaker assumes listener uses CG to interpret
+    var int_posteriors_listener = interpret_utterance_listener(selected_u,cg_listener,listener_beliefs); //listener uses their own beliefs as priors, but assumes speaker uses CG to sample
     var new_cg_speaker = update_cg(cg_speaker,int_posteriors_speaker,lr);
     var new_cg_listener = update_cg(cg_listener,int_posteriors_listener,lr);
     var genObj = {speaker: speaker, cg_type: 'approx', curr_gen: curr_gen, speaker_beliefs: speaker_beliefs, listener_beliefs: listener_beliefs, 
@@ -409,9 +434,18 @@ var main = function(){
   } else{
     var cg_a = initial_dists['cg_a'];
     var cg_b = initial_dists['cg_b'];
-    console.log('speaker,cg,generation,sampler,sampled_w_idx,selected_u,speaker_belief,listener_belief,location_pref,name,school/company,major,w_idx,cg_a_prob,cg_b_prob');
+    /*console.log("cg_a");
+    console.log(cg_a);
+    console.log("cg_b");
+    console.log(cg_b);
+    console.log("a beliefs");
+    console.log(a_beliefs);
+    console.log("b beliefs");
+    console.log(b_beliefs);*/
+    console.log('speaker,cg,generation,sampler,sampled_w_idx,selected_u,speaker_belief,listener_belief,location_pref,name,school/company,major,w_idx,cg_speaker_prob,cg_listener_prob');
     runApproxFixedConversation(n_moves,cg_a,cg_b,a_beliefs,b_beliefs,world_sampler,lr_set);
   }
+  return
 };
 
 // COMMAND LINE ARGS

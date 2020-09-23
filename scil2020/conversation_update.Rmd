@@ -10,10 +10,17 @@ library(tidyverse)
 
 ```{r}
 #import data
-n <- c("receiveTime", "participant", "controller", "item", "element", "type", "group", "question", "answer","correct","time")
-pairs <- read.csv('~/dissertation/modeling/scil2020/test.tsv',header=TRUE,comment.char = "#")
+pairs <- read.csv('~/dissertation/modeling/motionmod/scil2020/test.tsv',header=TRUE,comment.char = "#")
 ```
 
 ```{r}
+a_pairs <- pairs %>% mutate(cg_prob = ifelse(speaker=="a",cg_speaker_prob,cg_listener_prob),
+                            belief = ifelse(speaker=="a",speaker_belief,listener_belief))
+b_pairs <- pairs %>% mutate(cg_prob = ifelse(speaker=="b",cg_speaker_prob,cg_listener_prob),
+                            belief = ifelse(speaker=="b",speaker_belief,listener_belief))
+```
 
+```{r}
+ggplot(data=a_pairs,aes(x=w_idx,y=cg_prob)) + geom_col(position="dodge") + facet_wrap(~generation) + ylim(0,1) + ylab("Probability: p(u|w)")  
+ggplot(data=b_pairs,aes(x=w_idx,y=cg_prob)) + geom_col(position="dodge") + facet_wrap(~generation) + ylim(0,1) + ylab("Probability: p(u|w)")  #+ scale_x_discrete(name ="Utterance", labels=c("Thelma is coming to Northampton" = "Come", "Thelma is going to Northampton" = "Go", "Thelma is walking to Northampton" = "Walk")) + theme(legend.position="none",text=element_text(size=14))
 ```
