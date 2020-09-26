@@ -10,17 +10,57 @@ library(tidyverse)
 
 ```{r}
 #import data
-pairs <- read.csv('~/dissertation/modeling/motionmod/scil2020/test.tsv',header=TRUE,comment.char = "#")
+pairs <- read.csv('~/dissertation/modeling/motionmod/scil2020/shared_weighted_nathan_gerald_4.tsv',header=TRUE,comment.char = "#")
+shared = TRUE
 ```
 
 ```{r}
-a_pairs <- pairs %>% mutate(cg_prob = ifelse(speaker=="a",cg_speaker_prob,cg_listener_prob),
+if (shared){
+a_pairs <- pairs %>% mutate(belief = ifelse(speaker=="a",speaker_belief,listener_belief))
+b_pairs <- pairs %>% mutate(belief = ifelse(speaker=="b",speaker_belief,listener_belief))
+} else {
+  a_pairs <- pairs %>% mutate(cg_prob = ifelse(speaker=="a",cg_speaker_prob,cg_listener_prob),
                             belief = ifelse(speaker=="a",speaker_belief,listener_belief))
-b_pairs <- pairs %>% mutate(cg_prob = ifelse(speaker=="b",cg_speaker_prob,cg_listener_prob),
+  b_pairs <- pairs %>% mutate(cg_prob = ifelse(speaker=="b",cg_speaker_prob,cg_listener_prob),
                             belief = ifelse(speaker=="b",speaker_belief,listener_belief))
+}
 ```
 
 ```{r}
-ggplot(data=a_pairs,aes(x=w_idx,y=cg_prob)) + geom_col(position="dodge") + facet_wrap(~generation) + ylim(0,1) + ylab("Probability: p(u|w)")  
-ggplot(data=b_pairs,aes(x=w_idx,y=cg_prob)) + geom_col(position="dodge") + facet_wrap(~generation) + ylim(0,1) + ylab("Probability: p(u|w)")  #+ scale_x_discrete(name ="Utterance", labels=c("Thelma is coming to Northampton" = "Come", "Thelma is going to Northampton" = "Go", "Thelma is walking to Northampton" = "Walk")) + theme(legend.position="none",text=element_text(size=14))
+ggplot(data=a_pairs,aes(x=w_idx,y=belief)) + geom_col(position="dodge") + facet_wrap(~generation) + ylim(0,1) + ylab("P(w)")  
+ggplot(data=b_pairs,aes(x=w_idx,y=belief)) + geom_col(position="dodge") + facet_wrap(~generation) + ylim(0,1) + ylab("P(w)")
+ggplot(data=a_pairs,aes(x=w_idx,y=cg_prob)) + geom_col(position="dodge") + facet_wrap(~generation) + ylim(0,1) + ylab("P(w)")  
+```
+
+```{r}
+# Shared Common Ground Example
+
+shared_pairs <- read.csv('~/dissertation/modeling/motionmod/scil2020/shared_weighted_nathan_gerald_4.tsv',header=TRUE,comment.char = "#")
+
+shared_pairs <- shared_pairs %>% mutate(genString = as.character(generation))
+sent_labs <- c("1" = "A: They study a science", "2" = "B: They like being indoors", "3" = "A: They study a science", "4" = "B: They like being indoors", "5" = "Gen 5: They study a science")
+ggplot(data=subset(shared_pairs,generation > 0),aes(x=name,y=cg_prob)) + geom_col(position="dodge") + facet_wrap(~genString,nrow=1,labeller=as_labeller(sent_labs)) + ylim(0,0.5) + ylab("P(w)") + scale_x_discrete(name="World") + theme(legend.position="none",text=element_text(size=12),axis.text.x = element_text(angle = 90))
+ggsave("shared_pairs_ex.pdf",width=12, height=5)
+```
+
+```{r}
+# Different Updates (with shared CG)
+
+weighted_pairs <- read.csv('~/dissertation/modeling/motionmod/scil2020/shared_threshold_025_sally_none_7.tsv',header=TRUE,comment.char = "#")
+
+weighted_pairs <- weighted_pairs %>% mutate(genString = as.character(generation))
+sent_labs <- c("1" = "A: They are a student", "2" = "B: NULL", "3" = "A: They study a humanity", "4" = "B: NULL", "5" = "A: They like being indoors", "6" = "B: NULL", "7" = "A: They are a student")
+ggplot(data=subset(weighted_pairs,generation > 0 & w_idx != -1 & speaker=="a"),aes(x=name,y=cg_prob)) + geom_col(position="dodge") + facet_wrap(~genString,nrow=1,labeller=as_labeller(sent_labs)) + ylim(0,0.5) + ylab("P(w)") + scale_x_discrete(name="World") + theme(legend.position="none",text=element_text(size=12),axis.text.x = element_text(angle = 90))
+ggsave("weighted_balanced_ex.pdf",width=15, height=5)
+```
+
+```{r}
+# Different Updates (with shared CG)
+
+diff_pairs <- read.csv('~/dissertation/modeling/motionmod/scil2020/shared_difference_025_sally_none_7.tsv',header=TRUE,comment.char = "#")
+
+diff_pairs <- diff_pairs %>% mutate(genString = as.character(generation))
+sent_labs <- c("1" = "A: They are a student", "2" = "B: NULL", "3" = "A: They study a humanity", "4" = "B: NULL", "5" = "A: They like being indoors", "6" = "B: NULL", "7" = "A: They are a student")
+ggplot(data=subset(diff_pairs,generation > 0 & w_idx != -1 & speaker=="a"),aes(x=name,y=cg_prob)) + geom_col(position="dodge") + facet_wrap(~genString,nrow=1,labeller=as_labeller(sent_labs)) + ylim(0,0.5) + ylab("P(w)") + scale_x_discrete(name="World") + theme(legend.position="none",text=element_text(size=12),axis.text.x = element_text(angle = 90))
+ggsave("diff_balanced_ex.pdf",width=15, height=5)
 ```

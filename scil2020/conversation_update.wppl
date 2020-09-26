@@ -69,7 +69,11 @@ return a.maxIndex;
 var getHighestDiffProb = function(a1,a2){
   var probDiffs = map2(function(p1,p2){p1-p2},a1,a2);
   var maxDiffIdx = argmax(probDiffs);
+  if (sum(probDiffs)/probDiffs.length == probDiffs[maxDiffIdx]){
+    return -1;
+  } else {
   return maxDiffIdx;
+}
 }
 
 // returns the index of the probability in Dist. 1 with the greatest positive difference from Dist. 2 (it is higher in Dist. 1 than Dist. 2)
@@ -78,7 +82,11 @@ var getHighestDiffDist = function(d1,d2){
   var a2 = normalizeDistProbs(d2);
   var probDiffs = map2(function(p1,p2){p1-p2},a1,a2);
   var maxDiffIdx = argmax(probDiffs);
+  if (sum(probDiffs)/probDiffs.length == probDiffs[maxDiffIdx]){
+    return -1;
+  } else {
   return maxDiffIdx;
+}
 }
 
 
@@ -146,28 +154,42 @@ var getWPosteriorsS = function(w,worlds){
 
 // SAMPLERS
 
-var samplers = {threshold: {name: 'threshold', threshold: 0.3},
+var samplers = {threshold: {name: 'threshold', threshold: 0.25},
 weighted: {name: 'weighted'},
 difference: {name: 'difference'}};
 
 // DISTRIBUTIONS
 
-// world set
-var worlds = [
+// default world set
+/*var worlds = [
   {"Index": 0, "Major": "German", "School": "University of New Orleans", "Name": "Nancy", "Location Preference": "outdoor"},
   {"Index": 1,"Major": "Astronomy", "School": "Franklin Pierce Law Center", "Name": "Nathan", "Location Preference": "outdoor"}, 
   {"Index": 2,"Major": "German", "School": "State University of New York at Buffalo", "Name": "Daniel", "Location Preference": "outdoor"}, 
-  {"Index": 3,"Major": "Hispanic-American Studies", "School": "Franklin Pierce Law Center", "Name": "Gerald", "Location Preference": "outdoor"}, 
+  {"Index": 3,"Major": "Hispanic-American Studies", "School": "Franklin Pierce Law Center", "Name": "Gerald", "Location Preference": "indoor"}, 
   /*{"Index": 4, "Major": "Ceramic Engineering", "Company": "Commercial Metals Company","Name": "Nathan", "Location Preference": "outdoor"}, 
   {"Index": 5, "Major": "Adult & Continuing Education", "School": "Canisius College", "Name": "Gary", "Location Preference": "indoor"}, 
   {"Index": 6, "Major": "Veterinary Sciences", "School": "Marymount University", "Name": "Gary", "Location Preference": "outdoor"}, 
   {"Index": 7, "Major": "Electrical Engineering", "School": "University of Dallas", "Name": "Gary", "Location Preference": "outdoor"}, 
   {"Index": 8, "Major": "Astronomy", "School": "Saint Mary's College of California", "Name": "Nathan", "Location Preference": "outdoor"},
-  {"Index": 9, "Major": "Social Work & Social Services", "Company": "Commercial Metals Company","Name": "Mary","Location Preference": "outdoor"}*/
+  {"Index": 9, "Major": "Social Work & Social Services", "Company": "Commercial Metals Company","Name": "Mary","Location Preference": "outdoor"}
   ]
+  */
+
+//balanced world set
+var balanced_worlds = [
+{"Index": -1, "Major":undefined, "School": undefined, "Name": undefined, "Location Preference": undefined},
+{"Index": 0, "Major": "German", "School": "University of New Orleans", "Name": "Nancy", "Location Preference": "outdoor"},
+{"Index": 1, "Major": "German", "School": "University of New Orleans", "Name": "Sally", "Location Preference": "indoor"},
+{"Index": 2, "Major": "Astronomy", "School": "University of New Orleans", "Name": "Katie", "Location Preference": "outdoor"},
+{"Index": 3, "Major": "Astronomy", "School": "University of New Orleans", "Name": "Ina", "Location Preference": "indoor"},
+{"Index": 4, "Major": "German", "Company": "University of New Orleans", "Name": "Gwen", "Location Preference": "outdoor"},
+{"Index": 5, "Major": "German", "Company": "University of New Orleans", "Name": "Diana", "Location Preference": "indoor"},
+{"Index": 6, "Major": "Astronomy", "Company": "University of New Orleans", "Name": "Felicity", "Location Preference": "outdoor"},
+{"Index": 7, "Major": "Astronomy", "Company": "University of New Orleans", "Name": "Tara", "Location Preference": "indoor"},
+]
 
 // world priors
-var initWorldPriors = [1,1,1,1,1,1,1,1,1,1];
+//var initWorldPriors = [1,1,1,1,1,1,1,1,1,1];
 
 // returns world distribution
 var getWorldDist = function(worlds,worldPs) {
@@ -177,10 +199,10 @@ var getWorldDist = function(worlds,worldPs) {
 // utterance set
 var utterances = [
 'They are a student',
-//'They work',
-'They are female',
-'They are male',
-'Their name starts with N',
+'They work',
+//'They are female',
+//'They are male',
+//'Their name starts with N',
 //'Their name is Nancy',
 //'Their name is Nathan',
 //'Their name is Daniel',
@@ -195,7 +217,7 @@ var utterances = [
 'They study a humanity',
 'They study a science',
 'They like being outdoors',
-//'They like being indoors',
+'They like being indoors',
 'NULL'
 ]
 
@@ -213,10 +235,10 @@ var utteranceCost = function(utterance) {
 
 // interpretation function
 var get_meaning = function(utterance, world){
-  if ((utterance == 'They are a student' && world["Company"] == undefined) ||
+  if ((utterance == 'They are a student' && world["School"] != undefined) ||
    (utterance == 'They work' && world["Company"] != undefined) ||
    (utterance == 'They are female' && (world["Name"] == 'Nancy' || world["Name"] == 'Mary')) ||
-   (utterance == 'They are male' && (world["Name"] != 'Nancy' && world["Name"] != 'Mary')) ||
+   (utterance == 'They are male' && (world["Name"] != undefined && world["Name"] != 'Nancy' && world["Name"] != 'Mary')) ||
    (utterance == 'Their name is Nathan' && world["Name"] == 'Nathan') ||
    (utterance == 'They study German' && world["Major"] == 'German') ||
    (utterance == 'They study a science' && (world["Major"] == 'Ceramic Engineering' || world["Major"] == 'Astronomy' || world["Major"] == 'Electrical Engineering' || world["Major"] == "Veterinary Sciences")) ||
@@ -292,7 +314,11 @@ var sample_world = function(speaker_priors,cg,worlds,sampler){
   }
   if (sampler['name'] == 'difference'){ //sample a world based on the greatest potential probability gain
     var biggest_diff = getHighestDiffDist(speaker_priors,cg);
+    if (biggest_diff == -1){
+      return worlds[0];
+    } else {
     return worlds[biggest_diff];
+  }
   }
   if (sampler['name'] == 'threshold'){ //sample a world according to its probability, omitting low probability worlds
     var threshold = sampler.threshold;
@@ -302,7 +328,11 @@ var sample_world = function(speaker_priors,cg,worlds,sampler){
     var above_threshold = filter(function(x){x['prob'] > threshold},prob_pairs);
     var thresh_worlds = map(function(x){return x['w']},above_threshold);
     var thresh_probs = map(function(x){return x['prob']},above_threshold);
+    if (thresh_probs.length > 0){
     return sample(getWorldDist(thresh_worlds,thresh_probs));
+  } else{
+    return speaker_worlds[0];
+  }
   }
 }
 
@@ -355,7 +385,7 @@ var runSharedFixedConversationHelper = function(speaker,curr_gen,n_gens,cg,speak
     var sampled_w = sample_world(speaker_beliefs,cg,world_set,sampler);
     var selected_u = pick_utterance(sampled_w,cg)
     var int_posteriors = interpret_utterance(selected_u,cg);
-    var new_cg = update_cg(cg,int_posteriors,lr);
+    var new_cg = (selected_u == "NULL")? cg : update_cg(cg,int_posteriors,lr);
     var genObj = {speaker: speaker, cg_type: 'shared', curr_gen: curr_gen, speaker_beliefs: speaker_beliefs, listener_beliefs: listener_beliefs, 
       sampled_w: sampled_w, selected_u: selected_u, cg: new_cg, sampler: sampler, lr: lr};
     printGeneration(genObj);
@@ -423,13 +453,13 @@ var main = function(){
   //var world_file = fs.readFile(process.argv[6]);
 
   //log format of output
-  var initial_dists = init_distributions([10,1,1,1],[1,1,1,10],worlds,cg_shared);
+  var initial_dists = init_distributions([0,10,1,1,1,1,1,5,1],[0,1,1,1,1,1,1,1,1],balanced_worlds,cg_shared);
   var a_beliefs = initial_dists['a_beliefs'];
   var b_beliefs = initial_dists['b_beliefs'];
-  var lr_set = {lr: 0.05};
+  var lr_set = {lr: 0.1};
   if (cg_shared == 'shared'){
     var cg = initial_dists['cg'];
-    console.log('speaker,cg,generation,sampler,sampled_w_idx,selected_u,speaker_belief,listener_belief,location_pref,name,school/company,major,w_idx,cg_prob');
+    console.log('speaker,cg,generation,sampler,sampled_w_idx,selected_u,listener_belief,speaker_belief,location_pref,name,school/company,major,w_idx,cg_prob');
     runSharedFixedConversation(n_moves,cg,a_beliefs,b_beliefs,world_sampler,lr_set);
   } else{
     var cg_a = initial_dists['cg_a'];
@@ -442,7 +472,7 @@ var main = function(){
     console.log(a_beliefs);
     console.log("b beliefs");
     console.log(b_beliefs);*/
-    console.log('speaker,cg,generation,sampler,sampled_w_idx,selected_u,speaker_belief,listener_belief,location_pref,name,school/company,major,w_idx,cg_speaker_prob,cg_listener_prob');
+    console.log('speaker,cg,generation,sampler,sampled_w_idx,selected_u,listener_belief,speaker_belief,location_pref,name,school/company,major,w_idx,cg_speaker_prob,cg_listener_prob'); //check cg ordering!!
     runApproxFixedConversation(n_moves,cg_a,cg_b,a_beliefs,b_beliefs,world_sampler,lr_set);
   }
   return
