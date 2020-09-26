@@ -64,3 +64,15 @@ sent_labs <- c("1" = "A: They are a student", "2" = "B: NULL", "3" = "A: They st
 ggplot(data=subset(diff_pairs,generation > 0 & w_idx != -1 & speaker=="a"),aes(x=name,y=cg_prob)) + geom_col(position="dodge") + facet_wrap(~genString,nrow=1,labeller=as_labeller(sent_labs)) + ylim(0,0.5) + ylab("P(w)") + scale_x_discrete(name="World") + theme(legend.position="none",text=element_text(size=12),axis.text.x = element_text(angle = 90))
 ggsave("diff_balanced_ex.pdf",width=15, height=5)
 ```
+
+```{r}
+# Belief Updates (with skeptical listener and weighted sampling)
+
+belief_pairs <- read.csv('~/dissertation/modeling/motionmod/scil2020/threshold_approx_update_25.tsv',header=TRUE,comment.char = "#")
+
+belief_pairs <- belief_pairs %>% mutate(genString = as.character(generation))
+belief_pairs <- belief_pairs %>% mutate(genUtt = paste(genString,selected_u,": "))
+sent_labs <- c("1" = "A: They work", "2" = "B: They are a student", "3" = "A: They study a humanity", "4" = "B: They like being outdoors", "5" = "A: They like being indoors", "6" = "B: NULL", "7" = "A: They are a student")
+ggplot(data=subset(belief_pairs,generation > 0 & w_idx != -1),aes(x=name,y=speaker_belief)) + geom_col(position="dodge") + facet_wrap(~genUtt) + ylim(0,1) + ylab("P(w)") + scale_x_discrete(name="World") + theme(legend.position="none",text=element_text(size=12),axis.text.x = element_text(angle = 90))
+ggsave("belief_update.pdf")
+```
