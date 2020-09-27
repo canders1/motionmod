@@ -101,7 +101,6 @@ var getDiffDist = function(d1,d2,wset){
   var a2 = normalizeDistProbs(d2);
   var probDiffs = map2(function(p1,p2){p1-p2},a1,a2);
   var maxDiffIdx = argmax(probDiffs);
-  console.log("in get diff dist");
   if (sum(probDiffs)/probDiffs.length == probDiffs[maxDiffIdx]){
     return getWorldDist([wset[0]],[1]);
   } else {
@@ -129,7 +128,7 @@ var getThreshDist = function(dist,threshold){
   var thresh_worlds = map(function(x){return x['w']},above_threshold);
   var thresh_probs = map(function(x){return x['prob']},above_threshold);
   if (thresh_worlds.length == 0){
-    return getWorldDist([worlds[0]],[1])
+    return getWorldDist(null_world,[1])
   }
   return getWorldDist(thresh_worlds,thresh_probs);
 }
@@ -196,9 +195,10 @@ var getWPosteriorsS = function(w,worlds){
 
 // SAMPLERS
 
-var samplers = {threshold: {name: 'threshold', threshold: 0.25},
+var samplers = {threshold: {name: 'threshold', threshold: 0.35},
 weighted: {name: 'weighted'},
-difference: {name: 'difference'}};
+difference: {name: 'difference'},
+difference_thresh: {name: 'difference_thresh', threshold: 0.35}};
 
 // DISTRIBUTIONS
 
@@ -219,15 +219,19 @@ difference: {name: 'difference'}};
 
 //balanced world set
 var balanced_worlds = [
-{"Index": -1, "Major":undefined, "School": undefined, "Name": undefined, "Location Preference": undefined},
+//{"Index": -1, "Major":undefined, "School": undefined, "Name": undefined, "Location Preference": undefined},
 {"Index": 0, "Major": "German", "School": "University of New Orleans", "Name": "Nancy", "Location Preference": "outdoor"},
 {"Index": 1, "Major": "German", "School": "University of New Orleans", "Name": "Sally", "Location Preference": "indoor"},
 {"Index": 2, "Major": "Astronomy", "School": "University of New Orleans", "Name": "Katie", "Location Preference": "outdoor"},
 {"Index": 3, "Major": "Astronomy", "School": "University of New Orleans", "Name": "Ina", "Location Preference": "indoor"},
-{"Index": 4, "Major": "German", "Company": "University of New Orleans", "Name": "Gwen", "Location Preference": "outdoor"},
-{"Index": 5, "Major": "German", "Company": "University of New Orleans", "Name": "Diana", "Location Preference": "indoor"},
-{"Index": 6, "Major": "Astronomy", "Company": "University of New Orleans", "Name": "Felicity", "Location Preference": "outdoor"},
-{"Index": 7, "Major": "Astronomy", "Company": "University of New Orleans", "Name": "Tara", "Location Preference": "indoor"},
+//{"Index": 4, "Major": "German", "Company": "University of New Orleans", "Name": "Gwen", "Location Preference": "outdoor"},
+//{"Index": 5, "Major": "German", "Company": "University of New Orleans", "Name": "Diana", "Location Preference": "indoor"},
+//{"Index": 6, "Major": "Astronomy", "Company": "University of New Orleans", "Name": "Felicity", "Location Preference": "outdoor"},
+//{"Index": 7, "Major": "Astronomy", "Company": "University of New Orleans", "Name": "Tara", "Location Preference": "indoor"},
+]
+
+var null_world = [
+{"Index": -1, "Major":undefined, "School": undefined, "Name": undefined, "Location Preference": undefined},
 ]
 
 // world priors
@@ -241,7 +245,7 @@ var getWorldDist = function(worlds,worldPs) {
 // utterance set
 var utterances = [
 'They are a student',
-'They work',
+//'They work',
 //'They are female',
 //'They are male',
 //'Their name starts with N',
@@ -260,7 +264,7 @@ var utterances = [
 'They study a science',
 'They like being outdoors',
 'They like being indoors',
-'NULL'
+//'NULL'
 ]
 
 //utterance priors are even
@@ -356,6 +360,7 @@ var sample_world = function(speaker_priors,cg,worlds,sampler){
   }
   if (sampler['name'] == 'difference'){ //sample a world based on the greatest potential probability gain
     var biggest_diff_dist = getDiffDist(speaker_priors,cg,worlds);
+    console.log(biggest_diff_dist);
     return sample(biggest_diff_dist);
   }
   if (sampler['name'] == 'difference_thresh'){ //sample a world based on the greatest potential probability gain
@@ -365,6 +370,7 @@ var sample_world = function(speaker_priors,cg,worlds,sampler){
       return sample(thresh_dist);
     } else{
       var biggest_diff_dist = getDiffDist(speaker_priors,cg,worlds);
+      console.log(biggest_diff_dist);
       return sample(biggest_diff_dist);
     }
   }
@@ -389,8 +395,8 @@ var interpret_utterance = function(u,cg){
   return posteriors;
 }
 
-var interpret_utterance_listener = function(u,cg_s,cg_l){
-  var posteriors = getPosteriors(pragmaticListener(u,cg_s,cg_l),cg_s['params']['vs']);
+var interpret_utterance_listener = function(u,cg_l,b_l){
+  var posteriors = getPosteriors(pragmaticListener(u,cg_l,b_l),cg_l['params']['vs']);
   return posteriors;
 }
 
@@ -443,14 +449,23 @@ var runSharedFixedConversationHelper = function(speaker,curr_gen,n_gens,cg,speak
   } else {
     var world_set = cg['params']['vs'];
     var sampled_w = sample_world(speaker_beliefs,cg,world_set,sampler);
-    var selected_u = pick_utterance(sampled_w,cg)
-    var int_posteriors = interpret_utterance(selected_u,cg);
-    var new_cg = (selected_u == "NULL")? cg : update_cg(cg,int_posteriors,lr);
-    var genObj = {speaker: speaker, cg_type: 'shared', curr_gen: curr_gen, speaker_beliefs: speaker_beliefs, listener_beliefs: listener_beliefs, 
+    if (sampled_w["Index"] == -1){
+      var selected_u = "NULL";
+      var genObj = {speaker: speaker, cg_type: 'shared', curr_gen: curr_gen, speaker_beliefs: speaker_beliefs, listener_beliefs: listener_beliefs, 
+      sampled_w: sampled_w, selected_u: selected_u, cg: cg, sampler: sampler, lr: lr_set['name']};
+      printGeneration(genObj);
+      var next_speaker = (speaker == "a")? "b" : "a";
+      runSharedFixedConversationHelper(next_speaker,curr_gen+1,n_gens,cg,listener_beliefs,speaker_beliefs,sampler,lr_set);
+    } else {
+      var selected_u = pick_utterance(sampled_w,cg);
+      var int_posteriors = interpret_utterance(selected_u,cg);
+      var new_cg = update_cg(cg,int_posteriors,lr);
+      var genObj = {speaker: speaker, cg_type: 'shared', curr_gen: curr_gen, speaker_beliefs: speaker_beliefs, listener_beliefs: listener_beliefs, 
       sampled_w: sampled_w, selected_u: selected_u, cg: new_cg, sampler: sampler, lr: lr_set['name']};
-    printGeneration(genObj);
-    var next_speaker = (speaker == "a")? "b" : "a";
-    runSharedFixedConversationHelper(next_speaker,curr_gen+1,n_gens,new_cg,listener_beliefs,speaker_beliefs,sampler,lr_set);
+      printGeneration(genObj);
+      var next_speaker = (speaker == "a")? "b" : "a";
+      runSharedFixedConversationHelper(next_speaker,curr_gen+1,n_gens,new_cg,listener_beliefs,speaker_beliefs,sampler,lr_set);
+    }
   }
 }
 
@@ -469,24 +484,25 @@ var runApproxFixedConversationHelper = function(speaker,curr_gen,n_gens,cg_speak
   } else {
     var world_set = speaker_beliefs['params']['vs'];
     var sampled_w = sample_world(speaker_beliefs,cg_speaker,world_set,sampler);
-    var selected_u = pick_utterance(sampled_w,cg_speaker);
-    if (selected_u == "NULL"){
+    if (sampled_w["Index"] == -1){
+      var selected_u = "NULL";
       var genObj = {speaker: speaker, cg_type: 'approx', curr_gen: curr_gen, speaker_beliefs: speaker_beliefs, listener_beliefs: listener_beliefs, 
       sampled_w: sampled_w, selected_u: selected_u, cg_speaker: cg_speaker, cg_listener: cg_listener, sampler: sampler, lr: lr_set['name']};
       printGeneration(genObj);
       var next_speaker = (speaker == "a")? "b" : "a";
       return runApproxFixedConversationHelper(next_speaker,curr_gen+1,n_gens,cg_listener,cg_speaker,listener_beliefs,speaker_beliefs,sampler,lr_set);
     } else {
-    var int_posteriors_speaker = interpret_utterance(selected_u,cg_speaker); //speaker assumes listener uses CG to interpret
-    var int_posteriors_listener = interpret_utterance_listener(selected_u,cg_listener,listener_beliefs); //listener uses their own beliefs as priors, but assumes speaker uses CG to sample
-    var new_cg_speaker = update_cg(cg_speaker,int_posteriors_speaker,lr_set['speaker_cg']);
-    var new_cg_listener = update_cg(cg_listener,int_posteriors_listener,lr_set['listener_cg']);
-    var genObj = {speaker: speaker, cg_type: 'approx', curr_gen: curr_gen, speaker_beliefs: speaker_beliefs, listener_beliefs: listener_beliefs, 
+      var selected_u = pick_utterance(sampled_w,cg_speaker);
+      var int_posteriors_speaker = interpret_utterance(selected_u,cg_speaker); //speaker assumes listener uses CG to interpret
+      var int_posteriors_listener = interpret_utterance_listener(selected_u,cg_listener,listener_beliefs); //listener uses their own beliefs as priors, but assumes speaker uses CG to sample
+      var new_cg_speaker = update_cg(cg_speaker,int_posteriors_speaker,lr_set['speaker_cg']);
+      var new_cg_listener = update_cg(cg_listener,int_posteriors_listener,lr_set['listener_cg']);
+      var genObj = {speaker: speaker, cg_type: 'approx', curr_gen: curr_gen, speaker_beliefs: speaker_beliefs, listener_beliefs: listener_beliefs, 
       sampled_w: sampled_w, selected_u: selected_u, cg_speaker: new_cg_speaker, cg_listener: new_cg_listener, sampler: sampler, lr: lr_set['name']};
-    printGeneration(genObj);
-    var next_speaker = (speaker == "a")? "b" : "a";
-    runApproxFixedConversationHelper(next_speaker,curr_gen+1,n_gens,new_cg_listener,new_cg_speaker,listener_beliefs,speaker_beliefs,sampler,lr_set);
-  }
+      printGeneration(genObj);
+      var next_speaker = (speaker == "a")? "b" : "a";
+      runApproxFixedConversationHelper(next_speaker,curr_gen+1,n_gens,new_cg_listener,new_cg_speaker,listener_beliefs,speaker_beliefs,sampler,lr_set);
+    }
   }
 }
 
@@ -505,27 +521,28 @@ var runApproxConversationHelper = function(speaker,curr_gen,n_gens,cg_speaker,cg
   } else {
     var world_set = speaker_beliefs['params']['vs'];
     var sampled_w = sample_world(speaker_beliefs,cg_speaker,world_set,sampler);
-    var selected_u = pick_utterance(sampled_w,cg_speaker);
-    if (selected_u == "NULL"){
+    if (sampled_w["Index"] == -1){
+      var selected_u = "NULL";
       var genObj = {speaker: speaker, cg_type: 'approx', curr_gen: curr_gen, speaker_beliefs: speaker_beliefs, listener_beliefs: listener_beliefs, 
       sampled_w: sampled_w, selected_u: selected_u, cg_speaker: cg_speaker, cg_listener: cg_listener, sampler: sampler, lr: lr_set['name']};
       printGeneration(genObj);
       var next_speaker = (speaker == "a")? "b" : "a";
       return runApproxConversationHelper(next_speaker,curr_gen+1,n_gens,cg_listener,cg_speaker,listener_beliefs,speaker_beliefs,sampler,lr_set);
     } else {
-    var int_posteriors_speaker = interpret_utterance(selected_u,cg_speaker); //speaker assumes listener uses CG to interpret
-    var int_posteriors_listener = interpret_utterance_listener(selected_u,cg_listener,listener_beliefs); //listener uses their own beliefs as priors, but assumes speaker uses CG to sample
-    var new_cg_speaker = update_cg(cg_speaker,int_posteriors_speaker,lr_set['speaker_cg']);
-    var new_cg_listener = update_cg(cg_listener,int_posteriors_listener,lr_set['listener_cg']);
-    var belief_lr = (lr_set['listener_belief'] == 'entropyAdjusted') ? adjustLR(listener_beliefs,new_cg_listener) : lr_set['listener_belief'];
-    var new_listener_beliefs = update_beliefs(listener_beliefs,int_posteriors_listener,belief_lr);
-    var genObj = {speaker: speaker, cg_type: 'approx', curr_gen: curr_gen, speaker_beliefs: speaker_beliefs, listener_beliefs: new_listener_beliefs, 
+      var selected_u = pick_utterance(sampled_w,cg_speaker);
+      var int_posteriors_speaker = interpret_utterance(selected_u,cg_speaker); //speaker assumes listener uses CG to interpret
+      var int_posteriors_listener = interpret_utterance_listener(selected_u,cg_listener,listener_beliefs); //listener uses their own beliefs as priors, but assumes speaker uses CG to sample
+      var new_cg_speaker = update_cg(cg_speaker,int_posteriors_speaker,lr_set['speaker_cg']);
+      var new_cg_listener = update_cg(cg_listener,int_posteriors_listener,lr_set['listener_cg']);
+      var belief_lr = (lr_set['listener_belief'] == 'entropyAdjusted') ? adjustLR(listener_beliefs,new_cg_listener) : lr_set['listener_belief'];
+      var new_listener_beliefs = update_beliefs(listener_beliefs,int_posteriors_listener,belief_lr);
+      var genObj = {speaker: speaker, cg_type: 'approx', curr_gen: curr_gen, speaker_beliefs: speaker_beliefs, listener_beliefs: new_listener_beliefs, 
       sampled_w: sampled_w, selected_u: selected_u, cg_speaker: new_cg_speaker, cg_listener: new_cg_listener, sampler: sampler, lr: lr_set['name']};
-    printGeneration(genObj);
-    var next_speaker = (speaker == "a")? "b" : "a";
-    runApproxConversationHelper(next_speaker,curr_gen+1,n_gens,new_cg_listener,new_cg_speaker,new_listener_beliefs,speaker_beliefs,sampler,lr_set);
+      printGeneration(genObj);
+      var next_speaker = (speaker == "a")? "b" : "a";
+      runApproxConversationHelper(next_speaker,curr_gen+1,n_gens,new_cg_listener,new_cg_speaker,new_listener_beliefs,speaker_beliefs,sampler,lr_set);
+    }
   }
-}
 }
 
 
@@ -538,11 +555,16 @@ var main = function(){
   var belief_update = process.argv[5];
   var n_moves = Math.floor(process.argv[6]);
 
+  //Nancy_none : [10,1,1,1,],[1,1,1,1,]
+  // Nancy_Katie : [10,1,1,1,],[1,1,10,1,]
+  // Nancy7Katie10_Katie10 : 7,10,1,1,],[1,10,1,1,]
+
   //log format of output
-  var initial_dists = init_distributions([0,10,1,1,1,1,1,5,1],[0,1,1,1,1,1,1,1,1],balanced_worlds,cg_shared);
+  var initial_dists = init_distributions([7,1,9,1,],[1,1,15,1,],balanced_worlds,cg_shared);
   var a_beliefs = initial_dists['a_beliefs'];
   var b_beliefs = initial_dists['b_beliefs'];
-  var lr_set = {name: 'skeptical', speaker_cg: 0.3, listener_cg: 0.2, listener_belief: "entropyAdjusted", lr: 0.2};
+  var lr_set = {name: 'plain', speaker_cg: 0.2, listener_cg: 0.2, listener_belief: 0.2, lr: 0.2};
+  //var lr_set = {name: 'suspicious', speaker_cg: 0.2, listener_cg: 0.1, listener_belief: 0.1, lr: 0.2};
   if (cg_shared == 'shared'){
     var cg = initial_dists['cg'];
     console.log('speaker,cg,generation,sampler,sampled_w_idx,selected_u,listener_belief,speaker_belief,location_pref,name,school/company,major,w_idx,cg_prob');
@@ -551,12 +573,12 @@ var main = function(){
     if (cg_shared == 'approx' & belief_update == 'no'){
     var cg_a = initial_dists['cg_a'];
     var cg_b = initial_dists['cg_b'];
-    console.log('speaker,cg,generation,sampler,sampled_w_idx,selected_u,listener_belief,speaker_belief,location_pref,name,school/company,major,w_idx,cg_speaker_prob,cg_listener_prob'); //check cg ordering!!
+    console.log('speaker,cg,generation,sampler,sampled_w_idx,selected_u,listener_belief,speaker_belief,location_pref,name,school/company,major,w_idx,cg_listener_prob,cg_speaker_prob');
     runApproxFixedConversation(n_moves,cg_a,cg_b,a_beliefs,b_beliefs,world_sampler,lr_set);
   } else {
     var cg_a = initial_dists['cg_a'];
     var cg_b = initial_dists['cg_b'];
-    console.log('speaker,cg,generation,sampler,sampled_w_idx,selected_u,listener_belief,speaker_belief,location_pref,name,school/company,major,w_idx,cg_speaker_prob,cg_listener_prob'); //check cg ordering!!
+    console.log('speaker,cg,generation,sampler,sampled_w_idx,selected_u,listener_belief,speaker_belief,location_pref,name,school/company,major,w_idx,cg_listener_prob,cg_speaker_prob');
     runApproxConversation(n_moves,cg_a,cg_b,a_beliefs,b_beliefs,world_sampler,lr_set);
   }
   }
