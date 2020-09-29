@@ -6,6 +6,8 @@ output: html_document
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 library(tidyverse)
+# The palette with black:
+cbbPalette <- c("#000000", "#56B4E9", "#0072B2", "#CC79A7", "#D55E00")
 ```
 
 ```{r}
@@ -91,8 +93,23 @@ approx_fixed_pairs <- approx_fixed_pairs %>% mutate(genUtt = paste(paste(genStri
 approx_update_pairs <- approx_update_pairs %>% mutate(genString = as.character(generation))
 approx_update_pairs <- approx_update_pairs %>% mutate(genUtt = paste(paste(genString,toupper(speaker),sep=""),selected_u,sep=": "))
 
-ggplot(data=subset(shared_pairs,generation > 0 & generation < 5 & w_idx != -1),aes(x=name,y=cg_prob)) + geom_col(position="dodge") + facet_wrap(~genUtt) + ylim(0,1) + ylab("P(w)") + scale_x_discrete(name="World") + theme(legend.position="none",text=element_text(size=12),axis.text.x = element_text(angle = 90))
+shared_a_pairs <- shared_pairs %>% mutate(Participant = "A",
+                            belief = ifelse(speaker=="a",speaker_belief,listener_belief))
+shared_b_pairs <- shared_pairs %>% mutate(Participant = "B",
+                            belief = ifelse(speaker=="b",speaker_belief,listener_belief))
+shared_pairs_ab <- rbind(shared_a_pairs,shared_b_pairs)
+
+shared_pairs_beliefs <- shared_pairs_ab %>% mutate(prob = belief,
+                                                   Type = paste(Participant,"Belief",sep=" "))
+shared_pairs_cgs <- shared_pairs_ab %>% mutate(prob = cg_prob,
+                                                      Type = paste(Participant,"CG",sep=" "))
+shared_pairs_all <- rbind(shared_pairs_cgs,shared_pairs_beliefs)
+
+ggplot(data=subset(shared_pairs,generation > 0 & generation < 5 & w_idx != -1),aes(x=name,y=cg_prob)) + geom_col(position="dodge") + facet_wrap(~genUtt) + ylim(0,1) + ylab("P(w)") + scale_x_discrete(name="World") + theme(legend.position="none",text=element_text(size=12),axis.text.x = element_text(angle = 90)) + scale_fill_manual(values=cbbPalette)
 ggsave("weighted_shared_fixed_balanced_Nancy_none_lr02all_8_SHOW_noconvergence.pdf")
+
+ggplot(data=subset(shared_pairs_all,generation > 0 & generation < 5 & w_idx != -1),aes(x=name,y=prob,fill=Type)) + geom_col(position="dodge") + facet_wrap(~genUtt) + ylim(0,1) + ylab("P(w)") + scale_x_discrete(name="World") + theme(text=element_text(size=12),axis.text.x = element_text(angle = 90)) + scale_fill_manual(values=cbbPalette)
+ggsave("weighted_shared_fixed_balanced_Nancy_none_lr02all_8_SHOW_noconvergence_2.pdf")
 ```
 
 ```{r}
@@ -103,12 +120,22 @@ approx_fixed_a_pairs <-approx_fixed_pairs %>% mutate(cg_prob = ifelse(speaker=="
 approx_fixed_b_pairs <-approx_fixed_pairs %>% mutate(cg_prob = ifelse(speaker=="b",cg_listener_prob,cg_speaker_prob),
                                                      Participant = "B",
                             belief = ifelse(speaker=="b",speaker_belief,listener_belief))
+approx_fixed_pairs_ab <- rbind(approx_fixed_a_pairs,approx_fixed_b_pairs)
 approx_fixed_pairs_all <- rbind(approx_fixed_a_pairs,approx_fixed_b_pairs)
+
+approx_fixed_pairs_beliefs <- approx_fixed_pairs_ab %>% mutate(prob = belief,
+                                                                 Type = paste(Participant,"Belief",sep=" "))
+approx_fixed_pairs_cgs <- approx_fixed_pairs_ab %>% mutate(prob = cg_prob,
+                                                             Type = paste(Participant,"CG",sep=" "))
+approx_fixed_pairs_all2 <- rbind(approx_fixed_pairs_cgs,approx_fixed_pairs_beliefs)
 
 ggplot(data=subset(approx_fixed_pairs_all,generation > 0 & generation < 5 & w_idx != -1),aes(x=name,y=cg_prob,fill=Participant)) + geom_col(position="dodge") + facet_wrap(~genUtt,nrow=1) + ylab("P(w)") + scale_x_discrete(name="World") + ylim(0,1)+ theme(text=element_text(size=12),axis.text.x = element_text(angle = 90))
 ggsave("weighted_approx_fixed_balanced_Nancy_none_lr02all_8.pdf",width=15, height=5)
 
-ggplot(data=subset(approx_fixed_pairs_all,generation == 1),aes(x=name,y=belief,fill=Participant)) + geom_col(position="dodge") + ylab("P(w)")+ ylim(0,1) + scale_x_discrete(name="World") + theme(text=element_text(size=12),axis.text.x = element_text(angle = 90))
+ggplot(data=subset(approx_fixed_pairs_all2,generation > 0 & generation < 5 & w_idx != -1),aes(x=name,y=prob,fill=Type)) + geom_col(position="dodge") + facet_wrap(~genUtt,nrow=2) + ylab("P(w)") + scale_x_discrete(name="World") + ylim(0,1)+ theme(text=element_text(size=12),axis.text.x = element_text(angle = 90)) + scale_fill_manual(values=cbbPalette)
+ggsave("weighted_approx_fixed_balanced_Nancy_none_lr02all_8_2.pdf")
+
+ggplot(data=subset(approx_fixed_pairs_all,generation == 1),aes(x=name,y=belief,fill=Participant)) + geom_col(position="dodge") + ylab("P(w)")+ ylim(0,1) + scale_x_discrete(name="World") + theme(text=element_text(size=12),axis.text.x = element_text(angle = 90)) + scale_fill_manual(values=cbbPalette)
 ggsave("weighted_approx_fixed_balanced_Nancy_none_lr02all_8_priors.pdf")
 ```
 
@@ -127,7 +154,7 @@ approx_update_pairs_cgs <- approx_update_pairs_ab %>% mutate(prob = cg_prob,
                                                              Type = paste(Participant,"CG",sep=" "))
 approx_update_pairs_all <- rbind(approx_update_pairs_cgs,approx_update_pairs_beliefs)
 
-ggplot(data=subset(approx_update_pairs_all,generation > 0 & generation < 5 & w_idx != -1),aes(x=name,y=prob,fill=Type)) + geom_col(position="dodge") + facet_wrap(~genUtt) + ylim(0,1) + ylab("P(w)") + scale_x_discrete(name="World") + theme(text=element_text(size=12),axis.text.x = element_text(angle = 90))
+ggplot(data=subset(approx_update_pairs_all,generation > 0 & generation < 5 & w_idx != -1),aes(x=name,y=prob,fill=Type)) + geom_col(position="dodge") + facet_wrap(~genUtt) + ylim(0,1) + ylab("P(w)") + scale_x_discrete(name="World") + theme(text=element_text(size=12),axis.text.x = element_text(angle = 90)) + scale_fill_manual(values=cbbPalette)
 ggsave("weighted_approx_update_balanced_Nancy_none_lr02all_8.pdf")
 ```
 
@@ -145,8 +172,23 @@ approx_fixed_pairs <- approx_fixed_pairs %>% mutate(genUtt = paste(paste(genStri
 approx_update_pairs <- approx_update_pairs %>% mutate(genString = as.character(generation))
 approx_update_pairs <- approx_update_pairs %>% mutate(genUtt = paste(paste(genString,toupper(speaker),sep=""),selected_u,sep=": "))
 
-ggplot(data=subset(shared_pairs,generation > 0 & generation < 5 & w_idx != -1),aes(x=name,y=cg_prob)) + geom_col(position="dodge") + facet_wrap(~genUtt) + ylim(0,1) + ylab("P(w)") + scale_x_discrete(name="World") + theme(legend.position="none",text=element_text(size=12),axis.text.x = element_text(angle = 90))
+shared_a_pairs <- shared_pairs %>% mutate(Participant = "A",
+                            belief = ifelse(speaker=="a",speaker_belief,listener_belief))
+shared_b_pairs <- shared_pairs %>% mutate(Participant = "B",
+                            belief = ifelse(speaker=="b",speaker_belief,listener_belief))
+shared_pairs_ab <- rbind(shared_a_pairs,shared_b_pairs)
+
+shared_pairs_beliefs <- shared_pairs_ab %>% mutate(prob = belief,
+                                                   Type = paste(Participant,"Belief",sep=" "))
+shared_pairs_cgs <- shared_pairs_ab %>% mutate(prob = cg_prob,
+                                                      Type = paste(Participant,"CG",sep=" "))
+shared_pairs_all <- rbind(shared_pairs_cgs,shared_pairs_beliefs)
+
+ggplot(data=subset(shared_pairs,generation > 0 & generation < 5 & w_idx != -1),aes(x=name,y=cg_prob)) + geom_col(position="dodge") + facet_wrap(~genUtt) + ylim(0,1) + ylab("P(w)") + scale_x_discrete(name="World") + theme(legend.position="none",text=element_text(size=12),axis.text.x = element_text(angle = 90)) + scale_fill_manual(values=cbbPalette)
 ggsave("threshold03_shared_fixed_balanced_Nancy_none_lr02all_8_SHOW_convergence.pdf")
+
+ggplot(data=subset(shared_pairs_all,generation > 0 & generation < 5 & w_idx != -1),aes(x=name,y=prob,fill=Type)) + geom_col(position="dodge") + facet_wrap(~genUtt) + ylim(0,1) + ylab("P(w)") + scale_x_discrete(name="World") + theme(text=element_text(size=12),axis.text.x = element_text(angle = 90)) + scale_fill_manual(values=cbbPalette)
+ggsave("threshold03_shared_fixed_balanced_Nancy_none_lr02all_8_SHOW_convergence_2.pdf")
 ```
 
 ```{r}
@@ -159,10 +201,10 @@ approx_fixed_b_pairs <-approx_fixed_pairs %>% mutate(cg_prob = ifelse(speaker=="
                             belief = ifelse(speaker=="b",speaker_belief,listener_belief))
 approx_fixed_pairs_all <- rbind(approx_fixed_a_pairs,approx_fixed_b_pairs)
 
-ggplot(data=subset(approx_fixed_pairs_all,generation > 0 & generation < 5 & w_idx != -1),aes(x=name,y=cg_prob,fill=Participant)) + geom_col(position="dodge") + facet_wrap(~genUtt,nrow=1) + ylab("P(w)") + scale_x_discrete(name="World") + ylim(0,1)+ theme(text=element_text(size=12),axis.text.x = element_text(angle = 90))
+ggplot(data=subset(approx_fixed_pairs_all,generation > 0 & generation < 5 & w_idx != -1),aes(x=name,y=cg_prob,fill=Participant)) + geom_col(position="dodge") + facet_wrap(~genUtt,nrow=1) + ylab("P(w)") + scale_x_discrete(name="World") + ylim(0,1)+ theme(text=element_text(size=12),axis.text.x = element_text(angle = 90)) + scale_fill_manual(values=cbbPalette)
 ggsave("threshold03_approx_fixed_balanced_Nancy_none_lr02all_8.pdf",width=15, height=5)
 
-ggplot(data=subset(approx_fixed_pairs_all,generation == 1),aes(x=name,y=belief,fill=Participant)) + geom_col(position="dodge") + ylab("P(w)")+ ylim(0,1) + scale_x_discrete(name="World") + theme(text=element_text(size=12),axis.text.x = element_text(angle = 90))
+ggplot(data=subset(approx_fixed_pairs_all,generation == 1),aes(x=name,y=belief,fill=Participant)) + geom_col(position="dodge") + ylab("P(w)")+ ylim(0,1) + scale_x_discrete(name="World") + theme(text=element_text(size=12),axis.text.x = element_text(angle = 90))+ scale_fill_manual(values=cbbPalette)
 ggsave("threshold03_approx_fixed_balanced_Nancy_none_lr02all_8_priors.pdf")
 ```
 
@@ -181,7 +223,7 @@ approx_update_pairs_cgs <- approx_update_pairs_ab %>% mutate(prob = cg_prob,
                                                              Type = paste(Participant,"CG",sep=" "))
 approx_update_pairs_all <- rbind(approx_update_pairs_cgs,approx_update_pairs_beliefs)
 
-ggplot(data=subset(approx_update_pairs_all,generation > 0 & w_idx != -1),aes(x=name,y=prob,fill=Type)) + geom_col(position="dodge") + facet_wrap(~genUtt) + ylim(0,1) + ylab("P(w)") + scale_x_discrete(name="World") + theme(text=element_text(size=12),axis.text.x = element_text(angle = 90))
+ggplot(data=subset(approx_update_pairs_all,generation > 0 & w_idx != -1),aes(x=name,y=prob,fill=Type)) + geom_col(position="dodge") + facet_wrap(~genUtt) + ylim(0,1) + ylab("P(w)") + scale_x_discrete(name="World") + theme(text=element_text(size=12),axis.text.x = element_text(angle = 90)) + scale_fill_manual(values=cbbPalette)
 ggsave("threshold03_approx_update_balanced_Nancy_none_lr02all_8.pdf")
 ```
 
@@ -204,7 +246,7 @@ approx_fixed_b_pairs <-approx_fixed_pairs %>% mutate(cg_prob = ifelse(speaker=="
                             belief = ifelse(speaker=="b",speaker_belief,listener_belief))
 approx_fixed_pairs_all <- rbind(approx_fixed_a_pairs,approx_fixed_b_pairs)
 
-ggplot(data=subset(approx_fixed_pairs_all,generation > 0 & generation < 5 & w_idx != -1),aes(x=name,y=cg_prob,fill=Participant)) + geom_col(position="dodge") + facet_wrap(~genUtt,nrow=1) + ylab("P(w)") + scale_x_discrete(name="World") + ylim(0,1)+ theme(text=element_text(size=12),axis.text.x = element_text(angle = 90))
+ggplot(data=subset(approx_fixed_pairs_all,generation > 0 & generation < 5 & w_idx != -1),aes(x=name,y=cg_prob,fill=Participant)) + geom_col(position="dodge") + facet_wrap(~genUtt,nrow=1) + ylab("P(w)") + scale_x_discrete(name="World") + ylim(0,1)+ theme(text=element_text(size=12),axis.text.x = element_text(angle = 90)) + scale_fill_manual(values=cbbPalette)
 ggsave("weighted_approx_fixed_balanced_Nancy_none_suspicious0201_8.pdf",width=15, height=5)
 ```
 
@@ -222,7 +264,7 @@ approx_update_pairs_cgs <- approx_update_pairs_ab %>% mutate(prob = cg_prob,
                                                              Type = paste(Participant,"CG",sep=" "))
 approx_update_pairs_all <- rbind(approx_update_pairs_cgs,approx_update_pairs_beliefs)
 
-ggplot(data=subset(approx_update_pairs_all,generation > 0 & generation < 5 & w_idx != -1),aes(x=name,y=prob,fill=Type)) + geom_col(position="dodge") + facet_wrap(~genUtt) + ylim(0,1) + ylab("P(w)") + scale_x_discrete(name="World") + theme(text=element_text(size=12),axis.text.x = element_text(angle = 90))
+ggplot(data=subset(approx_update_pairs_all,generation > 0 & generation < 5 & w_idx != -1),aes(x=name,y=prob,fill=Type)) + geom_col(position="dodge") + facet_wrap(~genUtt) + ylim(0,1) + ylab("P(w)") + scale_x_discrete(name="World") + theme(text=element_text(size=12),axis.text.x = element_text(angle = 90)) + scale_fill_manual(values=cbbPalette)
 ggsave("weighted_approx_update_balanced_Nancy_none_suspicious0201_8.pdf")
 ```
 
@@ -240,7 +282,7 @@ approx_fixed_pairs <- approx_fixed_pairs %>% mutate(genUtt = paste(paste(genStri
 approx_update_pairs <- approx_update_pairs %>% mutate(genString = as.character(generation))
 approx_update_pairs <- approx_update_pairs %>% mutate(genUtt = paste(paste(genString,toupper(speaker),sep=""),selected_u,sep=": "))
 
-ggplot(data=subset(shared_pairs,generation > 0 & generation < 5 & w_idx != -1),aes(x=name,y=cg_prob)) + geom_col(position="dodge") + facet_wrap(~genUtt) + ylim(0,1) + ylab("P(w)") + scale_x_discrete(name="World") + theme(legend.position="none",text=element_text(size=12),axis.text.x = element_text(angle = 90))
+ggplot(data=subset(shared_pairs,generation > 0 & generation < 5 & w_idx != -1),aes(x=name,y=cg_prob)) + geom_col(position="dodge") + facet_wrap(~genUtt) + ylim(0,1) + ylab("P(w)") + scale_x_discrete(name="World") + theme(legend.position="none",text=element_text(size=12),axis.text.x = element_text(angle = 90)) + scale_fill_manual(values=cbbPalette)
 ggsave("difference_shared_fixed_balanced_Nancy_none_lr02all_8.pdf")
 ```
 
@@ -253,7 +295,7 @@ approx_fixed_b_pairs <-approx_fixed_pairs %>% mutate(cg_prob = ifelse(speaker=="
                             belief = ifelse(speaker=="b",speaker_belief,listener_belief))
 approx_fixed_pairs_all <- rbind(approx_fixed_a_pairs,approx_fixed_b_pairs)
 
-ggplot(data=subset(approx_fixed_pairs_all,generation > 0 & generation < 5 & w_idx != -1),aes(x=name,y=cg_prob,fill=Participant)) + geom_col(position="dodge") + facet_wrap(~genUtt,nrow=1) + ylab("P(w)") + scale_x_discrete(name="World") + ylim(0,1)+ theme(text=element_text(size=12),axis.text.x = element_text(angle = 90))
+ggplot(data=subset(approx_fixed_pairs_all,generation > 0 & generation < 5 & w_idx != -1),aes(x=name,y=cg_prob,fill=Participant)) + geom_col(position="dodge") + facet_wrap(~genUtt,nrow=1) + ylab("P(w)") + scale_x_discrete(name="World") + ylim(0,1)+ theme(text=element_text(size=12),axis.text.x = element_text(angle = 90)) + scale_fill_manual(values=cbbPalette)
 ggsave("difference_approx_fixed_balanced_Nancy_none_lr02all_8.pdf",width=15, height=5)
 ```
 
@@ -271,7 +313,7 @@ approx_update_pairs_cgs <- approx_update_pairs_ab %>% mutate(prob = cg_prob,
                                                              Type = paste(Participant,"CG",sep=" "))
 approx_update_pairs_all <- rbind(approx_update_pairs_cgs,approx_update_pairs_beliefs)
 
-ggplot(data=subset(approx_update_pairs_all,generation > 0 & w_idx != -1),aes(x=name,y=prob,fill=Type)) + geom_col(position="dodge") + facet_wrap(~genUtt) + ylim(0,1) + ylab("P(w)") + scale_x_discrete(name="World") + theme(text=element_text(size=12),axis.text.x = element_text(angle = 90))
+ggplot(data=subset(approx_update_pairs_all,generation > 0 & w_idx != -1),aes(x=name,y=prob,fill=Type)) + geom_col(position="dodge") + facet_wrap(~genUtt) + ylim(0,1) + ylab("P(w)") + scale_x_discrete(name="World") + theme(text=element_text(size=12),axis.text.x = element_text(angle = 90)) + scale_fill_manual(values=cbbPalette)
 ggsave("difference_approx_update_balanced_Nancy_none_lr02all_8.pdf")
 ```
 
@@ -291,7 +333,7 @@ approx_fixed_pairs <- approx_fixed_pairs %>% mutate(genUtt = paste(paste(genStri
 approx_update_pairs <- approx_update_pairs %>% mutate(genString = as.character(generation))
 approx_update_pairs <- approx_update_pairs %>% mutate(genUtt = paste(paste(genString,toupper(speaker),sep=""),selected_u,sep=": "))
 
-ggplot(data=subset(shared_pairs,generation > 0 & generation < 5 & w_idx != -1),aes(x=name,y=cg_prob)) + geom_col(position="dodge") + facet_wrap(~genUtt) + ylim(0,1) + ylab("P(w)") + scale_x_discrete(name="World") + theme(legend.position="none",text=element_text(size=12),axis.text.x = element_text(angle = 90))
+ggplot(data=subset(shared_pairs,generation > 0 & generation < 5 & w_idx != -1),aes(x=name,y=cg_prob)) + geom_col(position="dodge") + facet_wrap(~genUtt) + ylim(0,1) + ylab("P(w)") + scale_x_discrete(name="World") + theme(legend.position="none",text=element_text(size=12),axis.text.x = element_text(angle = 90)) + scale_fill_manual(values=cbbPalette)
 ggsave("thresh03_difference_shared_fixed_balanced_Nancy_none_lr02all_8.pdf")
 ```
 
@@ -304,7 +346,7 @@ approx_fixed_b_pairs <-approx_fixed_pairs %>% mutate(cg_prob = ifelse(speaker=="
                             belief = ifelse(speaker=="b",speaker_belief,listener_belief))
 approx_fixed_pairs_all <- rbind(approx_fixed_a_pairs,approx_fixed_b_pairs)
 
-ggplot(data=subset(approx_fixed_pairs_all,generation > 0 & generation < 5 & w_idx != -1),aes(x=name,y=cg_prob,fill=Participant)) + geom_col(position="dodge") + facet_wrap(~genUtt,nrow=1) + ylab("P(w)") + scale_x_discrete(name="World") + ylim(0,1)+ theme(text=element_text(size=12),axis.text.x = element_text(angle = 90))
+ggplot(data=subset(approx_fixed_pairs_all,generation > 0 & generation < 5 & w_idx != -1),aes(x=name,y=cg_prob,fill=Participant)) + geom_col(position="dodge") + facet_wrap(~genUtt,nrow=1) + ylab("P(w)") + scale_x_discrete(name="World") + ylim(0,1)+ theme(text=element_text(size=12),axis.text.x = element_text(angle = 90)) + scale_fill_manual(values=cbbPalette)
 ggsave("thresh03_difference_approx_fixed_balanced_Nancy_none_lr02all_8.pdf",width=15, height=5)
 ```
 
@@ -322,7 +364,7 @@ approx_update_pairs_cgs <- approx_update_pairs_ab %>% mutate(prob = cg_prob,
                                                              Type = paste(Participant,"CG",sep=" "))
 approx_update_pairs_all <- rbind(approx_update_pairs_cgs,approx_update_pairs_beliefs)
 
-ggplot(data=subset(approx_update_pairs_all,generation > 0 & w_idx != -1),aes(x=name,y=prob,fill=Type)) + geom_col(position="dodge") + facet_wrap(~genUtt) + ylim(0,1) + ylab("P(w)") + scale_x_discrete(name="World") + theme(text=element_text(size=12),axis.text.x = element_text(angle = 90))
+ggplot(data=subset(approx_update_pairs_all,generation > 0 & w_idx != -1),aes(x=name,y=prob,fill=Type)) + geom_col(position="dodge") + facet_wrap(~genUtt) + ylim(0,1) + ylab("P(w)") + scale_x_discrete(name="World") + theme(text=element_text(size=12),axis.text.x = element_text(angle = 90)) + scale_fill_manual(values=cbbPalette)
 ggsave("thresh03_difference_approx_update_balanced_Nancy_none_lr02all_8.pdf")
 ```
 
@@ -349,7 +391,7 @@ shared_pairs_cgs <- shared_pairs %>% mutate(prob = cg_prob, Type = "CG")
 shared_pairs_ab_beliefs <- rbind(shared_pairs_a_beliefs,shared_pairs_b_beliefs)
 shared_pairs_all <- rbind(shared_pairs_cgs,shared_pairs_ab_beliefs)
 
-ggplot(data=subset(shared_pairs_all,generation > 0 & generation < 5 & w_idx != -1),aes(x=name,y=prob, fill=Type)) + geom_col(position="dodge") + facet_wrap(~genUtt) + ylim(0,1) + ylab("P(w)") + scale_x_discrete(name="World") + theme(text=element_text(size=12),axis.text.x = element_text(angle = 90))
+ggplot(data=subset(shared_pairs_all,generation > 0 & generation < 5 & w_idx != -1),aes(x=name,y=prob, fill=Type)) + geom_col(position="dodge") + facet_wrap(~genUtt) + ylim(0,1) + ylab("P(w)") + scale_x_discrete(name="World") + theme(text=element_text(size=12),axis.text.x = element_text(angle = 90)) + scale_fill_manual(values=cbbPalette)
 ggsave("weighted_shared_fixed_balanced_Nancy_Katie_lr02all_8_SHOW_success.pdf")
 ```
 
@@ -362,7 +404,7 @@ approx_fixed_b_pairs <-approx_fixed_pairs %>% mutate(cg_prob = ifelse(speaker=="
                             belief = ifelse(speaker=="b",speaker_belief,listener_belief))
 approx_fixed_pairs_all <- rbind(approx_fixed_a_pairs,approx_fixed_b_pairs)
 
-ggplot(data=subset(approx_fixed_pairs_all,generation > 0 & generation < 5 & w_idx != -1),aes(x=name,y=cg_prob,fill=Participant)) + geom_col(position="dodge") + facet_wrap(~genUtt,nrow=1) + ylab("P(w)") + scale_x_discrete(name="World") + ylim(0,1)+ theme(text=element_text(size=12),axis.text.x = element_text(angle = 90))
+ggplot(data=subset(approx_fixed_pairs_all,generation > 0 & generation < 5 & w_idx != -1),aes(x=name,y=cg_prob,fill=Participant)) + geom_col(position="dodge") + facet_wrap(~genUtt,nrow=1) + ylab("P(w)") + scale_x_discrete(name="World") + ylim(0,1)+ theme(text=element_text(size=12),axis.text.x = element_text(angle = 90)) + scale_fill_manual(values=cbbPalette)
 ggsave("weighted_approx_fixed_balanced_Nancy_Katie_lr02all_8.pdf",width=15, height=5)
 ```
 
@@ -380,7 +422,7 @@ approx_update_pairs_cgs <- approx_update_pairs_ab %>% mutate(prob = cg_prob,
                                                              Type = paste(Participant,"CG",sep=" "))
 approx_update_pairs_all <- rbind(approx_update_pairs_cgs,approx_update_pairs_beliefs)
 
-ggplot(data=subset(approx_update_pairs_all,generation > 0 & generation < 7 & w_idx != -1),aes(x=name,y=prob,fill=Type)) + geom_col(position="dodge") + facet_wrap(~genUtt) + ylim(0,1) + ylab("P(w)") + scale_x_discrete(name="World") + theme(text=element_text(size=12),axis.text.x = element_text(angle = 90))
+ggplot(data=subset(approx_update_pairs_all,generation > 0 & generation < 7 & w_idx != -1),aes(x=name,y=prob,fill=Type)) + geom_col(position="dodge") + facet_wrap(~genUtt) + ylim(0,1) + ylab("P(w)") + scale_x_discrete(name="World") + theme(text=element_text(size=12),axis.text.x = element_text(angle = 90)) + scale_fill_manual(values=cbbPalette)
 ggsave("weighted_approx_update_balanced_Nancy_Katie_lr02all_8.pdf")
 ```
 
@@ -398,7 +440,7 @@ approx_fixed_pairs <- approx_fixed_pairs %>% mutate(genUtt = paste(paste(genStri
 approx_update_pairs <- approx_update_pairs %>% mutate(genString = as.character(generation))
 approx_update_pairs <- approx_update_pairs %>% mutate(genUtt = paste(paste(genString,toupper(speaker),sep=""),selected_u,sep=": "))
 
-ggplot(data=subset(shared_pairs,generation > 0 & generation < 5 & w_idx != -1),aes(x=name,y=cg_prob)) + geom_col(position="dodge") + facet_wrap(~genUtt) + ylim(0,1) + ylab("P(w)") + scale_x_discrete(name="World") + theme(legend.position="none",text=element_text(size=12),axis.text.x = element_text(angle = 90))
+ggplot(data=subset(shared_pairs,generation > 0 & generation < 5 & w_idx != -1),aes(x=name,y=cg_prob)) + geom_col(position="dodge") + facet_wrap(~genUtt) + ylim(0,1) + ylab("P(w)") + scale_x_discrete(name="World") + theme(legend.position="none",text=element_text(size=12),axis.text.x = element_text(angle = 90)) + scale_fill_manual(values=cbbPalette)
 ggsave("threshold03_shared_fixed_balanced_Nancy_Katie_lr02all_8.pdf")
 ```
 
@@ -411,7 +453,7 @@ approx_fixed_b_pairs <-approx_fixed_pairs %>% mutate(cg_prob = ifelse(speaker=="
                             belief = ifelse(speaker=="b",speaker_belief,listener_belief))
 approx_fixed_pairs_all <- rbind(approx_fixed_a_pairs,approx_fixed_b_pairs)
 
-ggplot(data=subset(approx_fixed_pairs_all,generation > 0 & generation < 5 & w_idx != -1),aes(x=name,y=cg_prob,fill=Participant)) + geom_col(position="dodge") + facet_wrap(~genUtt,nrow=1) + ylab("P(w)") + scale_x_discrete(name="World") + ylim(0,1)+ theme(text=element_text(size=12),axis.text.x = element_text(angle = 90))
+ggplot(data=subset(approx_fixed_pairs_all,generation > 0 & generation < 5 & w_idx != -1),aes(x=name,y=cg_prob,fill=Participant)) + geom_col(position="dodge") + facet_wrap(~genUtt,nrow=1) + ylab("P(w)") + scale_x_discrete(name="World") + ylim(0,1)+ theme(text=element_text(size=12),axis.text.x = element_text(angle = 90)) + scale_fill_manual(values=cbbPalette)
 ggsave("threshold03_approx_fixed_balanced_Nancy_Katie_lr02all_8.pdf",width=15, height=5)
 ```
 
@@ -429,7 +471,7 @@ approx_update_pairs_cgs <- approx_update_pairs_ab %>% mutate(prob = cg_prob,
                                                              Type = paste(Participant,"CG",sep=" "))
 approx_update_pairs_all <- rbind(approx_update_pairs_cgs,approx_update_pairs_beliefs)
 
-ggplot(data=subset(approx_update_pairs_all,generation > 0 & w_idx != -1),aes(x=name,y=prob,fill=Type)) + geom_col(position="dodge") + facet_wrap(~genUtt) + ylim(0,1) + ylab("P(w)") + scale_x_discrete(name="World") + theme(text=element_text(size=12),axis.text.x = element_text(angle = 90))
+ggplot(data=subset(approx_update_pairs_all,generation > 0 & w_idx != -1),aes(x=name,y=prob,fill=Type)) + geom_col(position="dodge") + facet_wrap(~genUtt) + ylim(0,1) + ylab("P(w)") + scale_x_discrete(name="World") + theme(text=element_text(size=12),axis.text.x = element_text(angle = 90)) + scale_fill_manual(values=cbbPalette)
 ggsave("threshold03_approx_update_balanced_Nancy_Katie_lr02all_8.pdf")
 ```
 
@@ -452,7 +494,7 @@ approx_fixed_b_pairs <-approx_fixed_pairs %>% mutate(cg_prob = ifelse(speaker=="
                             belief = ifelse(speaker=="b",speaker_belief,listener_belief))
 approx_fixed_pairs_all <- rbind(approx_fixed_a_pairs,approx_fixed_b_pairs)
 
-ggplot(data=subset(approx_fixed_pairs_all,generation > 0 & generation < 5 & w_idx != -1),aes(x=name,y=cg_prob,fill=Participant)) + geom_col(position="dodge") + facet_wrap(~genUtt,nrow=1) + ylab("P(w)") + scale_x_discrete(name="World") + ylim(0,1)+ theme(text=element_text(size=12),axis.text.x = element_text(angle = 90))
+ggplot(data=subset(approx_fixed_pairs_all,generation > 0 & generation < 5 & w_idx != -1),aes(x=name,y=cg_prob,fill=Participant)) + geom_col(position="dodge") + facet_wrap(~genUtt,nrow=1) + ylab("P(w)") + scale_x_discrete(name="World") + ylim(0,1)+ theme(text=element_text(size=12),axis.text.x = element_text(angle = 90)) + scale_fill_manual(values=cbbPalette)
 ggsave("weighted_approx_fixed_balanced_Nancy_Katie_suspicious0201_8.pdf",width=15, height=5)
 
 approx_update_a_pairs <- approx_update_pairs %>% mutate(cg_prob = ifelse(speaker=="a",cg_speaker_prob,cg_listener_prob),
@@ -468,7 +510,7 @@ approx_update_pairs_cgs <- approx_update_pairs_ab %>% mutate(prob = cg_prob,
                                                              Type = paste(Participant,"CG",sep=" "))
 approx_update_pairs_all <- rbind(approx_update_pairs_cgs,approx_update_pairs_beliefs)
 
-ggplot(data=subset(approx_update_pairs_all,generation > 0 & generation < 7 & w_idx != -1),aes(x=name,y=prob,fill=Type)) + geom_col(position="dodge") + facet_wrap(~genUtt) + ylim(0,1) + ylab("P(w)") + scale_x_discrete(name="World") + theme(text=element_text(size=12),axis.text.x = element_text(angle = 90))
+ggplot(data=subset(approx_update_pairs_all,generation > 0 & generation < 7 & w_idx != -1),aes(x=name,y=prob,fill=Type)) + geom_col(position="dodge") + facet_wrap(~genUtt) + ylim(0,1) + ylab("P(w)") + scale_x_discrete(name="World") + theme(text=element_text(size=12),axis.text.x = element_text(angle = 90)) + scale_fill_manual(values=cbbPalette)
 ggsave("weighted_approx_update_balanced_Nancy_Katie_suspicious0201_8.pdf")
 ```
 
@@ -486,7 +528,7 @@ approx_fixed_pairs <- approx_fixed_pairs %>% mutate(genUtt = paste(paste(genStri
 approx_update_pairs <- approx_update_pairs %>% mutate(genString = as.character(generation))
 approx_update_pairs <- approx_update_pairs %>% mutate(genUtt = paste(paste(genString,toupper(speaker),sep=""),selected_u,sep=": "))
 
-ggplot(data=subset(shared_pairs,generation > 0  & w_idx != -1),aes(x=name,y=cg_prob)) + geom_col(position="dodge") + facet_wrap(~genUtt) + ylim(0,1) + ylab("P(w)") + scale_x_discrete(name="World") + theme(legend.position="none",text=element_text(size=12),axis.text.x = element_text(angle = 90))
+ggplot(data=subset(shared_pairs,generation > 0  & w_idx != -1),aes(x=name,y=cg_prob)) + geom_col(position="dodge") + facet_wrap(~genUtt) + ylim(0,1) + ylab("P(w)") + scale_x_discrete(name="World") + theme(legend.position="none",text=element_text(size=12),axis.text.x = element_text(angle = 90)) + scale_fill_manual(values=cbbPalette)
 ggsave("difference_shared_fixed_balanced_Nancy_Katie_lr02all_8.pdf")
 ```
 ```{r}
@@ -498,7 +540,7 @@ approx_fixed_b_pairs <-approx_fixed_pairs %>% mutate(cg_prob = ifelse(speaker=="
                             belief = ifelse(speaker=="b",speaker_belief,listener_belief))
 approx_fixed_pairs_all <- rbind(approx_fixed_a_pairs,approx_fixed_b_pairs)
 
-ggplot(data=subset(approx_fixed_pairs_all,generation > 0 & generation < 5 & w_idx != -1),aes(x=name,y=cg_prob,fill=Participant)) + geom_col(position="dodge") + facet_wrap(~genUtt,nrow=1) + ylab("P(w)") + scale_x_discrete(name="World") + ylim(0,1)+ theme(text=element_text(size=12),axis.text.x = element_text(angle = 90))
+ggplot(data=subset(approx_fixed_pairs_all,generation > 0 & generation < 5 & w_idx != -1),aes(x=name,y=cg_prob,fill=Participant)) + geom_col(position="dodge") + facet_wrap(~genUtt,nrow=1) + ylab("P(w)") + scale_x_discrete(name="World") + ylim(0,1)+ theme(text=element_text(size=12),axis.text.x = element_text(angle = 90)) + scale_fill_manual(values=cbbPalette)
 ggsave("difference_approx_fixed_balanced_Nancy_Katie_lr02all_8.pdf",width=15, height=5)
 ```
 
@@ -516,7 +558,7 @@ approx_update_pairs_cgs <- approx_update_pairs_ab %>% mutate(prob = cg_prob,
                                                              Type = paste(Participant,"CG",sep=" "))
 approx_update_pairs_all <- rbind(approx_update_pairs_cgs,approx_update_pairs_beliefs)
 
-ggplot(data=subset(approx_update_pairs_all,generation > 0 & w_idx != -1),aes(x=name,y=prob,fill=Type)) + geom_col(position="dodge") + facet_wrap(~genUtt) + ylim(0,1) + ylab("P(w)") + scale_x_discrete(name="World") + theme(text=element_text(size=12),axis.text.x = element_text(angle = 90))
+ggplot(data=subset(approx_update_pairs_all,generation > 0 & w_idx != -1),aes(x=name,y=prob,fill=Type)) + geom_col(position="dodge") + facet_wrap(~genUtt) + ylim(0,1) + ylab("P(w)") + scale_x_discrete(name="World") + theme(text=element_text(size=12),axis.text.x = element_text(angle = 90)) + scale_fill_manual(values=cbbPalette)
 ggsave("difference_approx_update_balanced_Nancy_Katie_lr02all_8.pdf")
 ```
 
@@ -543,7 +585,7 @@ shared_pairs_cgs <- shared_pairs %>% mutate(prob = cg_prob, Type = "CG")
 shared_pairs_ab_beliefs <- rbind(shared_pairs_a_beliefs,shared_pairs_b_beliefs)
 shared_pairs_all <- rbind(shared_pairs_cgs,shared_pairs_ab_beliefs)
 
-ggplot(data=subset(shared_pairs_all,generation > 0 & w_idx != -1),aes(x=name,y=prob, fill=Type)) + geom_col(position="dodge") + facet_wrap(~genUtt) + ylim(0,1) + ylab("P(w)") + scale_x_discrete(name="World") + theme(text=element_text(size=12),axis.text.x = element_text(angle = 90))
+ggplot(data=subset(shared_pairs_all,generation > 0 & w_idx != -1),aes(x=name,y=prob, fill=Type)) + geom_col(position="dodge") + facet_wrap(~genUtt) + ylim(0,1) + ylab("P(w)") + scale_x_discrete(name="World") + theme(text=element_text(size=12),axis.text.x = element_text(angle = 90)) + scale_fill_manual(values=cbbPalette)
 ggsave("weighted_shared_fixed_balanced_NancyKatie_none_lr02all_8.pdf")
 ```
 
@@ -570,7 +612,7 @@ shared_pairs_cgs <- shared_pairs %>% mutate(prob = cg_prob, Type = "CG")
 shared_pairs_ab_beliefs <- rbind(shared_pairs_a_beliefs,shared_pairs_b_beliefs)
 shared_pairs_all <- rbind(shared_pairs_cgs,shared_pairs_ab_beliefs)
 
-ggplot(data=subset(shared_pairs_all,generation > 0 & w_idx != -1),aes(x=name,y=prob, fill=Type)) + geom_col(position="dodge") + facet_wrap(~genUtt) + ylim(0,1) + ylab("P(w)") + scale_x_discrete(name="World") + theme(text=element_text(size=12),axis.text.x = element_text(angle = 90))
+ggplot(data=subset(shared_pairs_all,generation > 0 & w_idx != -1),aes(x=name,y=prob, fill=Type)) + geom_col(position="dodge") + facet_wrap(~genUtt) + ylim(0,1) + ylab("P(w)") + scale_x_discrete(name="World") + theme(text=element_text(size=12),axis.text.x = element_text(angle = 90)) + scale_fill_manual(values=cbbPalette)
 ggsave("weighted_shared_fixed_balanced_Nancy7Katie10_Katie10_lr02all_8.pdf")
 
 approx_fixed_a_pairs <-approx_fixed_pairs %>% mutate(cg_prob = ifelse(speaker=="a",cg_speaker_prob,cg_listener_prob),
@@ -581,7 +623,7 @@ approx_fixed_b_pairs <-approx_fixed_pairs %>% mutate(cg_prob = ifelse(speaker=="
                             belief = ifelse(speaker=="b",speaker_belief,listener_belief))
 approx_fixed_pairs_all <- rbind(approx_fixed_a_pairs,approx_fixed_b_pairs)
 
-ggplot(data=subset(approx_fixed_pairs_all,generation > 0 & generation < 5 & w_idx != -1),aes(x=name,y=cg_prob,fill=Participant)) + geom_col(position="dodge") + facet_wrap(~genUtt,nrow=1) + ylab("P(w)") + scale_x_discrete(name="World") + ylim(0,1)+ theme(text=element_text(size=12),axis.text.x = element_text(angle = 90))
+ggplot(data=subset(approx_fixed_pairs_all,generation > 0 & generation < 5 & w_idx != -1),aes(x=name,y=cg_prob,fill=Participant)) + geom_col(position="dodge") + facet_wrap(~genUtt,nrow=1) + ylab("P(w)") + scale_x_discrete(name="World") + ylim(0,1)+ theme(text=element_text(size=12),axis.text.x = element_text(angle = 90)) + scale_fill_manual(values=cbbPalette)
 ggsave("weighted_approx_fixed_balanced_Nancy7Katie10_Katie10_lr02all_8.pdf",width=15, height=5)
 
 approx_update_a_pairs <- approx_update_pairs %>% mutate(cg_prob = ifelse(speaker=="a",cg_speaker_prob,cg_listener_prob),
@@ -597,7 +639,7 @@ approx_update_pairs_cgs <- approx_update_pairs_ab %>% mutate(prob = cg_prob,
                                                              Type = paste(Participant,"CG",sep=" "))
 approx_update_pairs_all <- rbind(approx_update_pairs_cgs,approx_update_pairs_beliefs)
 
-ggplot(data=subset(approx_update_pairs_all,generation > 0 & generation < 7 & w_idx != -1),aes(x=name,y=prob,fill=Type)) + geom_col(position="dodge") + facet_wrap(~genUtt) + ylim(0,1) + ylab("P(w)") + scale_x_discrete(name="World") + theme(text=element_text(size=12),axis.text.x = element_text(angle = 90))
+ggplot(data=subset(approx_update_pairs_all,generation > 0 & generation < 7 & w_idx != -1),aes(x=name,y=prob,fill=Type)) + geom_col(position="dodge") + facet_wrap(~genUtt) + ylim(0,1) + ylab("P(w)") + scale_x_discrete(name="World") + theme(text=element_text(size=12),axis.text.x = element_text(angle = 90)) + scale_fill_manual(values=cbbPalette)
 ggsave("weighted_approx_update_balanced_Nancy7Katie10_Katie10_lr02all_8_SHOW_noninformative.pdf")
 ```
 
@@ -615,7 +657,7 @@ approx_fixed_pairs <- approx_fixed_pairs %>% mutate(genUtt = paste(paste(genStri
 approx_update_pairs <- approx_update_pairs %>% mutate(genString = as.character(generation))
 approx_update_pairs <- approx_update_pairs %>% mutate(genUtt = paste(paste(genString,toupper(speaker),sep=""),selected_u,sep=": "))
 
-ggplot(data=subset(shared_pairs,generation > 0  & w_idx != -1),aes(x=name,y=cg_prob)) + geom_col(position="dodge") + facet_wrap(~genUtt) + ylim(0,1) + ylab("P(w)") + scale_x_discrete(name="World") + theme(legend.position="none",text=element_text(size=12),axis.text.x = element_text(angle = 90))
+ggplot(data=subset(shared_pairs,generation > 0  & w_idx != -1),aes(x=name,y=cg_prob)) + geom_col(position="dodge") + facet_wrap(~genUtt) + ylim(0,1) + ylab("P(w)") + scale_x_discrete(name="World") + theme(legend.position="none",text=element_text(size=12),axis.text.x = element_text(angle = 90)) + scale_fill_manual(values=cbbPalette)
 ggsave("difference_shared_fixed_balanced_Nancy7Katie10_Katie10_lr02all_8.pdf")
 
 approx_fixed_a_pairs <-approx_fixed_pairs %>% mutate(cg_prob = ifelse(speaker=="a",cg_speaker_prob,cg_listener_prob),
@@ -626,7 +668,7 @@ approx_fixed_b_pairs <-approx_fixed_pairs %>% mutate(cg_prob = ifelse(speaker=="
                             belief = ifelse(speaker=="b",speaker_belief,listener_belief))
 approx_fixed_pairs_all <- rbind(approx_fixed_a_pairs,approx_fixed_b_pairs)
 
-ggplot(data=subset(approx_fixed_pairs_all,generation > 0 & generation < 7 & w_idx != -1),aes(x=name,y=cg_prob,fill=Participant)) + geom_col(position="dodge") + facet_wrap(~genUtt) + ylab("P(w)") + scale_x_discrete(name="World") + ylim(0,1)+ theme(text=element_text(size=12),axis.text.x = element_text(angle = 90))
+ggplot(data=subset(approx_fixed_pairs_all,generation > 0 & generation < 7 & w_idx != -1),aes(x=name,y=cg_prob,fill=Participant)) + geom_col(position="dodge") + facet_wrap(~genUtt) + ylab("P(w)") + scale_x_discrete(name="World") + ylim(0,1)+ theme(text=element_text(size=12),axis.text.x = element_text(angle = 90)) + scale_fill_manual(values=cbbPalette)
 ggsave("difference_approx_fixed_balanced_Nancy7Katie10_Katie10_lr02all_8.pdf",width=15, height=5)
 
 approx_update_a_pairs <- approx_update_pairs %>% mutate(cg_prob = ifelse(speaker=="a",cg_speaker_prob,cg_listener_prob),
@@ -642,7 +684,7 @@ approx_update_pairs_cgs <- approx_update_pairs_ab %>% mutate(prob = cg_prob,
                                                              Type = paste(Participant,"CG",sep=" "))
 approx_update_pairs_all <- rbind(approx_update_pairs_cgs,approx_update_pairs_beliefs)
 
-ggplot(data=subset(approx_update_pairs_all,generation > 0 & w_idx != -1),aes(x=name,y=prob,fill=Type)) + geom_col(position="dodge") + facet_wrap(~genUtt) + ylim(0,1) + ylab("P(w)") + scale_x_discrete(name="World") + theme(text=element_text(size=12),axis.text.x = element_text(angle = 90))
+ggplot(data=subset(approx_update_pairs_all,generation > 0 & w_idx != -1),aes(x=name,y=prob,fill=Type)) + geom_col(position="dodge") + facet_wrap(~genUtt) + ylim(0,1) + ylab("P(w)") + scale_x_discrete(name="World") + theme(text=element_text(size=12),axis.text.x = element_text(angle = 90)) + scale_fill_manual(values=cbbPalette)
 ggsave("difference_approx_update_balanced_Nancy7Katie10_Katie10_lr02all_8.pdf")
 ```
 
@@ -660,7 +702,7 @@ approx_fixed_pairs <- approx_fixed_pairs %>% mutate(genUtt = paste(paste(genStri
 approx_update_pairs <- approx_update_pairs %>% mutate(genString = as.character(generation))
 approx_update_pairs <- approx_update_pairs %>% mutate(genUtt = paste(paste(genString,toupper(speaker),sep=""),selected_u,sep=": "))
 
-ggplot(data=subset(shared_pairs,generation > 0  & w_idx != -1),aes(x=name,y=cg_prob)) + geom_col(position="dodge") + facet_wrap(~genUtt) + ylim(0,1) + ylab("P(w)") + scale_x_discrete(name="World") + theme(legend.position="none",text=element_text(size=12),axis.text.x = element_text(angle = 90))
+ggplot(data=subset(shared_pairs,generation > 0  & w_idx != -1),aes(x=name,y=cg_prob)) + geom_col(position="dodge") + facet_wrap(~genUtt) + ylim(0,1) + ylab("P(w)") + scale_x_discrete(name="World") + theme(legend.position="none",text=element_text(size=12),axis.text.x = element_text(angle = 90)) + scale_fill_manual(values=cbbPalette)
 ggsave("thresh03_difference_shared_fixed_balanced_Nancy7Katie9_Katie15_lr02all_8.pdf")
 
 approx_fixed_a_pairs <-approx_fixed_pairs %>% mutate(cg_prob = ifelse(speaker=="a",cg_speaker_prob,cg_listener_prob),
@@ -671,7 +713,7 @@ approx_fixed_b_pairs <-approx_fixed_pairs %>% mutate(cg_prob = ifelse(speaker=="
                             belief = ifelse(speaker=="b",speaker_belief,listener_belief))
 approx_fixed_pairs_all <- rbind(approx_fixed_a_pairs,approx_fixed_b_pairs)
 
-ggplot(data=subset(approx_fixed_pairs_all,generation > 0 & generation < 7 & w_idx != -1),aes(x=name,y=cg_prob,fill=Participant)) + geom_col(position="dodge") + facet_wrap(~genUtt) + ylab("P(w)") + scale_x_discrete(name="World") + ylim(0,1)+ theme(text=element_text(size=12),axis.text.x = element_text(angle = 90))
+ggplot(data=subset(approx_fixed_pairs_all,generation > 0 & generation < 7 & w_idx != -1),aes(x=name,y=cg_prob,fill=Participant)) + geom_col(position="dodge") + facet_wrap(~genUtt) + ylab("P(w)") + scale_x_discrete(name="World") + ylim(0,1)+ theme(text=element_text(size=12),axis.text.x = element_text(angle = 90)) + scale_fill_manual(values=cbbPalette)
 ggsave("thresh03_difference_approx_fixed_balanced_Nancy7Katie9_Katie15_lr02all_8.pdf",width=15, height=5)
 
 approx_update_a_pairs <- approx_update_pairs %>% mutate(cg_prob = ifelse(speaker=="a",cg_speaker_prob,cg_listener_prob),
@@ -687,6 +729,31 @@ approx_update_pairs_cgs <- approx_update_pairs_ab %>% mutate(prob = cg_prob,
                                                              Type = paste(Participant,"CG",sep=" "))
 approx_update_pairs_all <- rbind(approx_update_pairs_cgs,approx_update_pairs_beliefs)
 
-ggplot(data=subset(approx_update_pairs_all,generation > 0 & generation < 7 &  w_idx != -1),aes(x=name,y=prob,fill=Type)) + geom_col(position="dodge") + facet_wrap(~genUtt) + ylim(0,1) + ylab("P(w)") + scale_x_discrete(name="World") + theme(text=element_text(size=12),axis.text.x = element_text(angle = 90))
+ggplot(data=subset(approx_update_pairs_all,generation > 0 & generation < 7 &  w_idx != -1),aes(x=name,y=prob,fill=Type)) + geom_col(position="dodge") + facet_wrap(~genUtt) + ylim(0,1) + ylab("P(w)") + scale_x_discrete(name="World") + theme(text=element_text(size=12),axis.text.x = element_text(angle = 90)) + scale_fill_manual(values=cbbPalette)
 ggsave("thresh03_difference_approx_update_balanced_Nancy7Katie9_Katie15_lr02all_8_SHOW_threshdiff.pdf")
+```
+
+```{r}
+# Entropy-based learning rate, B uninformed
+
+approx_update_pairs <- read.csv('~/dissertation/modeling/motionmod/scil2020/weighted_approx_update_balanced_Nancy_none_lrentropy01035_8.tsv',header=TRUE,comment.char = "#")
+
+approx_update_pairs <- approx_update_pairs %>% mutate(genString = as.character(generation))
+approx_update_pairs <- approx_update_pairs %>% mutate(genUtt = paste(paste(genString,toupper(speaker),sep=""),selected_u,sep=": "))
+
+approx_update_a_pairs <- approx_update_pairs %>% mutate(cg_prob = ifelse(speaker=="a",cg_speaker_prob,cg_listener_prob),
+                                                        Participant = "A",
+                            belief = ifelse(speaker=="a",speaker_belief,listener_belief))
+approx_update_b_pairs <- approx_update_pairs %>% mutate(cg_prob = ifelse(speaker=="b",cg_speaker_prob,cg_listener_prob),
+                                                        Participant = "B",
+                            belief = ifelse(speaker=="b",speaker_belief,listener_belief))
+approx_update_pairs_ab <- rbind(approx_update_a_pairs,approx_update_b_pairs)
+approx_update_pairs_beliefs <- approx_update_pairs_ab %>% mutate(prob = belief,
+                                                                 Type = paste(Participant,"Belief",sep=" "))
+approx_update_pairs_cgs <- approx_update_pairs_ab %>% mutate(prob = cg_prob,
+                                                             Type = paste(Participant,"CG",sep=" "))
+approx_update_pairs_all <- rbind(approx_update_pairs_cgs,approx_update_pairs_beliefs)
+
+ggplot(data=subset(approx_update_pairs_all,generation > 0 & generation < 7 &  w_idx != -1),aes(x=name,y=prob,fill=Type)) + geom_col(position="dodge") + facet_wrap(~genUtt) + ylim(0,1) + ylab("P(w)") + scale_x_discrete(name="World") + theme(text=element_text(size=12),axis.text.x = element_text(angle = 90)) + scale_fill_manual(values=cbbPalette)
+ggsave("weighted_approx_update_balanced_Nancy_none_lrentropy01035_8.pdf")
 ```
