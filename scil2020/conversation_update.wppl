@@ -561,12 +561,14 @@ var main = function(){
   //Nancy7Katie9_Katie15: [7,1,9,1,],[1,1,15,1,]
 
   //log format of output
-  var initial_dists = init_distributions([10,1,1,1,],[1,1,1,1,],balanced_worlds,cg_shared);
+  var initial_dists = init_distributions([10,1,1,1,],[1,1,10,1,],balanced_worlds,cg_shared);
   var a_beliefs = initial_dists['a_beliefs'];
   var b_beliefs = initial_dists['b_beliefs'];
   //var lr_set = {name: 'plain', speaker_cg: 0.2, listener_cg: 0.2, listener_belief: 0.2, lr: 0.2};
+  var lr_set = {name: 'plain', speaker_cg: 0.3, listener_cg: 0.3, listener_belief: 0.3, lr: 0.3};
   //var lr_set = {name: 'suspicious', speaker_cg: 0.2, listener_cg: 0.1, listener_belief: 0.1, lr: 0.2};
-  var lr_set = {name: 'entropy', speaker_cg: 0.2, listener_cg: 0.2, listener_belief: "entropyAdjusted", lr: 0.2};
+  //var lr_set = {name: 'more_suspicious', speaker_cg: 0.2, listener_cg: 0.05, listener_belief: 0.05, lr: 0.2};
+  //var lr_set = {name: 'entropy', speaker_cg: 0.2, listener_cg: 0.2, listener_belief: "entropyAdjusted", lr: 0.2};
   if (cg_shared == 'shared'){
     var cg = initial_dists['cg'];
     console.log('speaker,cg,generation,sampler,sampled_w_idx,selected_u,listener_belief,speaker_belief,location_pref,name,school/company,major,w_idx,cg_prob');
