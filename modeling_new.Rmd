@@ -57,7 +57,7 @@ n <- c("go","cost","utterance","perspective","locSam","locLucy","moveLucy", "mov
 ```
 
 ```{r}
-#datanm = "basic"
+datanm = "basic"
 #datanm = "basic_simple"
 #datanm = "sampled_pcost"
 #datanm = "nonu_w"
@@ -65,7 +65,7 @@ n <- c("go","cost","utterance","perspective","locSam","locLucy","moveLucy", "mov
 #datanm = "speaker_bias"
 #datanm = "sample_wp"
 #datanm = "listener_cost"
-datanm = "speaker_default"
+#datanm = "speaker_default"
 datad = paste0('img/',datanm,'_')
 ```
 
@@ -169,6 +169,14 @@ facet_u_labs <- pairs$utterance
 names(facet_u_labs) <- pairs$utterance
 ```
 
+```{r}
+moveSam1 <- subset(pairs,mover=="S")
+moveSam2 <- subset(moveSam1, as.character(utterance)=='I am coming to Northampton' | as.character(utterance)=='I am going to Northampton' | as.character(utterance)=='I am walking to Northampton')
+c05_moveSam <- subset(moveSam2,cost==0.5)
+ggplot(data=c05_moveSam,mapping=aes(x=perspective.and.world,y=probability,size=cost,shape=utterance,color=utterance)) + geom_point() + facet_wrap(~go.is.p) + ylab("Posterior probability") + xlab("Perspective/world pair")+
+    theme(legend.position="bottom", legend.direction="vertical") + guides(size = FALSE)
+ggsave(paste0(datad,"Smove05.pdf"),width=12, height=5)
+```
 
 ```{r}
 moveThelma <- subset(pairs, as.character(utterance)=='Thelma is coming to Northampton' | as.character(utterance)=='Thelma is going to Northampton' | as.character(utterance)=='Thelma is walking to Northampton')
@@ -212,6 +220,9 @@ f2 <- function(x) {
   r
 }
 
+
+facet_thelma_labs <- c("Thelma is coming to Northampton"="Thelma is coming to X","Thelma is going to Northampton"="Thelma is going to X","Thelma is walking to Northampton"="Thelma is walking to X")
+
 ggplot(data=pmarg_moveThelma_noprob,mapping=aes(x=Condition,y=marg.prob,shape=utterance,color=utterance)) + stat_summary(fun.data = f2, geom="crossbar") + facet_wrap(~go.is.p*utterance) + ylab("Marginal posterior probability: p(w|u)") + xlab("Condition") + ylim(0,1) + theme(legend.position="none",text=element_text(size=12))
 ggsave(paste0(datad,"pmarg_Tmove_noprob_new2.pdf"),height=3,width=12)
 
@@ -221,13 +232,13 @@ ggsave(paste0(datad,"pmarg_Tmove_noprob_new.pdf"),height=3,width=12)
 ggplot(data=pmarg_moveThelma_nogop,mapping=aes(x=Condition,y=marg.prob,shape=utterance,color=utterance)) + stat_summary(fun.data = f2, geom="crossbar") + facet_wrap(~utterance) + ylab("Marginal posterior probability: p(w|u)") + xlab("Condition") + ylim(0,1) + theme(legend.position="none",text=element_text(size=12))
 ggsave(paste0(datad,"pmarg_Tmove_nogop_new2.pdf"),height=3,width=12)
 
-ggplot(data=subset(pmarg_moveThelma_nogop,cost==0|cost==1|cost==0.5),mapping=aes(x=Condition,y=marg.prob,shape=utterance,fill=cost,group=cost)) + geom_col(position="dodge") + facet_wrap(~utterance) + ylab("Marginal posterior probability: p(w|u)") + xlab("Condition") + ylim(0,1) + theme(legend.position="none",text=element_text(size=12)) + scale_fill_gradient(trans = 'reverse')
+ggplot(data=subset(pmarg_moveThelma_nogop,cost==0|cost==1|cost==0.5),mapping=aes(x=Condition,y=marg.prob,shape=utterance,fill=cost,group=cost)) + geom_col(position="dodge") + facet_wrap(~utterance,labeller = as_labeller(facet_thelma_labs)) + ylab("Marginal posterior probability: p(w|u)") + xlab("Condition") + ylim(0,1) + theme(legend.position="none",text=element_text(size=12)) + scale_fill_gradient(trans = 'reverse')
 ggsave(paste0(datad,"pmarg_Tmove_nogop_new.pdf"),height=3,width=12)
 
 ggplot(data=pmarg_moveThelma_gop,mapping=aes(x=Condition,y=marg.prob,shape=utterance,color=utterance)) + stat_summary(fun.data = f2, geom="crossbar") + facet_wrap(~utterance) + ylab("Marginal posterior probability: p(w|u)") + xlab("Condition") + ylim(0,1) + theme(legend.position="none",text=element_text(size=12))
 ggsave(paste0(datad,"pmarg_Tmove_gop_new2.pdf"),height=3,width=12)
 
-ggplot(data=subset(pmarg_moveThelma_gop,cost==0|cost==1|cost==0.5),mapping=aes(x=Condition,y=marg.prob,shape=utterance,fill=cost,group=cost)) + geom_col(position="dodge") + facet_wrap(~utterance) + ylab("Marginal posterior probability: p(w|u)") + xlab("Condition") + ylim(0,1) + theme(legend.position="none",text=element_text(size=12)) + scale_fill_gradient(trans = 'reverse')
+ggplot(data=subset(pmarg_moveThelma_gop,cost==0|cost==1|cost==0.5),mapping=aes(x=Condition,y=marg.prob,shape=utterance,fill=cost,group=cost)) + geom_col(position="dodge") + facet_wrap(~utterance,labeller = as_labeller(facet_thelma_labs)) + ylab("Marginal posterior probability: p(w|u)") + xlab("Condition") + ylim(0,1) + theme(legend.position="none",text=element_text(size=12)) + scale_fill_gradient(trans = 'reverse')
 ggsave(paste0(datad,"pmarg_Tmove_gop_new.pdf"),height=3,width=12)
 
 ggplot(data=subset(pmarg_moveThelma_prob,cost==0|cost==1|cost==0.5),mapping=aes(x=Condition,y=marg.prob,shape=utterance,fill=cost,group=cost)) + geom_col(position="dodge") + facet_wrap(~utterance) + ylab("Marginal posterior probability: p(w|u)") + xlab("Condition") + ylim(0,1) + theme(legend.position="none",text=element_text(size=12)) + scale_fill_gradient(trans = 'reverse')

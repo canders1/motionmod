@@ -8,7 +8,7 @@ output: html_document
 ```{r}
 library(dplyr)
 library(ggplot2)
-#source("../../../coding/wellesley_palette.R")
+source("../../../coding/wellesley_palette.R")
 ```
 
 ```{r}
@@ -57,9 +57,9 @@ n <- c("go","cost","utterance","perspective","locSam","locLucy","moveLucy", "mov
 ```
 
 ```{r}
-datanm = "lit_speaker"
+#datanm = "lit_speaker"
 #datanm = "prag_speaker_early"
-#datanm = "prag_speaker"
+datanm = "prag_speaker"
 #datanm = "prag_speaker_double"
 datad = paste0('img/',datanm,'_')
 ```
@@ -130,6 +130,7 @@ facet_go_labs <- c(gop="Perspectival go",nogop="Plain go",prob="Lex. uncertain g
 
 ```{r}
 moveThelma <- subset(pairs, as.character(utterance)=='Thelma is coming to Northampton' | as.character(utterance)=='Thelma is going to Northampton' | as.character(utterance)=='Thelma is walking to Northampton')
+moveSam <- subset(pairs, moveSam=="true")
 ggplot(data=moveThelma,mapping=aes(x=world,y=probability,size=cost,shape=utterance,color=perspective)) + geom_point() + facet_wrap(moveThelma$go.is.p) + scale_color_wellesley(palette = "main")
 ggsave(paste0(datad,"Tmove.pdf"),width=12, height=5)
 ```
@@ -153,6 +154,7 @@ ggsave(paste0(datad,"Tmove_cost0_noprob.pdf"),width=12, height=5)
 
 ```{r}
 pmarg_moveThelma <- subset(p_marginals, as.character(utterance)=='Thelma is coming to Northampton' | as.character(utterance)=='Thelma is going to Northampton' | as.character(utterance)=='Thelma is walking to Northampton' | as.character(utterance)=='NULL')
+pmarg_moveSam <- subset(p_marginals, moveSam=="true")
 ggplot(data=pmarg_moveThelma,mapping=aes(x=world,y=marg.prob,size=cost,color=utterance,shape=utterance)) + geom_point() + facet_wrap(~go.is.p,labeller=as_labeller(facet_go_labs)) + labs(size="Cost",color="Utterance",shape="Utterance")
 ggsave(paste0(datad,"pmarg_Tmove.pdf"),width=12, height=5)
 ```
@@ -177,6 +179,7 @@ f2 <- function(x) {
   r
 }
 
+pmarg_moveSam_nogop <- subset(subset(pmarg_moveSam,go.is.p=='nogop'),cost < 1.1)
 pmarg_moveThelma_nogop <- subset(subset(pmarg_moveThelma,go.is.p=='nogop'),cost < 1.1)
 pmarg_moveThelma_nogop$Condition <- factor(pmarg_moveThelma_nogop$Condition,levels = c("Both", "Speaker", "Listener", "None"))
 
@@ -185,6 +188,21 @@ ggsave(paste0(datad,"pmarg_Tmove_nogop.pdf"),height=3,width=12)
 
 ggplot(data=subset(pmarg_moveThelma_nogop,cost==0|cost==1|cost==0.5),aes(x=utterance,y=marg.prob,fill=cost,group=cost)) + geom_col(position="dodge") + facet_wrap(~Condition, nrow = 1) + ylim(0,1) + ylab("Marginal probability: p(u|w)") + scale_x_discrete(name ="Utterance", labels=c("Thelma is coming to Northampton" = "Come", "Thelma is going to Northampton" = "Go", "Thelma is walking to Northampton" = "Walk")) + theme(legend.position="none",text=element_text(size=14))
 ggsave(paste0(datad,"pmarg_Tmove_nogop_new.pdf"),height=3,width=12)
+
+ggplot(data=subset(pmarg_moveSam_nogop,cost==0|cost==1|cost==0.5),aes(x=utterance,y=marg.prob,fill=cost,group=cost)) + geom_col(position="dodge") + facet_wrap(~Condition, nrow = 1) + ylim(0,1) + ylab("Marginal probability: p(u|w)") + scale_x_discrete(name ="Utterance", labels=c("I am coming to Northampton" = "Come", "I am going to Northampton" = "Go", "I am walking to Northampton" = "Walk")) + theme(legend.position="none",text=element_text(size=14))
+ggsave(paste0(datad,"pmarg_Smove_nogop_new.pdf"),height=3,width=12)
+```
+
+```{r}
+sm <- pmarg_moveSam_nogop %>% mutate(Condition = paste0("Speaker Moving ",Condition))
+list_none <- rbind(pmarg_moveThelma_nogop,sm)
+
+list_none <- list_none %>% mutate(verb = ifelse(grepl("com",utterance),
+                                                "Come",
+                                                ifelse(grepl("go",utterance),"Go","Walk")))
+
+ggplot(data=subset(list_none,(cost==0|cost==1|cost==0.5)&(grepl("List",Condition)|grepl("Moving None",Condition))),aes(x=verb,y=marg.prob,fill=cost,group=cost)) + geom_col(position="dodge") + facet_wrap(~Condition, nrow = 1) + ylim(0,1) + ylab("Marginal probability: p(u|w)") + scale_x_discrete(name ="Utterance", labels=c("I am coming to Northampton" = "Come", "I am going to Northampton" = "Go", "I am walking to Northampton" = "Walk", "Thelma is coming to Northampton" = "Come", "Thelma is going to Northampton" = "Go", "Thelma is walking to Northampton" = "Walk")) + theme(legend.position="none",text=element_text(size=14))
+ggsave(paste0(datad,"pmarg_SmoveTmove_nogop_new.pdf"),height=3,width=12)
 ```
 
 ```{r}

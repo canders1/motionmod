@@ -21,6 +21,15 @@ takes 'speaker' as a cmdline arg to call Pragmatic Speaker instead of Pragmatic 
 Bash script for listener: run_simple.sh
 Bash script for speaker: none
 
+SPEAKER DEFAULT:
+Basic, perspective is always speaker
+speaker_default.wppl
+defines a set of utterances consistent with the speaker's perspective and only samples from that set during the Pragmatic Speaker computation
+includes 'walk' in utterance set
+takes gop or nogop as a cmdline arg
+takes 'speaker' as a cmdline arg to call Pragmatic Speaker instead of Pragmatic Listener
+Bash script: run_default_speaker.sh
+
 Basic, heavily biased towards speaker perspective:
 irrational_speaker.wppl
 defines a set of utterances consistent with each perspective and only samples from that set during the Pragmatic Speaker computation

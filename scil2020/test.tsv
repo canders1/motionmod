@@ -1,25 +1,26 @@
 speaker,cg,generation,sampler,sampled_w_idx,selected_u,speaker_belief,listener_belief,location_pref,name,school/company,major,w_idx,cg_speaker_prob,cg_listener_prob
-n/a,approx,0,weighted,-1,undefined,0.07692307692307693,0.7692307692307693,outdoor,Nancy,University of New Orleans,German,0,0.25,0.25
-n/a,approx,0,weighted,-1,undefined,0.07692307692307693,0.07692307692307693,outdoor,Nathan,Franklin Pierce Law Center,Astronomy,1,0.25,0.25
-n/a,approx,0,weighted,-1,undefined,0.07692307692307693,0.07692307692307693,outdoor,Daniel,State University of New York at Buffalo,German,2,0.25,0.25
-n/a,approx,0,weighted,-1,undefined,0.7692307692307693,0.07692307692307693,outdoor,Gerald,Franklin Pierce Law Center,Hispanic-American Studies,3,0.25,0.25
-a,approx,1,weighted,0,They are female,0.07692307692307693,0.7692307692307693,outdoor,Nancy,University of New Orleans,German,0,0.2592592592592593,0.2592592592592593
-a,approx,1,weighted,0,They are female,0.07692307692307693,0.07692307692307693,outdoor,Nathan,Franklin Pierce Law Center,Astronomy,1,0.2469135802469136,0.2469135802469136
-a,approx,1,weighted,0,They are female,0.07692307692307693,0.07692307692307693,outdoor,Daniel,State University of New York at Buffalo,German,2,0.2469135802469136,0.2469135802469136
-a,approx,1,weighted,0,They are female,0.7692307692307693,0.07692307692307693,outdoor,Gerald,Franklin Pierce Law Center,Hispanic-American Studies,3,0.2469135802469136,0.2469135802469136
-b,approx,2,weighted,3,They are male,0.7692307692307693,0.07692307692307693,outdoor,Nancy,University of New Orleans,German,0,0.24691358024691362,0.24691358024691362
-b,approx,2,weighted,3,They are male,0.07692307692307693,0.07692307692307693,outdoor,Nathan,Franklin Pierce Law Center,Astronomy,1,0.24538598494012445,0.24538598494012445
-b,approx,2,weighted,3,They are male,0.07692307692307693,0.07692307692307693,outdoor,Daniel,State University of New York at Buffalo,German,2,0.25385021740648095,0.25385021740648095
-b,approx,2,weighted,3,They are male,0.07692307692307693,0.7692307692307693,outdoor,Gerald,Franklin Pierce Law Center,Hispanic-American Studies,3,0.25385021740648095,0.25385021740648095
-a,approx,3,weighted,0,They are female,0.07692307692307693,0.7692307692307693,outdoor,Nancy,University of New Orleans,German,0,0.28277483833039396,0.28277483833039396
-a,approx,3,weighted,0,They are female,0.07692307692307693,0.07692307692307693,outdoor,Nathan,Franklin Pierce Law Center,Astronomy,1,0.2337009380382138,0.2337009380382138
-a,approx,3,weighted,0,They are female,0.07692307692307693,0.07692307692307693,outdoor,Daniel,State University of New York at Buffalo,German,2,0.24176211181569618,0.24176211181569618
-a,approx,3,weighted,0,They are female,0.7692307692307693,0.07692307692307693,outdoor,Gerald,Franklin Pierce Law Center,Hispanic-American Studies,3,0.24176211181569618,0.24176211181569618
-b,approx,4,weighted,3,They are male,0.7692307692307693,0.07692307692307693,outdoor,Nancy,University of New Orleans,German,0,0.26930936983847037,0.2693093698384704
-b,approx,4,weighted,3,They are male,0.07692307692307693,0.07692307692307693,outdoor,Nathan,Franklin Pierce Law Center,Astronomy,1,0.23265446495086503,0.23238758405837748
-b,approx,4,weighted,3,They are male,0.07692307692307693,0.07692307692307693,outdoor,Daniel,State University of New York at Buffalo,German,2,0.24901808260533226,0.24915152305157606
-b,approx,4,weighted,3,They are male,0.07692307692307693,0.7692307692307693,outdoor,Gerald,Franklin Pierce Law Center,Hispanic-American Studies,3,0.24901808260533226,0.24915152305157606
-a,approx,5,weighted,0,They are female,0.07692307692307693,0.7692307692307693,outdoor,Nancy,University of New Orleans,German,0,0.3041041617509242,0.3041041617509242
-a,approx,5,weighted,0,They are female,0.07692307692307693,0.07692307692307693,outdoor,Nathan,Franklin Pierce Law Center,Astronomy,1,0.22132150862702615,0.22157568090558577
-a,approx,5,weighted,0,They are female,0.07692307692307693,0.07692307692307693,outdoor,Daniel,State University of New York at Buffalo,German,2,0.2372871648110248,0.23716007867174504
-a,approx,5,weighted,0,They are female,0.7692307692307693,0.07692307692307693,outdoor,Gerald,Franklin Pierce Law Center,Hispanic-American Studies,3,0.2372871648110248,0.23716007867174504
+n/a,approx,0,difference,-1,undefined,0.07692307692307693,0.7692307692307693,outdoor,Nancy,University of New Orleans,German,0,0.25,0.25
+n/a,approx,0,difference,-1,undefined,0.7692307692307693,0.07692307692307693,outdoor,Nathan,Franklin Pierce Law Center,Astronomy,1,0.25,0.25
+n/a,approx,0,difference,-1,undefined,0.07692307692307693,0.07692307692307693,outdoor,Daniel,State University of New York at Buffalo,German,2,0.25,0.25
+n/a,approx,0,difference,-1,undefined,0.07692307692307693,0.07692307692307693,outdoor,Gerald,Franklin Pierce Law Center,Hispanic-American Studies,3,0.25,0.25
+a,approx,1,difference,0,They are female,0.07692307692307693,0.7692307692307693,outdoor,Nancy,University of New Orleans,German,0,0.2592592592592593,0.2592592592592593
+a,approx,1,difference,0,They are female,0.7692307692307693,0.07692307692307693,outdoor,Nathan,Franklin Pierce Law Center,Astronomy,1,0.2469135802469136,0.2469135802469136
+a,approx,1,difference,0,They are female,0.07692307692307693,0.07692307692307693,outdoor,Daniel,State University of New York at Buffalo,German,2,0.2469135802469136,0.2469135802469136
+a,approx,1,difference,0,They are female,0.07692307692307693,0.07692307692307693,outdoor,Gerald,Franklin Pierce Law Center,Hispanic-American Studies,3,0.2469135802469136,0.2469135802469136
+b,approx,2,difference,1,They study a science,0.7692307692307693,0.07692307692307693,outdoor,Nancy,University of New Orleans,German,0,0.24691358024691362,0.24691358024691362
+b,approx,2,difference,1,They study a science,0.07692307692307693,0.7692307692307693,outdoor,Nathan,Franklin Pierce Law Center,Astronomy,1,0.2827748383303939,0.2827748383303939
+b,approx,2,difference,1,They study a science,0.07692307692307693,0.07692307692307693,outdoor,Daniel,State University of New York at Buffalo,German,2,0.23515579071134626,0.23515579071134626
+b,approx,2,difference,1,They study a science,0.07692307692307693,0.07692307692307693,outdoor,Gerald,Franklin Pierce Law Center,Hispanic-American Studies,3,0.23515579071134626,0.23515579071134626
+a,approx,3,difference,0,They are female,0.07692307692307693,0.7692307692307693,outdoor,Nancy,University of New Orleans,German,0,0.2827748383303939,0.2827748383303939
+a,approx,3,difference,0,They are female,0.7692307692307693,0.07692307692307693,outdoor,Nathan,Franklin Pierce Law Center,Astronomy,1,0.26930936983847037,0.26930936983847037
+a,approx,3,difference,0,They are female,0.07692307692307693,0.07692307692307693,outdoor,Daniel,State University of New York at Buffalo,German,2,0.22395789591556786,0.22395789591556786
+a,approx,3,difference,0,They are female,0.07692307692307693,0.07692307692307693,outdoor,Gerald,Franklin Pierce Law Center,Hispanic-American Studies,3,0.22395789591556786,0.22395789591556786
+b,approx,4,difference,1,They study a science,0.7692307692307693,0.07692307692307693,outdoor,Nancy,University of New Orleans,German,0,0.26930936983847037,0.26930936983847037
+b,approx,4,difference,1,They study a science,0.07692307692307693,0.7692307692307693,outdoor,Nathan,Franklin Pierce Law Center,Astronomy,1,0.30410416175092414,0.30410416175092414
+b,approx,4,difference,1,They study a science,0.07692307692307693,0.07692307692307693,outdoor,Daniel,State University of New York at Buffalo,German,2,0.21329323420530272,0.21329323420530272
+b,approx,4,difference,1,They study a science,0.07692307692307693,0.07692307692307693,outdoor,Gerald,Franklin Pierce Law Center,Hispanic-American Studies,3,0.21329323420530272,0.21329323420530272
+a,approx,5,difference,0,They are female,0.07692307692307693,0.7692307692307693,outdoor,Nancy,University of New Orleans,German,0,0.3041041617509242,0.3041041617509242
+a,approx,5,difference,0,They are female,0.7692307692307693,0.07692307692307693,outdoor,Nathan,Franklin Pierce Law Center,Astronomy,1,0.28962301119135636,0.28962301119135636
+a,approx,5,difference,0,They are female,0.07692307692307693,0.07692307692307693,outdoor,Daniel,State University of New York at Buffalo,German,2,0.20313641352885978,0.20313641352885978
+a,approx,5,difference,0,They are female,0.07692307692307693,0.07692307692307693,outdoor,Gerald,Franklin Pierce Law Center,Hispanic-American Studies,3,0.20313641352885978,0.20313641352885978
+undefined

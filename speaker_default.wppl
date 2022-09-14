@@ -20,12 +20,12 @@ var printAll = function(arr,f,c){
 var worlds = [
   //{locSam: 'Amherst', locLucy: 'Amherst', moveLucyNoho: true, moveSamNoho: false, moveThelmaNoho: false},
   {locSam: 'Amherst', locLucy: 'Amherst', moveLucyNoho: false, moveSamNoho: false, moveThelmaNoho: true},
-  //{locSam: 'Amherst', locLucy: 'Amherst', moveLucyNoho: false, moveSamNoho: true, moveThelmaNoho: false},
+  {locSam: 'Amherst', locLucy: 'Amherst', moveLucyNoho: false, moveSamNoho: true, moveThelmaNoho: false},
   {locSam: 'Noho', locLucy: 'Noho', moveLucyNoho: false, moveSamNoho: false, moveThelmaNoho: true},
   //{locSam: 'Noho', locLucy: 'Amherst', moveLucyNoho: true, moveSamNoho: false, moveThelmaNoho: false},
   {locSam: 'Noho', locLucy: 'Amherst', moveLucyNoho: false, moveSamNoho: false, moveThelmaNoho: true},
   {locSam: 'Amherst', locLucy: 'Noho', moveLucyNoho: false, moveSamNoho: false, moveThelmaNoho: true},
-  //{locSam: 'Amherst', locLucy: 'Noho', moveLucyNoho: false, moveSamNoho: true, moveThelmaNoho: false},
+  {locSam: 'Amherst', locLucy: 'Noho', moveLucyNoho: false, moveSamNoho: true, moveThelmaNoho: false},
   ]
 
 var worldPrior = function() {
@@ -62,13 +62,13 @@ var utteranceCost = function(utterance) {
 
 var utterances = [
 //'You are coming to Northampton',
-//'I am coming to Northampton',
+'I am coming to Northampton',
 'Thelma is going to Northampton',
 'Thelma is coming to Northampton',
-//'I am going to Northampton',
+'I am going to Northampton',
 //'You are going to Northampton',
 //'You are walking to Northampton',
-//'I am walking to Northampton',
+'I am walking to Northampton',
 'Thelma is walking to Northampton',
 //'NULL'
 ]
@@ -77,22 +77,22 @@ var non_S_utterances = [
 //'You are coming to Northampton',
 'Thelma is going to Northampton',
 'Thelma is coming to Northampton',
-//'I am going to Northampton',
+'I am going to Northampton',
 //'You are going to Northampton',
 //'You are walking to Northampton',
-//'I am walking to Northampton',
+'I am walking to Northampton',
 'Thelma is walking to Northampton',
 //'NULL'
 ]
 
 var non_L_utterances = [
-//'I am coming to Northampton',
+'I am coming to Northampton',
 'Thelma is going to Northampton',
 'Thelma is coming to Northampton',
-//'I am going to Northampton',
+'I am going to Northampton',
 //'You are going to Northampton',
 //'You are walking to Northampton',
-//'I am walking to Northampton',
+'I am walking to Northampton',
 'Thelma is walking to Northampton',
 //'NULL'
 ]

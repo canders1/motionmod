@@ -57,7 +57,7 @@ n <- c("go","cost","utterance","perspective","locSam","locLucy","moveLucy", "mov
 ```
 
 ```{r}
-datanm = "speaker_basic"
+#datanm = "speaker_basic"
 #datanm = "speaker_basic_simple"
 #datanm = "speaker_sampled_pcost"
 #datanm = "speaker_nonu_w"
@@ -65,7 +65,7 @@ datanm = "speaker_basic"
 #datanm = "speaker_speaker_bias"
 #datanm = "speaker_listener_cost"
 #datanm = "speaker_sample_wp"
-#datanm = "speaker_speaker_default"
+datanm = "speaker_speaker_default"
 datad = paste0('img/',datanm,'_')
 ```
 
@@ -165,6 +165,7 @@ facet_go_labs <- c(gop="Perspectival go",nogop="Plain go",prob="Lex. uncertain g
 
 ```{r}
 moveThelma <- subset(pairs, as.character(utterance)=='Thelma is coming to Northampton' | as.character(utterance)=='Thelma is going to Northampton' | as.character(utterance)=='Thelma is walking to Northampton')
+moveSam <- subset(pairs, moveSam=="true")
 moveThelma.nogop <- subset(moveThelma, go.is.p=='nogop')
 ggplot(data=moveThelma,mapping=aes(x=Condition,y=probability,size=cost,shape=utterance,color=perspective)) + geom_point() + facet_wrap(moveThelma$go.is.p) + ylim(0,1) 
 ggsave(paste0(datad,"Tmove.pdf"),width=12, height=5)
@@ -189,6 +190,7 @@ ggsave(paste0(datad,"Tmove_cost0_noprob.pdf"),width=12, height=5)
 
 ```{r}
 pmarg_moveThelma <- subset(p_marginals, as.character(utterance)=='Thelma is coming to Northampton' | as.character(utterance)=='Thelma is going to Northampton' | as.character(utterance)=='Thelma is walking to Northampton' | as.character(utterance)=='NULL')
+pmarg_moveSam <- subset(p_marginals, moveSam=="true")
 ggplot(data=pmarg_moveThelma,mapping=aes(x=Condition,y=marg.prob,size=cost,color=utterance,shape=utterance)) + geom_point() + facet_wrap(~go.is.p,labeller=as_labeller(facet_go_labs)) + labs(size="Cost",color="Utterance",shape="Utterance") + ylim(0,1) 
 ggsave(paste0(datad,"pmarg_Tmove.pdf"),width=12, height=5)
 ```
@@ -206,6 +208,8 @@ f2 <- function(x) {
   r
 }
 
+pmarg_moveSam_nogop <- subset(subset(pmarg_moveSam,go.is.p=='nogop'),cost < 1.1)
+pmarg_moveSam_gop <- subset(subset(pmarg_moveSam,go.is.p=='gop'),cost < 1.1)
 pmarg_moveThelma_nogop <- subset(subset(pmarg_moveThelma,go.is.p=='nogop'),cost < 1.1)
 pmarg_moveThelma_nogop$Condition <- factor(pmarg_moveThelma_nogop$Condition,levels = c("Both", "Speaker", "Listener", "None"))
 
@@ -214,6 +218,9 @@ ggsave(paste0(datad,"pmarg_Tmove_nogop.pdf"),height=3,width=12)
 
 ggplot(data=subset(pmarg_moveThelma_nogop,cost==0|cost==1|cost==0.5),aes(x=utterance,y=marg.prob,fill=cost,group=cost)) + geom_col(position="dodge") + facet_wrap(~Condition, nrow = 1) + ylim(0,1) + ylab("Marginal probability: p(u|w)") + scale_x_discrete(name ="Utterance", labels=c("Thelma is coming to Northampton" = "Come", "Thelma is going to Northampton" = "Go", "Thelma is walking to Northampton" = "Walk")) + theme(legend.position="none",text=element_text(size=14))
 ggsave(paste0(datad,"pmarg_Tmove_nogop_new.pdf"),height=3,width=12)
+
+ggplot(data=subset(pmarg_moveSam_nogop,cost==0|cost==1|cost==0.5),aes(x=utterance,y=marg.prob,fill=cost,group=cost)) + geom_col(position="dodge") + facet_wrap(~Condition, nrow = 1) + ylim(0,1) + ylab("Marginal probability: p(u|w)") + scale_x_discrete(name ="Utterance", labels=c("I am coming to Northampton" = "Come", "I am going to Northampton" = "Go", "I am walking to Northampton" = "Walk")) + theme(legend.position="none",text=element_text(size=14))
+ggsave(paste0(datad,"pmarg_Smove_nogop_new.pdf"),height=3,width=12)
 ```
 
 ```{r}
@@ -239,6 +246,29 @@ ggsave(paste0(datad,"pmarg_Tmove_prob.pdf"),height=3,width=12)
 
 ggplot(data=subset(pmarg_moveThelma_gop,cost==0|cost==1|cost==0.5),aes(x=utterance,y=marg.prob,fill=cost,group=cost)) + geom_col(position="dodge") + facet_wrap(~Condition, nrow = 1) + ylim(0,1) + ylab("Marginal probability: p(u|w)") + scale_x_discrete(name ="Utterance", labels=c("Thelma is coming to Northampton" = "Come", "Thelma is going to Northampton" = "Go", "Thelma is walking to Northampton" = "Walk")) + theme(legend.position="none",text=element_text(size=14))
 ggsave(paste0(datad,"pmarg_Tmove_gop_new.pdf"),height=3,width=12)
+```
+
+
+```{r}
+sm <- pmarg_moveSam_gop %>% mutate(Condition = paste0("Speaker Moving ",Condition))
+list_none <- rbind(pmarg_moveThelma_gop,sm)
+
+list_none <- list_none %>% mutate(verb = ifelse(grepl("com",utterance),
+                                                "Come",
+                                                ifelse(grepl("go",utterance),"Go","Walk")))
+
+list_none$verb <- factor(list_none$verb)
+
+list_none_filled <- list_none %>% complete(Condition,utterance,verb)
+
+list_none_filled$verb <- as.character(list_none_filled$verb)
+
+filled <- list_none_filled %>% rowwise() %>% mutate(keep = ifelse(grepl(substr(verb, 1,3), utterance, ignore.case = TRUE),1,0)) %>% subset(keep==1)
+```
+
+```{r}
+ggplot(data=subset(filled,(cost==0|cost==1|cost==0.5)&(grepl("List",Condition)|grepl("Moving None",Condition))),aes(x=verb,y=marg.prob,fill=cost,group=cost)) + geom_col(position="dodge") + facet_wrap(~Condition, nrow = 1) + ylim(0,1) + ylab("Marginal probability: p(u|w)") + scale_x_discrete(name ="Utterance", breaks=c("Come", "Go", "Walk")) + theme(legend.position="none",text=element_text(size=14))
+ggsave(paste0(datad,"pmarg_SmoveTmove_gop_new.pdf"),height=3,width=12)
 ```
 
 ```{r}
