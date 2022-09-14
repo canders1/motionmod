@@ -1,0 +1,74 @@
+speaker,cg,generation,sampler,sampled_w_idx,selected_u,listener_belief,speaker_belief,location_pref,name,school/company,major,w_idx,cg_prob
+n/a,shared,0,difference,-1,undefined,0,0,undefined,undefined,undefined,undefined,-1,0.1111111111111111
+n/a,shared,0,difference,-1,undefined,0.125,0.47619047619047616,outdoor,Nancy,University of New Orleans,German,0,0.1111111111111111
+n/a,shared,0,difference,-1,undefined,0.125,0.047619047619047616,indoor,Sally,University of New Orleans,German,1,0.1111111111111111
+n/a,shared,0,difference,-1,undefined,0.125,0.047619047619047616,outdoor,Katie,University of New Orleans,Astronomy,2,0.1111111111111111
+n/a,shared,0,difference,-1,undefined,0.125,0.047619047619047616,indoor,Ina,University of New Orleans,Astronomy,3,0.1111111111111111
+n/a,shared,0,difference,-1,undefined,0.125,0.047619047619047616,outdoor,Gwen,University of New Orleans,German,4,0.1111111111111111
+n/a,shared,0,difference,-1,undefined,0.125,0.047619047619047616,indoor,Diana,University of New Orleans,German,5,0.1111111111111111
+n/a,shared,0,difference,-1,undefined,0.125,0.23809523809523808,outdoor,Felicity,University of New Orleans,Astronomy,6,0.1111111111111111
+n/a,shared,0,difference,-1,undefined,0.125,0.047619047619047616,indoor,Tara,University of New Orleans,Astronomy,7,0.1111111111111111
+a,shared,1,difference,0,They are a student,0,0,undefined,undefined,undefined,undefined,-1,0.10989010989010992
+a,shared,1,difference,0,They are a student,0.125,0.47619047619047616,outdoor,Nancy,University of New Orleans,German,0,0.11263736263736265
+a,shared,1,difference,0,They are a student,0.125,0.047619047619047616,indoor,Sally,University of New Orleans,German,1,0.11263736263736265
+a,shared,1,difference,0,They are a student,0.125,0.047619047619047616,outdoor,Katie,University of New Orleans,Astronomy,2,0.11263736263736265
+a,shared,1,difference,0,They are a student,0.125,0.047619047619047616,indoor,Ina,University of New Orleans,Astronomy,3,0.11263736263736265
+a,shared,1,difference,0,They are a student,0.125,0.047619047619047616,outdoor,Gwen,University of New Orleans,German,4,0.10989010989010992
+a,shared,1,difference,0,They are a student,0.125,0.047619047619047616,indoor,Diana,University of New Orleans,German,5,0.10989010989010992
+a,shared,1,difference,0,They are a student,0.125,0.23809523809523808,outdoor,Felicity,University of New Orleans,Astronomy,6,0.10989010989010992
+a,shared,1,difference,0,They are a student,0.125,0.047619047619047616,indoor,Tara,University of New Orleans,Astronomy,7,0.10989010989010992
+b,shared,2,difference,7,They work,0,0,undefined,undefined,undefined,undefined,-1,0.09990009990009989
+b,shared,2,difference,7,They work,0.47619047619047616,0.125,outdoor,Nancy,University of New Orleans,German,0,0.10239760239760239
+b,shared,2,difference,7,They work,0.047619047619047616,0.125,indoor,Sally,University of New Orleans,German,1,0.10239760239760239
+b,shared,2,difference,7,They work,0.047619047619047616,0.125,outdoor,Katie,University of New Orleans,Astronomy,2,0.10239760239760239
+b,shared,2,difference,7,They work,0.047619047619047616,0.125,indoor,Ina,University of New Orleans,Astronomy,3,0.10239760239760239
+b,shared,2,difference,7,They work,0.047619047619047616,0.125,outdoor,Gwen,University of New Orleans,German,4,0.12262737262737261
+b,shared,2,difference,7,They work,0.047619047619047616,0.125,indoor,Diana,University of New Orleans,German,5,0.12262737262737261
+b,shared,2,difference,7,They work,0.23809523809523808,0.125,outdoor,Felicity,University of New Orleans,Astronomy,6,0.12262737262737261
+b,shared,2,difference,7,They work,0.047619047619047616,0.125,indoor,Tara,University of New Orleans,Astronomy,7,0.12262737262737261
+a,shared,3,difference,0,They are a student,0,0,undefined,undefined,undefined,undefined,-1,0.09081827263645446
+a,shared,3,difference,0,They are a student,0.125,0.47619047619047616,outdoor,Nancy,University of New Orleans,German,0,0.11581600217963856
+a,shared,3,difference,0,They are a student,0.125,0.047619047619047616,indoor,Sally,University of New Orleans,German,1,0.11581600217963856
+a,shared,3,difference,0,They are a student,0.125,0.047619047619047616,outdoor,Katie,University of New Orleans,Astronomy,2,0.11581600217963856
+a,shared,3,difference,0,They are a student,0.125,0.047619047619047616,indoor,Ina,University of New Orleans,Astronomy,3,0.11581600217963856
+a,shared,3,difference,0,They are a student,0.125,0.047619047619047616,outdoor,Gwen,University of New Orleans,German,4,0.11147942966124784
+a,shared,3,difference,0,They are a student,0.125,0.047619047619047616,indoor,Diana,University of New Orleans,German,5,0.11147942966124784
+a,shared,3,difference,0,They are a student,0.125,0.23809523809523808,outdoor,Felicity,University of New Orleans,Astronomy,6,0.11147942966124784
+a,shared,3,difference,0,They are a student,0.125,0.047619047619047616,indoor,Tara,University of New Orleans,Astronomy,7,0.11147942966124784
+b,shared,4,difference,7,They work,0,0,undefined,undefined,undefined,undefined,-1,0.08256206603314042
+b,shared,4,difference,7,They work,0.47619047619047616,0.125,outdoor,Nancy,University of New Orleans,German,0,0.10528727470876233
+b,shared,4,difference,7,They work,0.047619047619047616,0.125,indoor,Sally,University of New Orleans,German,1,0.10528727470876233
+b,shared,4,difference,7,They work,0.047619047619047616,0.125,outdoor,Katie,University of New Orleans,Astronomy,2,0.10528727470876233
+b,shared,4,difference,7,They work,0.047619047619047616,0.125,indoor,Ina,University of New Orleans,Astronomy,3,0.10528727470876233
+b,shared,4,difference,7,They work,0.047619047619047616,0.125,outdoor,Gwen,University of New Orleans,German,4,0.12407220878295257
+b,shared,4,difference,7,They work,0.047619047619047616,0.125,indoor,Diana,University of New Orleans,German,5,0.12407220878295257
+b,shared,4,difference,7,They work,0.23809523809523808,0.125,outdoor,Felicity,University of New Orleans,Astronomy,6,0.12407220878295257
+b,shared,4,difference,7,They work,0.047619047619047616,0.125,indoor,Tara,University of New Orleans,Astronomy,7,0.12407220878295257
+a,shared,5,difference,0,They are a student,0,0,undefined,undefined,undefined,undefined,-1,0.07505642366649129
+a,shared,5,difference,0,They are a student,0.125,0.47619047619047616,outdoor,Nancy,University of New Orleans,German,0,0.11844297700796574
+a,shared,5,difference,0,They are a student,0.125,0.047619047619047616,indoor,Sally,University of New Orleans,German,1,0.11844297700796574
+a,shared,5,difference,0,They are a student,0.125,0.047619047619047616,outdoor,Katie,University of New Orleans,Astronomy,2,0.11844297700796574
+a,shared,5,difference,0,They are a student,0.125,0.047619047619047616,indoor,Ina,University of New Orleans,Astronomy,3,0.11844297700796574
+a,shared,5,difference,0,They are a student,0.125,0.047619047619047616,outdoor,Gwen,University of New Orleans,German,4,0.11279291707541142
+a,shared,5,difference,0,They are a student,0.125,0.047619047619047616,indoor,Diana,University of New Orleans,German,5,0.11279291707541142
+a,shared,5,difference,0,They are a student,0.125,0.23809523809523808,outdoor,Felicity,University of New Orleans,Astronomy,6,0.11279291707541142
+a,shared,5,difference,0,They are a student,0.125,0.047619047619047616,indoor,Tara,University of New Orleans,Astronomy,7,0.11279291707541142
+b,shared,6,difference,7,They work,0,0,undefined,undefined,undefined,undefined,-1,0.068233112424083
+b,shared,6,difference,7,They work,0.47619047619047616,0.125,outdoor,Nancy,University of New Orleans,German,0,0.10767543364360523
+b,shared,6,difference,7,They work,0.047619047619047616,0.125,indoor,Sally,University of New Orleans,German,1,0.10767543364360523
+b,shared,6,difference,7,They work,0.047619047619047616,0.125,outdoor,Katie,University of New Orleans,Astronomy,2,0.10767543364360523
+b,shared,6,difference,7,They work,0.047619047619047616,0.125,indoor,Ina,University of New Orleans,Astronomy,3,0.10767543364360523
+b,shared,6,difference,7,They work,0.047619047619047616,0.125,outdoor,Gwen,University of New Orleans,German,4,0.12526628825037403
+b,shared,6,difference,7,They work,0.047619047619047616,0.125,indoor,Diana,University of New Orleans,German,5,0.12526628825037403
+b,shared,6,difference,7,They work,0.23809523809523808,0.125,outdoor,Felicity,University of New Orleans,Astronomy,6,0.12526628825037403
+b,shared,6,difference,7,They work,0.047619047619047616,0.125,indoor,Tara,University of New Orleans,Astronomy,7,0.12526628825037403
+a,shared,7,difference,0,They are a student,0,0,undefined,undefined,undefined,undefined,-1,0.062030102203711815
+a,shared,7,difference,0,They are a student,0.125,0.47619047619047616,outdoor,Nancy,University of New Orleans,German,0,0.12061403058509566
+a,shared,7,difference,0,They are a student,0.125,0.047619047619047616,indoor,Sally,University of New Orleans,German,1,0.12061403058509566
+a,shared,7,difference,0,They are a student,0.125,0.047619047619047616,outdoor,Katie,University of New Orleans,Astronomy,2,0.12061403058509566
+a,shared,7,difference,0,They are a student,0.125,0.047619047619047616,indoor,Ina,University of New Orleans,Astronomy,3,0.12061403058509566
+a,shared,7,difference,0,They are a student,0.125,0.047619047619047616,outdoor,Gwen,University of New Orleans,German,4,0.11387844386397639
+a,shared,7,difference,0,They are a student,0.125,0.047619047619047616,indoor,Diana,University of New Orleans,German,5,0.11387844386397639
+a,shared,7,difference,0,They are a student,0.125,0.23809523809523808,outdoor,Felicity,University of New Orleans,Astronomy,6,0.11387844386397639
+a,shared,7,difference,0,They are a student,0.125,0.047619047619047616,indoor,Tara,University of New Orleans,Astronomy,7,0.11387844386397639
+undefined

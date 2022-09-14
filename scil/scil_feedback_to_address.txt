@@ -1,0 +1,37 @@
+----------------------- REVIEW 1 ---------------------
+
+It's important to add citations for previous joint-reasoning versions of RSA. The first is the lexical uncertainty model, which is defined just as in (10) in this paper, but with reasoning over the lexicon instead of over the perspective. This is the model used by Potts et al. 2016 (cited), but it was proposed in the first of these papers and developed extensively in this second:
+
+Bergen, Leon, Goodman, Noah D., and Levy, Roger. 2012. That's what she (could have) said: how alternative utterances affect language use. In Naomi Miyake, David Peebles, Richard P. Cooper, ed., Proceedings of the Thirty-Fourth Annual Conference of the Cognitive Science Society, 120–125. Austin, TX: Cognitive Science Society.
+
+Bergen, Leon, Levy, Roger, and Goodman, Noah D. 2016. Pragmatic reasoning through semantic inference. Semantics and Pragmatics 9(20). 
+
+Relatedly:
+
+Kao, Justine T., Wu, Jean Y., Bergen, Leon, and Goodman, Noah D. 2014. Nonliteral understanding of number words. Proceedings of the National Academy of Sciences 111(33): 12002–12007. 
+
+I'm not ready to endorse the reasoning in the paragraph beginning on line 733. The authors observe that their model tends to favor interpretations in which the sentences is true for all potential perspective takers, and they take this to challenge principles according to which the speaker's perspective is the default, or where there is a cost to perspective shifting. I think this doesn't follow, though. All the proposals under discussion acknowledge that there is uncertainty about the perspective. As long as there is, multiple perspectives emerge as the favored -- least uncertain, surest -- interpretations.
+
+***I think it would be good to include the log term in the speaker calculations. Otherwise, I think this isn't giving the desired values; if Cost returns probabilities, then it should be multiplication instead of subtraction, and if Cost returns any positive real, then the listener probabilities aren't being scaled correctly.***
+
+
+----------------------- REVIEW 2 ---------------------
+
+Section 5.1 shows that when interpreting “go”, the model correctly produces lower probabilities for world/perspective pairs when the perspective-holder is at the destination. But it is not clear whether this is a novel contribution of this model or a prediction that the alternatives can make as well. It does demonstrate that pragmatics can produce this effect, but is this a novel insight? 
+
+***Also, the model sometimes shows higher probability when the speaker is at the destination (if the perspective-holder is not), and this seems empirically incorrect. ****
+
+Why not just modify the perspective prior to make speaker perspective more likely, rather than adding the cost parameter? As it is, the perspective cost directly decreases the probability of any message conditioned on that perspective, which seems strange. 
+
+The paragraph starting at line 320 is very confusing. I think there may be a typo in the first sentence. The second sentence is difficult to interpret as well. 
+
+Line 556, “with various parameter settings” -- name the parameters.
+
+Figures 2-4 are much too small, and they are quite difficult to interpret. 
+
+***I was unclear on why only two worlds (per perspective) show predictions for the "come" sentences in Figure 2-4. Is this just because they are at zero? It would be better to show all predictions.***
+
+For the constraint against the perspective-holder being in motion (discussed in Section 5.2), how is that encoded into the model? Is that simply stipulated?
+
+It also isn't clear to me that the prediction described in Section 5.3 would actually be problematic for the alternative hypothesis. I do think experimental participants, if forced to choose a single most likely world, would probably choose the world in which both speaker and listener are at the destination. However, I don’t think the most logical explanation for this is the one suggested by the model (a summing of probabilities over different possible perspectives). I think the more likely explanation would be that the participants find acceptable both / all worlds in which the speaker is at the destination, but when forced to choose one option they draw on other Gricean reasoning, like the statement being more relevant if the listener is also at the destination. This seems consistent with the alternative hypothesis as well.
+

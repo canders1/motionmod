@@ -1,0 +1,72 @@
+speaker,cg,generation,sampler,sampled_w_idx,selected_u,listener_belief,speaker_belief,location_pref,name,school/company,major,w_idx,cg_speaker_prob,cg_listener_prob
+n/a,approx,0,weighted,-1,undefined,0,0,undefined,undefined,undefined,undefined,-1,0.1111111111111111,0.1111111111111111
+n/a,approx,0,weighted,-1,undefined,0.125,0.47619047619047616,outdoor,Nancy,University of New Orleans,German,0,0.1111111111111111,0.1111111111111111
+n/a,approx,0,weighted,-1,undefined,0.125,0.047619047619047616,indoor,Sally,University of New Orleans,German,1,0.1111111111111111,0.1111111111111111
+n/a,approx,0,weighted,-1,undefined,0.125,0.047619047619047616,outdoor,Katie,University of New Orleans,Astronomy,2,0.1111111111111111,0.1111111111111111
+n/a,approx,0,weighted,-1,undefined,0.125,0.047619047619047616,indoor,Ina,University of New Orleans,Astronomy,3,0.1111111111111111,0.1111111111111111
+n/a,approx,0,weighted,-1,undefined,0.125,0.047619047619047616,outdoor,Gwen,University of New Orleans,German,4,0.1111111111111111,0.1111111111111111
+n/a,approx,0,weighted,-1,undefined,0.125,0.047619047619047616,indoor,Diana,University of New Orleans,German,5,0.1111111111111111,0.1111111111111111
+n/a,approx,0,weighted,-1,undefined,0.125,0.23809523809523808,outdoor,Felicity,University of New Orleans,Astronomy,6,0.1111111111111111,0.1111111111111111
+n/a,approx,0,weighted,-1,undefined,0.125,0.047619047619047616,indoor,Tara,University of New Orleans,Astronomy,7,0.1111111111111111,0.1111111111111111
+[
+  0.1111111111111111,
+  0.1111111111111111,
+  0.1111111111111111,
+  0.1111111111111111,
+  0.1111111111111111,
+  0.1111111111111111,
+  0.1111111111111111,
+  0.1111111111111111,
+  0.1111111111111111
+]
+[
+  -3.1699250014423126,
+  -3.1699250014423126,
+  -3.1699250014423126,
+  -3.1699250014423126,
+  -3.1699250014423126,
+  -3.1699250014423126,
+  -3.1699250014423126,
+  -3.1699250014423126,
+  -3.1699250014423126
+]
+[
+  -0.3522138890491458,
+  -0.3522138890491458,
+  -0.3522138890491458,
+  -0.3522138890491458,
+  -0.3522138890491458,
+  -0.3522138890491458,
+  -0.3522138890491458,
+  -0.3522138890491458,
+  -0.3522138890491458
+]
+[
+      0, 0.125, 0.125,
+  0.125, 0.125, 0.125,
+  0.125, 0.125, 0.125
+]
+[ -Infinity, -3, -3, -3, -3, -3, -3, -3, -3 ]
+[
+     NaN, -0.375,
+  -0.375, -0.375,
+  -0.375, -0.375,
+  -0.375, -0.375,
+  -0.375
+]
+
+[1mError: Parameter "ps" should be of type "vector or real array [0, Infinity)".[22m
+    at /usr/local/lib/node_modules/webppl/src/dists/base.js:119
+
+[2m118| [22m                    if (type && !type.check(ad.valueRec(params[p]))) {
+[2m119| [22m[1m                        throw new Error('Parameter "' + p + '" should be of type "' + type.desc + '".');[22m
+     ------------------------------^
+[2m120| [22m                    }
+
+    at conversation_update.wppl:236
+
+[2m235| [22mvar getWorldDist = function(worlds,worldPs) {
+[2m236| [22m[1m	return Categorical({ps: worldPs,vs: worlds})[22m
+     --------^
+[2m237| [22m}
+

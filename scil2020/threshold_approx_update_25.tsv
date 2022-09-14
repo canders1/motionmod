@@ -1,0 +1,13 @@
+speaker,cg,generation,sampler,sampled_w_idx,selected_u,listener_belief,speaker_belief,location_pref,name,school/company,major,w_idx,cg_speaker_prob,cg_listener_prob
+n/a,approx,0,threshold,-1,undefined,0.25,0.7692307692307693,outdoor,Nancy,University of New Orleans,German,0,0.25,0.25
+n/a,approx,0,threshold,-1,undefined,0.25,0.07692307692307693,indoor,Sally,University of New Orleans,German,1,0.25,0.25
+n/a,approx,0,threshold,-1,undefined,0.25,0.07692307692307693,outdoor,Katie,University of New Orleans,Astronomy,2,0.25,0.25
+n/a,approx,0,threshold,-1,undefined,0.25,0.07692307692307693,indoor,Ina,University of New Orleans,Astronomy,3,0.25,0.25
+All paths explored by Enumerate have probability zero...quit enumerate
+Using "rejection"
+0.00 samples/sec is below threshold...quit rejection
+Using "MCMC"
+Initialization warning [1/4]: Trace not initialized after 1000 attempts.
+Initialization warning [2/4]: Trace not initialized after 10000 attempts.
+Initialization warning [3/4]: Trace not initialized after 100000 attempts.
+Initialization warning [4/4]: Trace not initialized after 1000000 attempts.

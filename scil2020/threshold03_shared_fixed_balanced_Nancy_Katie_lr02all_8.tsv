@@ -1,0 +1,38 @@
+speaker,cg,generation,sampler,sampled_w_idx,selected_u,listener_belief,speaker_belief,location_pref,name,school/company,major,w_idx,cg_prob
+n/a,shared,0,threshold,-1,undefined,0.07692307692307693,0.7692307692307693,outdoor,Nancy,University of New Orleans,German,0,0.25
+n/a,shared,0,threshold,-1,undefined,0.07692307692307693,0.07692307692307693,indoor,Sally,University of New Orleans,German,1,0.25
+n/a,shared,0,threshold,-1,undefined,0.7692307692307693,0.07692307692307693,outdoor,Katie,University of New Orleans,Astronomy,2,0.25
+n/a,shared,0,threshold,-1,undefined,0.07692307692307693,0.07692307692307693,indoor,Ina,University of New Orleans,Astronomy,3,0.25
+a,shared,1,threshold,0,They study a humanity,0.07692307692307693,0.7692307692307693,outdoor,Nancy,University of New Orleans,German,0,0.2619047619047619
+a,shared,1,threshold,0,They study a humanity,0.07692307692307693,0.07692307692307693,indoor,Sally,University of New Orleans,German,1,0.2619047619047619
+a,shared,1,threshold,0,They study a humanity,0.7692307692307693,0.07692307692307693,outdoor,Katie,University of New Orleans,Astronomy,2,0.23809523809523808
+a,shared,1,threshold,0,They study a humanity,0.07692307692307693,0.07692307692307693,indoor,Ina,University of New Orleans,Astronomy,3,0.23809523809523808
+b,shared,2,threshold,2,They study a science,0.7692307692307693,0.07692307692307693,outdoor,Nancy,University of New Orleans,German,0,0.21825396825396828
+b,shared,2,threshold,2,They study a science,0.07692307692307693,0.07692307692307693,indoor,Sally,University of New Orleans,German,1,0.21825396825396828
+b,shared,2,threshold,2,They study a science,0.07692307692307693,0.7692307692307693,outdoor,Katie,University of New Orleans,Astronomy,2,0.28174603174603174
+b,shared,2,threshold,2,They study a science,0.07692307692307693,0.07692307692307693,indoor,Ina,University of New Orleans,Astronomy,3,0.28174603174603174
+a,shared,3,threshold,0,They study a humanity,0.07692307692307693,0.7692307692307693,outdoor,Nancy,University of New Orleans,German,0,0.26521164021164023
+a,shared,3,threshold,0,They study a humanity,0.07692307692307693,0.07692307692307693,indoor,Sally,University of New Orleans,German,1,0.26521164021164023
+a,shared,3,threshold,0,They study a humanity,0.7692307692307693,0.07692307692307693,outdoor,Katie,University of New Orleans,Astronomy,2,0.2347883597883598
+a,shared,3,threshold,0,They study a humanity,0.07692307692307693,0.07692307692307693,indoor,Ina,University of New Orleans,Astronomy,3,0.2347883597883598
+b,shared,4,threshold,2,They study a science,0.7692307692307693,0.07692307692307693,outdoor,Nancy,University of New Orleans,German,0,0.22100970017636687
+b,shared,4,threshold,2,They study a science,0.07692307692307693,0.07692307692307693,indoor,Sally,University of New Orleans,German,1,0.22100970017636687
+b,shared,4,threshold,2,They study a science,0.07692307692307693,0.7692307692307693,outdoor,Katie,University of New Orleans,Astronomy,2,0.27899029982363316
+b,shared,4,threshold,2,They study a science,0.07692307692307693,0.07692307692307693,indoor,Ina,University of New Orleans,Astronomy,3,0.27899029982363316
+a,shared,5,threshold,0,They study a humanity,0.07692307692307693,0.7692307692307693,outdoor,Nancy,University of New Orleans,German,0,0.26750808348030575
+a,shared,5,threshold,0,They study a humanity,0.07692307692307693,0.07692307692307693,indoor,Sally,University of New Orleans,German,1,0.26750808348030575
+a,shared,5,threshold,0,They study a humanity,0.7692307692307693,0.07692307692307693,outdoor,Katie,University of New Orleans,Astronomy,2,0.2324919165196943
+a,shared,5,threshold,0,They study a humanity,0.07692307692307693,0.07692307692307693,indoor,Ina,University of New Orleans,Astronomy,3,0.2324919165196943
+b,shared,6,threshold,2,They study a science,0.7692307692307693,0.07692307692307693,outdoor,Nancy,University of New Orleans,German,0,0.2229234029002548
+b,shared,6,threshold,2,They study a science,0.07692307692307693,0.07692307692307693,indoor,Sally,University of New Orleans,German,1,0.2229234029002548
+b,shared,6,threshold,2,They study a science,0.07692307692307693,0.7692307692307693,outdoor,Katie,University of New Orleans,Astronomy,2,0.27707659709974525
+b,shared,6,threshold,2,They study a science,0.07692307692307693,0.07692307692307693,indoor,Ina,University of New Orleans,Astronomy,3,0.27707659709974525
+a,shared,7,threshold,0,They study a humanity,0.07692307692307693,0.7692307692307693,outdoor,Nancy,University of New Orleans,German,0,0.26910283575021227
+a,shared,7,threshold,0,They study a humanity,0.07692307692307693,0.07692307692307693,indoor,Sally,University of New Orleans,German,1,0.26910283575021227
+a,shared,7,threshold,0,They study a humanity,0.7692307692307693,0.07692307692307693,outdoor,Katie,University of New Orleans,Astronomy,2,0.23089716424978768
+a,shared,7,threshold,0,They study a humanity,0.07692307692307693,0.07692307692307693,indoor,Ina,University of New Orleans,Astronomy,3,0.23089716424978768
+b,shared,8,threshold,2,They study a science,0.7692307692307693,0.07692307692307693,outdoor,Nancy,University of New Orleans,German,0,0.2242523631251769
+b,shared,8,threshold,2,They study a science,0.07692307692307693,0.07692307692307693,indoor,Sally,University of New Orleans,German,1,0.2242523631251769
+b,shared,8,threshold,2,They study a science,0.07692307692307693,0.7692307692307693,outdoor,Katie,University of New Orleans,Astronomy,2,0.27574763687482307
+b,shared,8,threshold,2,They study a science,0.07692307692307693,0.07692307692307693,indoor,Ina,University of New Orleans,Astronomy,3,0.27574763687482307
+undefined

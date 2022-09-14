@@ -1,0 +1,4 @@
+{"Major": "German", "School": "University of New Orleans", "Name": "Nancy", "Location Preference": "outdoor"}
+{"Major": "Astronomy", "School": "Franklin Pierce Law Center", "Name": "Nathan", "Location Preference": "outdoor"}
+{"Major": "German", "School": "State University of New York at Buffalo", "Name": "Daniel", "Location Preference": "outdoor"}
+{"Major": "Hispanic-American Studies", "School": "Franklin Pierce Law Center", "Name": "Gerald", "Location Preference": "outdoor"}

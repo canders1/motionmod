@@ -1,0 +1,73 @@
+speaker,cg,generation,sampler,sampled_w_idx,selected_u,speaker_belief,listener_belief,location_pref,name,school/company,major,w_idx,cg_prob
+n/a,shared,0,weighted,-1,undefined,0.009345794392523364,0.009345794392523364,outdoor,Nancy,University of New Orleans,German,0,0.125
+n/a,shared,0,weighted,-1,undefined,0.009345794392523364,0.9345794392523364,indoor,Sally,University of New Orleans,German,0,0.125
+n/a,shared,0,weighted,-1,undefined,0.009345794392523364,0.009345794392523364,outdoor,Katie,University of New Orleans,Astronomy,0,0.125
+n/a,shared,0,weighted,-1,undefined,0.9345794392523364,0.009345794392523364,indoor,Ina,University of New Orleans,Astronomy,0,0.125
+n/a,shared,0,weighted,-1,undefined,0.009345794392523364,0.009345794392523364,outdoor,Gwen,University of New Orleans,German,0,0.125
+n/a,shared,0,weighted,-1,undefined,0.009345794392523364,0.009345794392523364,indoor,Diana,University of New Orleans,German,0,0.125
+n/a,shared,0,weighted,-1,undefined,0.009345794392523364,0.009345794392523364,outdoor,Felicity,University of New Orleans,Astronomy,0,0.125
+n/a,shared,0,weighted,-1,undefined,0.009345794392523364,0.009345794392523364,indoor,Tara,University of New Orleans,Astronomy,0,0.125
+a,shared,1,weighted,0,They are a student,0.009345794392523364,0.009345794392523364,outdoor,Nancy,University of New Orleans,German,0,0.12577639751552797
+a,shared,1,weighted,0,They are a student,0.009345794392523364,0.9345794392523364,indoor,Sally,University of New Orleans,German,0,0.12577639751552797
+a,shared,1,weighted,0,They are a student,0.009345794392523364,0.009345794392523364,outdoor,Katie,University of New Orleans,Astronomy,0,0.12577639751552797
+a,shared,1,weighted,0,They are a student,0.9345794392523364,0.009345794392523364,indoor,Ina,University of New Orleans,Astronomy,0,0.12577639751552797
+a,shared,1,weighted,0,They are a student,0.009345794392523364,0.009345794392523364,outdoor,Gwen,University of New Orleans,German,0,0.12422360248447205
+a,shared,1,weighted,0,They are a student,0.009345794392523364,0.009345794392523364,indoor,Diana,University of New Orleans,German,0,0.12422360248447205
+a,shared,1,weighted,0,They are a student,0.009345794392523364,0.009345794392523364,outdoor,Felicity,University of New Orleans,Astronomy,0,0.12422360248447205
+a,shared,1,weighted,0,They are a student,0.009345794392523364,0.009345794392523364,indoor,Tara,University of New Orleans,Astronomy,0,0.12422360248447205
+b,shared,2,weighted,0,They study a science,0.009345794392523364,0.009345794392523364,outdoor,Nancy,University of New Orleans,German,0,0.11978704525288376
+b,shared,2,weighted,0,They study a science,0.9345794392523364,0.009345794392523364,indoor,Sally,University of New Orleans,German,0,0.11978704525288376
+b,shared,2,weighted,0,They study a science,0.009345794392523364,0.009345794392523364,outdoor,Katie,University of New Orleans,Astronomy,0,0.13178687577543902
+b,shared,2,weighted,0,They study a science,0.009345794392523364,0.9345794392523364,indoor,Ina,University of New Orleans,Astronomy,0,0.13178687577543902
+b,shared,2,weighted,0,They study a science,0.009345794392523364,0.009345794392523364,outdoor,Gwen,University of New Orleans,German,0,0.11830819284235433
+b,shared,2,weighted,0,They study a science,0.009345794392523364,0.009345794392523364,indoor,Diana,University of New Orleans,German,0,0.11830819284235433
+b,shared,2,weighted,0,They study a science,0.009345794392523364,0.009345794392523364,outdoor,Felicity,University of New Orleans,Astronomy,0,0.1301178861293229
+b,shared,2,weighted,0,They study a science,0.009345794392523364,0.009345794392523364,indoor,Tara,University of New Orleans,Astronomy,0,0.1301178861293229
+a,shared,3,weighted,0,They study a humanity,0.009345794392523364,0.009345794392523364,outdoor,Nancy,University of New Orleans,German,0,0.1260827166075989
+a,shared,3,weighted,0,They study a humanity,0.009345794392523364,0.9345794392523364,indoor,Sally,University of New Orleans,German,0,0.1260827166075989
+a,shared,3,weighted,0,They study a humanity,0.009345794392523364,0.009345794392523364,outdoor,Katie,University of New Orleans,Astronomy,0,0.1255113102623229
+a,shared,3,weighted,0,They study a humanity,0.9345794392523364,0.009345794392523364,indoor,Ina,University of New Orleans,Astronomy,0,0.1255113102623229
+a,shared,3,weighted,0,They study a humanity,0.009345794392523364,0.009345794392523364,outdoor,Gwen,University of New Orleans,German,0,0.12448417681643739
+a,shared,3,weighted,0,They study a humanity,0.009345794392523364,0.009345794392523364,indoor,Diana,University of New Orleans,German,0,0.12448417681643739
+a,shared,3,weighted,0,They study a humanity,0.009345794392523364,0.009345794392523364,outdoor,Felicity,University of New Orleans,Astronomy,0,0.12392179631364086
+a,shared,3,weighted,0,They study a humanity,0.009345794392523364,0.009345794392523364,indoor,Tara,University of New Orleans,Astronomy,0,0.12392179631364086
+b,shared,4,weighted,0,They study a science,0.009345794392523364,0.009345794392523364,outdoor,Nancy,University of New Orleans,German,0,0.12007877772152276
+b,shared,4,weighted,0,They study a science,0.9345794392523364,0.009345794392523364,indoor,Sally,University of New Orleans,German,0,0.12007877772152276
+b,shared,4,weighted,0,They study a science,0.009345794392523364,0.009345794392523364,outdoor,Katie,University of New Orleans,Astronomy,0,0.1315368791374541
+b,shared,4,weighted,0,They study a science,0.009345794392523364,0.9345794392523364,indoor,Ina,University of New Orleans,Astronomy,0,0.1315368791374541
+b,shared,4,weighted,0,They study a science,0.009345794392523364,0.009345794392523364,outdoor,Gwen,University of New Orleans,German,0,0.11855635887279753
+b,shared,4,weighted,0,They study a science,0.009345794392523364,0.009345794392523364,indoor,Diana,University of New Orleans,German,0,0.11855635887279753
+b,shared,4,weighted,0,They study a science,0.009345794392523364,0.009345794392523364,outdoor,Felicity,University of New Orleans,Astronomy,0,0.12982798426822564
+b,shared,4,weighted,0,They study a science,0.009345794392523364,0.009345794392523364,indoor,Tara,University of New Orleans,Astronomy,0,0.12982798426822564
+a,shared,5,weighted,0,They study a humanity,0.009345794392523364,0.009345794392523364,outdoor,Nancy,University of New Orleans,German,0,0.12636313746709407
+a,shared,5,weighted,0,They study a humanity,0.009345794392523364,0.9345794392523364,indoor,Sally,University of New Orleans,German,0,0.12636313746709407
+a,shared,5,weighted,0,They study a humanity,0.009345794392523364,0.009345794392523364,outdoor,Katie,University of New Orleans,Astronomy,0,0.12527321822614676
+a,shared,5,weighted,0,They study a humanity,0.9345794392523364,0.009345794392523364,indoor,Ina,University of New Orleans,Astronomy,0,0.12527321822614676
+a,shared,5,weighted,0,They study a humanity,0.009345794392523364,0.009345794392523364,outdoor,Gwen,University of New Orleans,German,0,0.12471794500368713
+a,shared,5,weighted,0,They study a humanity,0.009345794392523364,0.009345794392523364,indoor,Diana,University of New Orleans,German,0,0.12471794500368713
+a,shared,5,weighted,0,They study a humanity,0.009345794392523364,0.009345794392523364,outdoor,Felicity,University of New Orleans,Astronomy,0,0.12364569930307204
+a,shared,5,weighted,0,They study a humanity,0.009345794392523364,0.009345794392523364,indoor,Tara,University of New Orleans,Astronomy,0,0.12364569930307204
+b,shared,6,weighted,0,They study a science,0.009345794392523364,0.009345794392523364,outdoor,Nancy,University of New Orleans,German,0,0.12034584520675623
+b,shared,6,weighted,0,They study a science,0.9345794392523364,0.009345794392523364,indoor,Sally,University of New Orleans,German,0,0.12034584520675623
+b,shared,6,weighted,0,They study a science,0.009345794392523364,0.009345794392523364,outdoor,Katie,University of New Orleans,Astronomy,0,0.13131266149223858
+b,shared,6,weighted,0,They study a science,0.009345794392523364,0.9345794392523364,indoor,Ina,University of New Orleans,Astronomy,0,0.13131266149223858
+b,shared,6,weighted,0,They study a science,0.009345794392523364,0.009345794392523364,outdoor,Gwen,University of New Orleans,German,0,0.11877899524160676
+b,shared,6,weighted,0,They study a science,0.009345794392523364,0.009345794392523364,indoor,Diana,University of New Orleans,German,0,0.11877899524160676
+b,shared,6,weighted,0,They study a science,0.009345794392523364,0.009345794392523364,outdoor,Felicity,University of New Orleans,Astronomy,0,0.12956249805939832
+b,shared,6,weighted,0,They study a science,0.009345794392523364,0.009345794392523364,indoor,Tara,University of New Orleans,Astronomy,0,0.12956249805939832
+a,shared,7,weighted,0,They study a humanity,0.009345794392523364,0.009345794392523364,outdoor,Nancy,University of New Orleans,German,0,0.12662013250242785
+a,shared,7,weighted,0,They study a humanity,0.009345794392523364,0.9345794392523364,indoor,Sally,University of New Orleans,German,0,0.12662013250242785
+a,shared,7,weighted,0,They study a humanity,0.009345794392523364,0.009345794392523364,outdoor,Katie,University of New Orleans,Astronomy,0,0.12505967761165582
+a,shared,7,weighted,0,They study a humanity,0.9345794392523364,0.009345794392523364,indoor,Ina,University of New Orleans,Astronomy,0,0.12505967761165582
+a,shared,7,weighted,0,They study a humanity,0.009345794392523364,0.009345794392523364,outdoor,Gwen,University of New Orleans,German,0,0.12492733459125123
+a,shared,7,weighted,0,They study a humanity,0.009345794392523364,0.009345794392523364,indoor,Diana,University of New Orleans,German,0,0.12492733459125123
+a,shared,7,weighted,0,They study a humanity,0.009345794392523364,0.009345794392523364,outdoor,Felicity,University of New Orleans,Astronomy,0,0.12339285529466508
+a,shared,7,weighted,0,They study a humanity,0.009345794392523364,0.009345794392523364,indoor,Tara,University of New Orleans,Astronomy,0,0.12339285529466508
+b,shared,8,weighted,0,They study a science,0.009345794392523364,0.009345794392523364,outdoor,Nancy,University of New Orleans,German,0,0.12059060238326463
+b,shared,8,weighted,0,They study a science,0.9345794392523364,0.009345794392523364,indoor,Sally,University of New Orleans,German,0,0.12059060238326463
+b,shared,8,weighted,0,They study a science,0.009345794392523364,0.009345794392523364,outdoor,Katie,University of New Orleans,Astronomy,0,0.13111189700654188
+b,shared,8,weighted,0,They study a science,0.009345794392523364,0.9345794392523364,indoor,Ina,University of New Orleans,Astronomy,0,0.13111189700654188
+b,shared,8,weighted,0,They study a science,0.009345794392523364,0.009345794392523364,outdoor,Gwen,University of New Orleans,German,0,0.11897841389642977
+b,shared,8,weighted,0,They study a science,0.009345794392523364,0.009345794392523364,indoor,Diana,University of New Orleans,German,0,0.11897841389642977
+b,shared,8,weighted,0,They study a science,0.009345794392523364,0.009345794392523364,outdoor,Felicity,University of New Orleans,Astronomy,0,0.12931908671376377
+b,shared,8,weighted,0,They study a science,0.009345794392523364,0.009345794392523364,indoor,Tara,University of New Orleans,Astronomy,0,0.12931908671376377

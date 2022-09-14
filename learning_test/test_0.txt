@@ -1,0 +1,351 @@
+Belief: {"Major":"German","School":"University of New Orleans","Name":"Nancy","Location Preference":"outdoor"}
+Gen 0
+Observed: {"Major":"German","School":"University of New Orleans","Name":"Nancy","Location Preference":"outdoor"}
+Uttered: "They are female"
+Interpretation: {"probs":[0.45341614906832284,0.5465838509316772],"support":[{"Major":"Social Work & Social Services","Company":"Commercial Metals Company","Name":"Mary","Location Preference":"outdoor"},{"Major":"German","School":"University of New Orleans","Name":"Nancy","Location Preference":"outdoor"}]}
+Speaker dist: 0.10396039603960396,0.099009900990099,0.099009900990099,0.099009900990099,0.099009900990099,0.099009900990099,0.099009900990099,0.099009900990099,0.099009900990099,0.10396039603960396
+Listener dist: 0.10442162228645224,0.09900990099009901,0.09900990099009901,0.09900990099009901,0.09900990099009901,0.09900990099009901,0.09900990099009901,0.09900990099009901,0.09900990099009901,0.10349916979275567
+Belief: {"Major":"German","School":"University of New Orleans","Name":"Nancy","Location Preference":"outdoor"}
+Gen 1
+Observed: {"Major":"German","School":"University of New Orleans","Name":"Nancy","Location Preference":"outdoor"}
+Uttered: "They are female"
+Interpretation: {"probs":[0.4518941817407647,0.5481058182592352],"support":[{"Major":"Social Work & Social Services","Company":"Commercial Metals Company","Name":"Mary","Location Preference":"outdoor"},{"Major":"German","School":"University of New Orleans","Name":"Nancy","Location Preference":"outdoor"}]}
+Speaker dist: 0.13996399639963997,0.09000900090009001,0.09000900090009001,0.09000900090009001,0.09000900090009001,0.09000900090009001,0.09000900090009001,0.09000900090009001,0.09000900090009001,0.13996399639963997
+Listener dist: 0.1447565491930689,0.09000900090009002,0.09000900090009002,0.09000900090009002,0.09000900090009002,0.09000900090009002,0.09000900090009002,0.09000900090009002,0.09000900090009002,0.13517144360621106
+Belief: {"Major":"German","School":"University of New Orleans","Name":"Nancy","Location Preference":"outdoor"}
+Gen 2
+Observed: {"Major":"German","School":"University of New Orleans","Name":"Nancy","Location Preference":"outdoor"}
+Uttered: "They are female"
+Interpretation: {"probs":[0.44412432297749377,0.5558756770225064],"support":[{"Major":"Social Work & Social Services","Company":"Commercial Metals Company","Name":"Mary","Location Preference":"outdoor"},{"Major":"German","School":"University of New Orleans","Name":"Nancy","Location Preference":"outdoor"}]}
+Speaker dist: 0.17269454218149088,0.08182636445462728,0.08182636445462728,0.08182636445462728,0.08182636445462728,0.08182636445462728,0.08182636445462728,0.08182636445462728,0.08182636445462728,0.17269454218149088
+Listener dist: 0.1821310153593814,0.08182636445462729,0.08182636445462729,0.08182636445462729,0.08182636445462729,0.08182636445462729,0.08182636445462729,0.08182636445462729,0.08182636445462729,0.16325806900360038
+Belief: {"Major":"German","School":"University of New Orleans","Name":"Nancy","Location Preference":"outdoor"}
+Gen 3
+Observed: {"Major":"Ceramic Engineering","Company":"Commercial Metals Company","Name":"Nathan","Location Preference":"outdoor"}
+Uttered: "They work"
+Interpretation: {"probs":[0.6544842670905217,0.34551573290947846],"support":[{"Major":"Social Work & Social Services","Company":"Commercial Metals Company","Name":"Mary","Location Preference":"outdoor"},{"Major":"Ceramic Engineering","Company":"Commercial Metals Company","Name":"Nathan","Location Preference":"outdoor"}]}
+Speaker dist: 0.1569950383468099,0.07438760404966116,0.07438760404966116,0.07438760404966116,0.10361412419404016,0.07438760404966116,0.07438760404966116,0.07438760404966116,0.07438760404966116,0.21867760911152176
+Listener dist: 0.16557365032671031,0.07438760404966116,0.07438760404966116,0.07438760404966116,0.1057981252232501,0.07438760404966116,0.07438760404966116,0.07438760404966116,0.07438760404966116,0.20791499610241135
+Belief: {"Major":"German","School":"University of New Orleans","Name":"Nancy","Location Preference":"outdoor"}
+Gen 4
+Observed: {"Major":"German","School":"University of New Orleans","Name":"Nancy","Location Preference":"outdoor"}
+Uttered: "They study a humanity"
+Interpretation: {"probs":[0.27998827991233133,0.27998827991233133,0.44002344017533723],"support":[{"Major":"Hispanic-American Studies","School":"Franklin Pierce Law Center","Name":"Gerald","Location Preference":"outdoor"},{"Major":"German","School":"State University of New York at Buffalo","Name":"Daniel","Location Preference":"outdoor"},{"Major":"German","School":"University of New Orleans","Name":"Nancy","Location Preference":"outdoor"}]}
+Speaker dist: 0.1893992336974184,0.06762509459060106,0.0897414042631691,0.0897414042631691,0.09419465835821834,0.06762509459060106,0.06762509459060106,0.06762509459060106,0.06762509459060106,0.1987978264650198
+Listener dist: 0.19052363122204005,0.06762509459060106,0.09307857458263118,0.09307857458263118,0.09618011383931829,0.06762509459060106,0.06762509459060106,0.06762509459060106,0.06762509459060106,0.18901363282037398
+Belief: {"Major":"Astronomy","School":"Franklin Pierce Law Center","Name":"Nathan","Location Preference":"outdoor"}
+Gen 0
+Observed: {"Major":"Astronomy","School":"Franklin Pierce Law Center","Name":"Nathan","Location Preference":"outdoor"}
+Uttered: "Their name starts with N"
+Interpretation: {"probs":[0.2984805552962312,0.2114505877692523,0.2984805552962312,0.19158830163828544],"support":[{"Major":"Astronomy","School":"Saint Mary's College of California","Name":"Nathan","Location Preference":"outdoor"},{"Major":"Ceramic Engineering","Company":"Commercial Metals Company","Name":"Nathan","Location Preference":"outdoor"},{"Major":"Astronomy","School":"Franklin Pierce Law Center","Name":"Nathan","Location Preference":"outdoor"},{"Major":"German","School":"University of New Orleans","Name":"Nancy","Location Preference":"outdoor"}]}
+Speaker dist: 0.10148514851485146,0.10148514851485146,0.099009900990099,0.099009900990099,0.10148514851485146,0.099009900990099,0.099009900990099,0.099009900990099,0.10148514851485146,0.099009900990099
+Listener dist: 0.10090681486770581,0.10196515401283399,0.09900990099009901,0.09900990099009901,0.10110347116603222,0.09900990099009901,0.09900990099009901,0.09900990099009901,0.10196515401283399,0.09900990099009901
+Belief: {"Major":"Astronomy","School":"Franklin Pierce Law Center","Name":"Nathan","Location Preference":"outdoor"}
+Gen 1
+Observed: {"Major":"German","School":"University of New Orleans","Name":"Nancy","Location Preference":"outdoor"}
+Uttered: "They are female"
+Interpretation: {"probs":[0.44761288447483905,0.5523871155251608],"support":[{"Major":"Social Work & Social Services","Company":"Commercial Metals Company","Name":"Mary","Location Preference":"outdoor"},{"Major":"German","School":"University of New Orleans","Name":"Nancy","Location Preference":"outdoor"}]}
+Speaker dist: 0.13827493860497161,0.09225922592259225,0.09000900090009001,0.09000900090009001,0.09225922592259225,0.09000900090009001,0.09000900090009001,0.09000900090009001,0.09225922592259225,0.13490237912680159
+Listener dist: 0.14195047856383808,0.0926955945571218,0.09000900090009001,0.09000900090009001,0.09191224651457473,0.09000900090009001,0.09000900090009001,0.09000900090009001,0.0926955945571218,0.13070108130689356
+Belief: {"Major":"Astronomy","School":"Franklin Pierce Law Center","Name":"Nathan","Location Preference":"outdoor"}
+Gen 2
+Observed: {"Major":"Astronomy","School":"Franklin Pierce Law Center","Name":"Nathan","Location Preference":"outdoor"}
+Uttered: "Their name starts with N"
+Interpretation: {"probs":[0.2579142483998943,0.1903465127530147,0.2579142483998943,0.29382499044719673],"support":[{"Major":"Astronomy","School":"Saint Mary's College of California","Name":"Nathan","Location Preference":"outdoor"},{"Major":"Ceramic Engineering","Company":"Commercial Metals Company","Name":"Nathan","Location Preference":"outdoor"},{"Major":"Astronomy","School":"Franklin Pierce Law Center","Name":"Nathan","Location Preference":"outdoor"},{"Major":"German","School":"University of New Orleans","Name":"Nancy","Location Preference":"outdoor"}]}
+Speaker dist: 0.15599088820390095,0.1040795876813507,0.08182636445462728,0.08182636445462728,0.1040795876813507,0.08182636445462728,0.08182636445462728,0.08182636445462728,0.1040795876813507,0.12263852647891052
+Listener dist: 0.15575725237141613,0.10771547217919202,0.08182636445462728,0.08182636445462728,0.10086081617261473,0.08182636445462728,0.08182636445462728,0.08182636445462728,0.10771547217919202,0.11881916482444868
+Belief: {"Major":"Astronomy","School":"Franklin Pierce Law Center","Name":"Nathan","Location Preference":"outdoor"}
+Gen 3
+Observed: {"Major":"Hispanic-American Studies","School":"Franklin Pierce Law Center","Name":"Gerald","Location Preference":"outdoor"}
+Uttered: "They study a humanity"
+Interpretation: {"probs":[0.3102439813279447,0.3102439813279447,0.3795120373441103],"support":[{"Major":"Hispanic-American Studies","School":"Franklin Pierce Law Center","Name":"Gerald","Location Preference":"outdoor"},{"Major":"German","School":"State University of New York at Buffalo","Name":"Daniel","Location Preference":"outdoor"},{"Major":"German","School":"University of New Orleans","Name":"Nancy","Location Preference":"outdoor"}]}
+Speaker dist: 0.18617490075575885,0.0946178069830461,0.09765964830991854,0.09765964830991854,0.0946178069830461,0.07438760404966117,0.07438760404966117,0.07438760404966117,0.0946178069830461,0.1114895695262823
+Listener dist: 0.17609859645984288,0.09792315652653821,0.10259160235220159,0.10259160235220159,0.0916916510660134,0.07438760404966117,0.07438760404966117,0.07438760404966117,0.09792315652653821,0.10801742256768063
+Belief: {"Major":"Astronomy","School":"Franklin Pierce Law Center","Name":"Nathan","Location Preference":"outdoor"}
+Gen 4
+Observed: {"Major":"Electrical Engineering","School":"University of Dallas","Name":"Gary","Location Preference":"outdoor"}
+Uttered: "They study a science"
+Interpretation: {"probs":[0.21503082149153122,0.21354608396450522,0.21354608396450522,0.14284618908792682,0.21503082149153122],"support":[{"Major":"Astronomy","School":"Saint Mary's College of California","Name":"Nathan","Location Preference":"outdoor"},{"Major":"Electrical Engineering","School":"University of Dallas","Name":"Gary","Location Preference":"outdoor"},{"Major":"Veterinary Sciences","School":"Marymount University","Name":"Gary","Location Preference":"outdoor"},{"Major":"Ceramic Engineering","Company":"Commercial Metals Company","Name":"Nathan","Location Preference":"outdoor"},{"Major":"Astronomy","School":"Franklin Pierce Law Center","Name":"Nathan","Location Preference":"outdoor"}]}
+Speaker dist: 0.16924990977796253,0.10589841102243627,0.08878149846356229,0.08878149846356229,0.10589841102243627,0.06762509459060105,0.08325630576110037,0.08325630576110037,0.10589841102243627,0.10135415411480207
+Listener dist: 0.16008963314531174,0.10856930788699214,0.093265093047456,0.093265093047456,0.09634206361346008,0.06762509459060108,0.08703837495101065,0.08703837495101065,0.10856930788699214,0.09819765687970967
+Belief: {"Major":"German","School":"State University of New York at Buffalo","Name":"Daniel","Location Preference":"outdoor"}
+Gen 0
+Observed: {"Major":"German","School":"State University of New York at Buffalo","Name":"Daniel","Location Preference":"outdoor"}
+Uttered: "They study a humanity"
+Interpretation: {"probs":[0.39067278287461765,0.39067278287461765,0.21865443425076453],"support":[{"Major":"Hispanic-American Studies","School":"Franklin Pierce Law Center","Name":"Gerald","Location Preference":"outdoor"},{"Major":"German","School":"State University of New York at Buffalo","Name":"Daniel","Location Preference":"outdoor"},{"Major":"German","School":"University of New Orleans","Name":"Nancy","Location Preference":"outdoor"}]}
+Speaker dist: 0.10231023102310233,0.09900990099009901,0.10231023102310233,0.10231023102310233,0.09900990099009901,0.09900990099009901,0.09900990099009901,0.09900990099009901,0.09900990099009901,0.09900990099009901
+Listener dist: 0.10117479637872044,0.09900990099009901,0.10287794834529324,0.10287794834529324,0.09900990099009901,0.09900990099009901,0.09900990099009901,0.09900990099009901,0.09900990099009901,0.09900990099009901
+Belief: {"Major":"German","School":"State University of New York at Buffalo","Name":"Daniel","Location Preference":"outdoor"}
+Gen 1
+Observed: {"Major":"German","School":"State University of New York at Buffalo","Name":"Daniel","Location Preference":"outdoor"}
+Uttered: "They study a humanity"
+Interpretation: {"probs":[0.39250447727609394,0.39250447727609394,0.2149910454478122],"support":[{"Major":"Hispanic-American Studies","School":"Franklin Pierce Law Center","Name":"Gerald","Location Preference":"outdoor"},{"Major":"German","School":"State University of New York at Buffalo","Name":"Daniel","Location Preference":"outdoor"},{"Major":"German","School":"University of New Orleans","Name":"Nancy","Location Preference":"outdoor"}]}
+Speaker dist: 0.12331233123312331,0.09000900090009001,0.12331233123312331,0.12331233123312331,0.09000900090009001,0.09000900090009001,0.09000900090009001,0.09000900090009001,0.09000900090009001,0.09000900090009001
+Listener dist: 0.11152172811227426,0.09000900090009002,0.12920763279354786,0.12920763279354786,0.09000900090009002,0.09000900090009002,0.09000900090009002,0.09000900090009002,0.09000900090009002,0.09000900090009002
+Belief: {"Major":"German","School":"State University of New York at Buffalo","Name":"Daniel","Location Preference":"outdoor"}
+Gen 2
+Observed: {"Major":"German","School":"State University of New York at Buffalo","Name":"Daniel","Location Preference":"outdoor"}
+Uttered: "They study a humanity"
+Interpretation: {"probs":[0.40625812441973197,0.40625812441973197,0.18748375116053628],"support":[{"Major":"Hispanic-American Studies","School":"Franklin Pierce Law Center","Name":"Gerald","Location Preference":"outdoor"},{"Major":"German","School":"State University of New York at Buffalo","Name":"Daniel","Location Preference":"outdoor"},{"Major":"German","School":"University of New Orleans","Name":"Nancy","Location Preference":"outdoor"}]}
+Speaker dist: 0.14240514960586967,0.08182636445462728,0.14240514960586967,0.14240514960586967,0.08182636445462728,0.08182636445462728,0.08182636445462728,0.08182636445462728,0.08182636445462728,0.08182636445462728
+Listener dist: 0.11842736657120716,0.08182636445462729,0.15439404112320093,0.15439404112320093,0.08182636445462729,0.08182636445462729,0.08182636445462729,0.08182636445462729,0.08182636445462729,0.08182636445462729
+Belief: {"Major":"German","School":"State University of New York at Buffalo","Name":"Daniel","Location Preference":"outdoor"}
+Gen 3
+Observed: {"Major":"German","School":"State University of New York at Buffalo","Name":"Daniel","Location Preference":"outdoor"}
+Uttered: "They study a humanity"
+Interpretation: {"probs":[0.4176131172756658,0.4176131172756658,0.1647737654486684],"support":[{"Major":"Hispanic-American Studies","School":"Franklin Pierce Law Center","Name":"Gerald","Location Preference":"outdoor"},{"Major":"German","School":"State University of New York at Buffalo","Name":"Daniel","Location Preference":"outdoor"},{"Major":"German","School":"University of New Orleans","Name":"Nancy","Location Preference":"outdoor"}]}
+Speaker dist: 0.1597622572174573,0.07438760404966116,0.1597622572174573,0.1597622572174573,0.07438760404966116,0.07438760404966116,0.07438760404966116,0.07438760404966116,0.07438760404966116,0.07438760404966116
+Listener dist: 0.12264067556006726,0.07438760404966117,0.17832304804615226,0.17832304804615226,0.07438760404966117,0.07438760404966117,0.07438760404966117,0.07438760404966117,0.07438760404966117,0.07438760404966117
+Belief: {"Major":"German","School":"State University of New York at Buffalo","Name":"Daniel","Location Preference":"outdoor"}
+Gen 4
+Observed: {"Major":"German","School":"State University of New York at Buffalo","Name":"Daniel","Location Preference":"outdoor"}
+Uttered: "They study a humanity"
+Interpretation: {"probs":[0.4272798457449998,0.4272798457449998,0.14544030851000056],"support":[{"Major":"Hispanic-American Studies","School":"Franklin Pierce Law Center","Name":"Gerald","Location Preference":"outdoor"},{"Major":"German","School":"State University of New York at Buffalo","Name":"Daniel","Location Preference":"outdoor"},{"Major":"German","School":"University of New Orleans","Name":"Nancy","Location Preference":"outdoor"}]}
+Speaker dist: 0.1755414459552642,0.06762509459060105,0.1755414459552642,0.1755414459552642,0.06762509459060105,0.06762509459060105,0.06762509459060105,0.06762509459060105,0.06762509459060105,0.06762509459060105
+Listener dist: 0.12471336946460664,0.06762509459060106,0.20095548420059292,0.20095548420059292,0.06762509459060106,0.06762509459060106,0.06762509459060106,0.06762509459060106,0.06762509459060106,0.06762509459060106
+Belief: {"Major":"Hispanic-American Studies","School":"Franklin Pierce Law Center","Name":"Gerald","Location Preference":"outdoor"}
+Gen 0
+Observed: {"Major":"Hispanic-American Studies","School":"Franklin Pierce Law Center","Name":"Gerald","Location Preference":"outdoor"}
+Uttered: "They study a humanity"
+Interpretation: {"probs":[0.39067278287461765,0.39067278287461765,0.21865443425076453],"support":[{"Major":"Hispanic-American Studies","School":"Franklin Pierce Law Center","Name":"Gerald","Location Preference":"outdoor"},{"Major":"German","School":"State University of New York at Buffalo","Name":"Daniel","Location Preference":"outdoor"},{"Major":"German","School":"University of New Orleans","Name":"Nancy","Location Preference":"outdoor"}]}
+Speaker dist: 0.10231023102310233,0.09900990099009901,0.10231023102310233,0.10231023102310233,0.09900990099009901,0.09900990099009901,0.09900990099009901,0.09900990099009901,0.09900990099009901,0.09900990099009901
+Listener dist: 0.10117479637872044,0.09900990099009901,0.10287794834529324,0.10287794834529324,0.09900990099009901,0.09900990099009901,0.09900990099009901,0.09900990099009901,0.09900990099009901,0.09900990099009901
+Belief: {"Major":"Hispanic-American Studies","School":"Franklin Pierce Law Center","Name":"Gerald","Location Preference":"outdoor"}
+Gen 1
+Observed: {"Major":"Social Work & Social Services","Company":"Commercial Metals Company","Name":"Mary","Location Preference":"outdoor"}
+Uttered: "They work"
+Interpretation: {"probs":[0.4292821153633307,0.5707178846366694],"support":[{"Major":"Social Work & Social Services","Company":"Commercial Metals Company","Name":"Mary","Location Preference":"outdoor"},{"Major":"Ceramic Engineering","Company":"Commercial Metals Company","Name":"Nathan","Location Preference":"outdoor"}]}
+Speaker dist: 0.09300930093009302,0.09000900090009001,0.09300930093009302,0.09300930093009302,0.13546354635463545,0.09000900090009001,0.09000900090009001,0.09000900090009001,0.09000900090009001,0.13546354635463545
+Listener dist: 0.09197708761701857,0.09000900090009001,0.09352540758663021,0.09352540758663021,0.14189244495796904,0.09000900090009001,0.09000900090009001,0.09000900090009001,0.09000900090009001,0.12903464775130188
+Belief: {"Major":"Hispanic-American Studies","School":"Franklin Pierce Law Center","Name":"Gerald","Location Preference":"outdoor"}
+Gen 2
+Observed: {"Major":"Hispanic-American Studies","School":"Franklin Pierce Law Center","Name":"Gerald","Location Preference":"outdoor"}
+Uttered: "They study a humanity"
+Interpretation: {"probs":[0.3867092645704937,0.3867092645704937,0.2265814708590122],"support":[{"Major":"Hispanic-American Studies","School":"Franklin Pierce Law Center","Name":"Gerald","Location Preference":"outdoor"},{"Major":"German","School":"State University of New York at Buffalo","Name":"Daniel","Location Preference":"outdoor"},{"Major":"German","School":"University of New Orleans","Name":"Nancy","Location Preference":"outdoor"}]}
+Speaker dist: 0.11485694023947848,0.08182636445462728,0.11485694023947848,0.11485694023947848,0.12314867850421403,0.08182636445462728,0.08182636445462728,0.08182636445462728,0.08182636445462728,0.12314867850421403
+Listener dist: 0.1042138497299271,0.08182636445462729,0.12017848549425418,0.12017848549425418,0.12899313177997188,0.08182636445462729,0.08182636445462729,0.08182636445462729,0.08182636445462729,0.11730422522845627
+Belief: {"Major":"Hispanic-American Studies","School":"Franklin Pierce Law Center","Name":"Gerald","Location Preference":"outdoor"}
+Gen 3
+Observed: {"Major":"Hispanic-American Studies","School":"Franklin Pierce Law Center","Name":"Gerald","Location Preference":"outdoor"}
+Uttered: "They study a humanity"
+Interpretation: {"probs":[0.4010018890380913,0.4010018890380913,0.19799622192381722],"support":[{"Major":"Hispanic-American Studies","School":"Franklin Pierce Law Center","Name":"Gerald","Location Preference":"outdoor"},{"Major":"German","School":"State University of New York at Buffalo","Name":"Daniel","Location Preference":"outdoor"},{"Major":"German","School":"University of New Orleans","Name":"Nancy","Location Preference":"outdoor"}]}
+Speaker dist: 0.13471843052073804,0.07438760404966117,0.13471843052073804,0.13471843052073804,0.11195334409474005,0.07438760404966117,0.07438760404966117,0.07438760404966117,0.07438760404966117,0.11195334409474005
+Listener dist: 0.11273951992937165,0.07438760404966117,0.1457078858164212,0.1457078858164212,0.11726648343633805,0.07438760404966117,0.07438760404966117,0.07438760404966117,0.07438760404966117,0.10664020475314205
+Belief: {"Major":"Hispanic-American Studies","School":"Franklin Pierce Law Center","Name":"Gerald","Location Preference":"outdoor"}
+Gen 4
+Observed: {"Major":"Hispanic-American Studies","School":"Franklin Pierce Law Center","Name":"Gerald","Location Preference":"outdoor"}
+Uttered: "They study a humanity"
+Interpretation: {"probs":[0.41276780209512387,0.41276780209512387,0.17446439580975232],"support":[{"Major":"Hispanic-American Studies","School":"Franklin Pierce Law Center","Name":"Gerald","Location Preference":"outdoor"},{"Major":"German","School":"State University of New York at Buffalo","Name":"Daniel","Location Preference":"outdoor"},{"Major":"German","School":"University of New Orleans","Name":"Nancy","Location Preference":"outdoor"}]}
+Speaker dist: 0.1527743307764285,0.06762509459060106,0.1527743307764285,0.1527743307764285,0.10177576735885457,0.06762509459060106,0.06762509459060106,0.06762509459060106,0.06762509459060106,0.10177576735885457
+Listener dist: 0.11835087228213353,0.06762509459060108,0.169986060023576,0.169986060023576,0.10660589403303461,0.06762509459060108,0.06762509459060108,0.06762509459060108,0.06762509459060108,0.09694564068467461
+Belief: {"Major":"Ceramic Engineering","Company":"Commercial Metals Company","Name":"Nathan","Location Preference":"outdoor"}
+Gen 0
+Observed: {"Major":"Ceramic Engineering","Company":"Commercial Metals Company","Name":"Nathan","Location Preference":"outdoor"}
+Uttered: "They work"
+Interpretation: {"probs":[0.4291010194624653,0.5708989805375349],"support":[{"Major":"Social Work & Social Services","Company":"Commercial Metals Company","Name":"Mary","Location Preference":"outdoor"},{"Major":"Ceramic Engineering","Company":"Commercial Metals Company","Name":"Nathan","Location Preference":"outdoor"}]}
+Speaker dist: 0.09900990099009901,0.09900990099009901,0.09900990099009901,0.09900990099009901,0.10396039603960397,0.09900990099009901,0.09900990099009901,0.09900990099009901,0.09900990099009901,0.10396039603960397
+Listener dist: 0.09900990099009901,0.09900990099009901,0.09900990099009901,0.09900990099009901,0.104662366143936,0.09900990099009901,0.09900990099009901,0.09900990099009901,0.09900990099009901,0.10325842593527194
+Belief: {"Major":"Ceramic Engineering","Company":"Commercial Metals Company","Name":"Nathan","Location Preference":"outdoor"}
+Gen 1
+Observed: {"Major":"Ceramic Engineering","Company":"Commercial Metals Company","Name":"Nathan","Location Preference":"outdoor"}
+Uttered: "They work"
+Interpretation: {"probs":[0.42631601356638615,0.5736839864336138],"support":[{"Major":"Social Work & Social Services","Company":"Commercial Metals Company","Name":"Mary","Location Preference":"outdoor"},{"Major":"Ceramic Engineering","Company":"Commercial Metals Company","Name":"Nathan","Location Preference":"outdoor"}]}
+Speaker dist: 0.09000900090009001,0.09000900090009001,0.09000900090009001,0.09000900090009001,0.13996399639963994,0.09000900090009001,0.09000900090009001,0.09000900090009001,0.09000900090009001,0.13996399639963994
+Listener dist: 0.09000900090009001,0.09000900090009001,0.09000900090009001,0.09000900090009001,0.14730069526117942,0.09000900090009001,0.09000900090009001,0.09000900090009001,0.09000900090009001,0.13262729753810049
+Belief: {"Major":"Ceramic Engineering","Company":"Commercial Metals Company","Name":"Nathan","Location Preference":"outdoor"}
+Gen 2
+Observed: {"Major":"Ceramic Engineering","Company":"Commercial Metals Company","Name":"Nathan","Location Preference":"outdoor"}
+Uttered: "They work"
+Interpretation: {"probs":[0.4103121586066429,0.5896878413933571],"support":[{"Major":"Social Work & Social Services","Company":"Commercial Metals Company","Name":"Mary","Location Preference":"outdoor"},{"Major":"Ceramic Engineering","Company":"Commercial Metals Company","Name":"Nathan","Location Preference":"outdoor"}]}
+Speaker dist: 0.08182636445462729,0.08182636445462729,0.08182636445462729,0.08182636445462729,0.17269454218149086,0.08182636445462729,0.08182636445462729,0.08182636445462729,0.08182636445462729,0.17269454218149086
+Listener dist: 0.08182636445462728,0.08182636445462728,0.08182636445462728,0.08182636445462728,0.18751770854592284,0.08182636445462728,0.08182636445462728,0.08182636445462728,0.08182636445462728,0.15787137581705887
+Belief: {"Major":"Ceramic Engineering","Company":"Commercial Metals Company","Name":"Nathan","Location Preference":"outdoor"}
+Gen 3
+Observed: {"Major":"Astronomy","School":"Franklin Pierce Law Center","Name":"Nathan","Location Preference":"outdoor"}
+Uttered: "Their name starts with N"
+Interpretation: {"probs":[0.2153938735317264,0.42962831424440245,0.2153938735317264,0.1395839386921449],"support":[{"Major":"Astronomy","School":"Saint Mary's College of California","Name":"Nathan","Location Preference":"outdoor"},{"Major":"Ceramic Engineering","Company":"Commercial Metals Company","Name":"Nathan","Location Preference":"outdoor"},{"Major":"Astronomy","School":"Franklin Pierce Law Center","Name":"Nathan","Location Preference":"outdoor"},{"Major":"German","School":"University of New Orleans","Name":"Nancy","Location Preference":"outdoor"}]}
+Speaker dist: 0.09217629222285184,0.09217629222285184,0.07438760404966117,0.07438760404966117,0.19453806473632876,0.07438760404966117,0.07438760404966117,0.07438760404966117,0.09217629222285184,0.15699503834680986
+Listener dist: 0.08707705302167433,0.0939688652798181,0.07438760404966116,0.07438760404966116,0.20952776360942096,0.07438760404966116,0.07438760404966116,0.07438760404966116,0.0939688652798181,0.1435194325609626
+Belief: {"Major":"Ceramic Engineering","Company":"Commercial Metals Company","Name":"Nathan","Location Preference":"outdoor"}
+Gen 4
+Observed: {"Major":"Ceramic Engineering","Company":"Commercial Metals Company","Name":"Nathan","Location Preference":"outdoor"}
+Uttered: "They work"
+Interpretation: {"probs":[0.3334527673133205,0.6665472326866794],"support":[{"Major":"Social Work & Social Services","Company":"Commercial Metals Company","Name":"Mary","Location Preference":"outdoor"},{"Major":"Ceramic Engineering","Company":"Commercial Metals Company","Name":"Nathan","Location Preference":"outdoor"}]}
+Speaker dist: 0.08379662929350166,0.08379662929350166,0.06762509459060106,0.06762509459060106,0.2271617853541184,0.06762509459060106,0.06762509459060106,0.06762509459060106,0.08379662929350166,0.18332285381237126
+Listener dist: 0.07916095729243122,0.08542624116347101,0.06762509459060106,0.06762509459060106,0.25107498807098994,0.06762509459060106,0.06762509459060106,0.06762509459060106,0.08542624116347101,0.16078609935663155
+Belief: {"Major":"Adult & Continuing Education","School":"Canisius College","Name":"Gary","Location Preference":"indoor"}
+Gen 0
+Observed: {"Major":"Adult & Continuing Education","School":"Canisius College","Name":"Gary","Location Preference":"indoor"}
+Uttered: "They like being indoors"
+Interpretation: {"probs":[1],"support":[{"Major":"Adult & Continuing Education","School":"Canisius College","Name":"Gary","Location Preference":"indoor"}]}
+Speaker dist: 0.09900990099009901,0.09900990099009901,0.09900990099009901,0.09900990099009901,0.09900990099009901,0.10891089108910892,0.09900990099009901,0.09900990099009901,0.09900990099009901,0.09900990099009901
+Listener dist: 0.09900990099009901,0.09900990099009901,0.09900990099009901,0.09900990099009901,0.09900990099009901,0.10891089108910892,0.09900990099009901,0.09900990099009901,0.09900990099009901,0.09900990099009901
+Belief: {"Major":"Adult & Continuing Education","School":"Canisius College","Name":"Gary","Location Preference":"indoor"}
+Gen 1
+Observed: {"Major":"Adult & Continuing Education","School":"Canisius College","Name":"Gary","Location Preference":"indoor"}
+Uttered: "They like being indoors"
+Interpretation: {"probs":[1],"support":[{"Major":"Adult & Continuing Education","School":"Canisius College","Name":"Gary","Location Preference":"indoor"}]}
+Speaker dist: 0.09000900090009001,0.09000900090009001,0.09000900090009001,0.09000900090009001,0.09000900090009001,0.18991899189918993,0.09000900090009001,0.09000900090009001,0.09000900090009001,0.09000900090009001
+Listener dist: 0.09000900090009001,0.09000900090009001,0.09000900090009001,0.09000900090009001,0.09000900090009001,0.18991899189918993,0.09000900090009001,0.09000900090009001,0.09000900090009001,0.09000900090009001
+Belief: {"Major":"Adult & Continuing Education","School":"Canisius College","Name":"Gary","Location Preference":"indoor"}
+Gen 2
+Observed: {"Major":"Adult & Continuing Education","School":"Canisius College","Name":"Gary","Location Preference":"indoor"}
+Uttered: "They like being indoors"
+Interpretation: {"probs":[1],"support":[{"Major":"Adult & Continuing Education","School":"Canisius College","Name":"Gary","Location Preference":"indoor"}]}
+Speaker dist: 0.08182636445462728,0.08182636445462728,0.08182636445462728,0.08182636445462728,0.08182636445462728,0.26356271990835445,0.08182636445462728,0.08182636445462728,0.08182636445462728,0.08182636445462728
+Listener dist: 0.08182636445462728,0.08182636445462728,0.08182636445462728,0.08182636445462728,0.08182636445462728,0.26356271990835445,0.08182636445462728,0.08182636445462728,0.08182636445462728,0.08182636445462728
+Belief: {"Major":"Adult & Continuing Education","School":"Canisius College","Name":"Gary","Location Preference":"indoor"}
+Gen 3
+Observed: {"Major":"Adult & Continuing Education","School":"Canisius College","Name":"Gary","Location Preference":"indoor"}
+Uttered: "They like being indoors"
+Interpretation: {"probs":[1],"support":[{"Major":"Adult & Continuing Education","School":"Canisius College","Name":"Gary","Location Preference":"indoor"}]}
+Speaker dist: 0.07438760404966116,0.07438760404966116,0.07438760404966116,0.07438760404966116,0.07438760404966116,0.33051156355304945,0.07438760404966116,0.07438760404966116,0.07438760404966116,0.07438760404966116
+Listener dist: 0.07438760404966116,0.07438760404966116,0.07438760404966116,0.07438760404966116,0.07438760404966116,0.33051156355304945,0.07438760404966116,0.07438760404966116,0.07438760404966116,0.07438760404966116
+Belief: {"Major":"Adult & Continuing Education","School":"Canisius College","Name":"Gary","Location Preference":"indoor"}
+Gen 4
+Observed: {"Major":"Adult & Continuing Education","School":"Canisius College","Name":"Gary","Location Preference":"indoor"}
+Uttered: "They like being indoors"
+Interpretation: {"probs":[1],"support":[{"Major":"Adult & Continuing Education","School":"Canisius College","Name":"Gary","Location Preference":"indoor"}]}
+Speaker dist: 0.06762509459060106,0.06762509459060106,0.06762509459060106,0.06762509459060106,0.06762509459060106,0.3913741486845904,0.06762509459060106,0.06762509459060106,0.06762509459060106,0.06762509459060106
+Listener dist: 0.06762509459060106,0.06762509459060106,0.06762509459060106,0.06762509459060106,0.06762509459060106,0.3913741486845904,0.06762509459060106,0.06762509459060106,0.06762509459060106,0.06762509459060106
+Belief: {"Major":"Veterinary Sciences","School":"Marymount University","Name":"Gary","Location Preference":"outdoor"}
+Gen 0
+Observed: {"Major":"Veterinary Sciences","School":"Marymount University","Name":"Gary","Location Preference":"outdoor"}
+Uttered: "They study a science"
+Interpretation: {"probs":[0.18299179647281538,0.2521903749709389,0.2521903749709389,0.12963565711249117,0.18299179647281538],"support":[{"Major":"Astronomy","School":"Saint Mary's College of California","Name":"Nathan","Location Preference":"outdoor"},{"Major":"Electrical Engineering","School":"University of Dallas","Name":"Gary","Location Preference":"outdoor"},{"Major":"Veterinary Sciences","School":"Marymount University","Name":"Gary","Location Preference":"outdoor"},{"Major":"Ceramic Engineering","Company":"Commercial Metals Company","Name":"Nathan","Location Preference":"outdoor"},{"Major":"Astronomy","School":"Franklin Pierce Law Center","Name":"Nathan","Location Preference":"outdoor"}]}
+Speaker dist: 0.09900990099009901,0.100990099009901,0.09900990099009901,0.09900990099009901,0.100990099009901,0.09900990099009901,0.100990099009901,0.100990099009901,0.100990099009901,0.09900990099009901
+Listener dist: 0.09900990099009901,0.1008217009551764,0.09900990099009901,0.09900990099009901,0.10029342234764842,0.09900990099009901,0.10150683539575188,0.10150683539575188,0.1008217009551764,0.09900990099009901
+Belief: {"Major":"Veterinary Sciences","School":"Marymount University","Name":"Gary","Location Preference":"outdoor"}
+Gen 1
+Observed: {"Major":"Veterinary Sciences","School":"Marymount University","Name":"Gary","Location Preference":"outdoor"}
+Uttered: "They study a science"
+Interpretation: {"probs":[0.18251124831686405,0.2533364625243713,0.2533364625243713,0.12830457831752934,0.18251124831686405],"support":[{"Major":"Astronomy","School":"Saint Mary's College of California","Name":"Nathan","Location Preference":"outdoor"},{"Major":"Electrical Engineering","School":"University of Dallas","Name":"Gary","Location Preference":"outdoor"},{"Major":"Veterinary Sciences","School":"Marymount University","Name":"Gary","Location Preference":"outdoor"},{"Major":"Ceramic Engineering","Company":"Commercial Metals Company","Name":"Nathan","Location Preference":"outdoor"},{"Major":"Astronomy","School":"Franklin Pierce Law Center","Name":"Nathan","Location Preference":"outdoor"}]}
+Speaker dist: 0.09000900090009001,0.10999099909990999,0.09000900090009001,0.09000900090009001,0.10999099909990999,0.09000900090009001,0.10999099909990999,0.10999099909990999,0.10999099909990999,0.09000900090009001
+Listener dist: 0.09000900090009001,0.10824802344260254,0.09000900090009001,0.09000900090009001,0.10283989107218304,0.09000900090009001,0.1153095287710809,0.1153095287710809,0.10824802344260254,0.09000900090009001
+Belief: {"Major":"Veterinary Sciences","School":"Marymount University","Name":"Gary","Location Preference":"outdoor"}
+Gen 2
+Observed: {"Major":"German","School":"University of New Orleans","Name":"Nancy","Location Preference":"outdoor"}
+Uttered: "They are female"
+Interpretation: {"probs":[0.4498223467489001,0.5501776532510999],"support":[{"Major":"Social Work & Social Services","Company":"Commercial Metals Company","Name":"Mary","Location Preference":"outdoor"},{"Major":"German","School":"University of New Orleans","Name":"Nancy","Location Preference":"outdoor"}]}
+Speaker dist: 0.12728090990917273,0.09999181736355454,0.08182636445462729,0.08182636445462729,0.09999181736355454,0.08182636445462729,0.09999181736355454,0.09999181736355454,0.09999181736355454,0.12728090990917273
+Listener dist: 0.13184251475018183,0.0984072940387296,0.08182636445462729,0.08182636445462729,0.09349081006562096,0.08182636445462729,0.10482684433734629,0.10482684433734629,0.0984072940387296,0.12271930506816367
+Belief: {"Major":"Veterinary Sciences","School":"Marymount University","Name":"Gary","Location Preference":"outdoor"}
+Gen 3
+Observed: {"Major":"Veterinary Sciences","School":"Marymount University","Name":"Gary","Location Preference":"outdoor"}
+Uttered: "They study a science"
+Interpretation: {"probs":[0.179310743184028,0.2584736401873621,0.2584736401873621,0.12443123325722005,0.179310743184028],"support":[{"Major":"Astronomy","School":"Saint Mary's College of California","Name":"Nathan","Location Preference":"outdoor"},{"Major":"Electrical Engineering","School":"University of Dallas","Name":"Gary","Location Preference":"outdoor"},{"Major":"Veterinary Sciences","School":"Marymount University","Name":"Gary","Location Preference":"outdoor"},{"Major":"Ceramic Engineering","Company":"Commercial Metals Company","Name":"Nathan","Location Preference":"outdoor"},{"Major":"Astronomy","School":"Franklin Pierce Law Center","Name":"Nathan","Location Preference":"outdoor"}]}
+Speaker dist: 0.11570991809924794,0.10908347033050413,0.07438760404966117,0.07438760404966117,0.10908347033050413,0.07438760404966117,0.10908347033050413,0.10908347033050413,0.10908347033050413,0.11570991809924794
+Listener dist: 0.11985683159107435,0.10576215305193852,0.07438760404966116,0.07438760404966116,0.09630357581031176,0.07438760404966116,0.11879473486916589,0.11879473486916589,0.10576215305193852,0.11156300460742148
+Belief: {"Major":"Veterinary Sciences","School":"Marymount University","Name":"Gary","Location Preference":"outdoor"}
+Gen 4
+Observed: {"Major":"Veterinary Sciences","School":"Marymount University","Name":"Gary","Location Preference":"outdoor"}
+Uttered: "They study a science"
+Interpretation: {"probs":[0.17523545589551318,0.26787964932225583,0.26787964932225583,0.1137697895644622,0.17523545589551318],"support":[{"Major":"Astronomy","School":"Saint Mary's College of California","Name":"Nathan","Location Preference":"outdoor"},{"Major":"Electrical Engineering","School":"University of Dallas","Name":"Gary","Location Preference":"outdoor"},{"Major":"Veterinary Sciences","School":"Marymount University","Name":"Gary","Location Preference":"outdoor"},{"Major":"Ceramic Engineering","Company":"Commercial Metals Company","Name":"Nathan","Location Preference":"outdoor"},{"Major":"Astronomy","School":"Franklin Pierce Law Center","Name":"Nathan","Location Preference":"outdoor"}]}
+Speaker dist: 0.10519083463567994,0.11734860939136738,0.06762509459060106,0.06762509459060106,0.11734860939136738,0.06762509459060106,0.11734860939136738,0.11734860939136738,0.11734860939136738,0.10519083463567994
+Listener dist: 0.10896075599188579,0.11207790785589986,0.06762509459060106,0.06762509459060106,0.09789141342432546,0.06762509459060106,0.13234790891035592,0.13234790891035592,0.11207790785589986,0.10142091327947408
+Belief: {"Major":"Electrical Engineering","School":"University of Dallas","Name":"Gary","Location Preference":"outdoor"}
+Gen 0
+Observed: {"Major":"Electrical Engineering","School":"University of Dallas","Name":"Gary","Location Preference":"outdoor"}
+Uttered: "They study a science"
+Interpretation: {"probs":[0.18299179647281538,0.2521903749709389,0.2521903749709389,0.12963565711249117,0.18299179647281538],"support":[{"Major":"Astronomy","School":"Saint Mary's College of California","Name":"Nathan","Location Preference":"outdoor"},{"Major":"Electrical Engineering","School":"University of Dallas","Name":"Gary","Location Preference":"outdoor"},{"Major":"Veterinary Sciences","School":"Marymount University","Name":"Gary","Location Preference":"outdoor"},{"Major":"Ceramic Engineering","Company":"Commercial Metals Company","Name":"Nathan","Location Preference":"outdoor"},{"Major":"Astronomy","School":"Franklin Pierce Law Center","Name":"Nathan","Location Preference":"outdoor"}]}
+Speaker dist: 0.09900990099009901,0.100990099009901,0.09900990099009901,0.09900990099009901,0.100990099009901,0.09900990099009901,0.100990099009901,0.100990099009901,0.100990099009901,0.09900990099009901
+Listener dist: 0.09900990099009901,0.1008217009551764,0.09900990099009901,0.09900990099009901,0.10029342234764842,0.09900990099009901,0.10150683539575188,0.10150683539575188,0.1008217009551764,0.09900990099009901
+Belief: {"Major":"Electrical Engineering","School":"University of Dallas","Name":"Gary","Location Preference":"outdoor"}
+Gen 1
+Observed: {"Major":"Electrical Engineering","School":"University of Dallas","Name":"Gary","Location Preference":"outdoor"}
+Uttered: "They study a science"
+Interpretation: {"probs":[0.18251124831686405,0.2533364625243713,0.2533364625243713,0.12830457831752934,0.18251124831686405],"support":[{"Major":"Astronomy","School":"Saint Mary's College of California","Name":"Nathan","Location Preference":"outdoor"},{"Major":"Electrical Engineering","School":"University of Dallas","Name":"Gary","Location Preference":"outdoor"},{"Major":"Veterinary Sciences","School":"Marymount University","Name":"Gary","Location Preference":"outdoor"},{"Major":"Ceramic Engineering","Company":"Commercial Metals Company","Name":"Nathan","Location Preference":"outdoor"},{"Major":"Astronomy","School":"Franklin Pierce Law Center","Name":"Nathan","Location Preference":"outdoor"}]}
+Speaker dist: 0.09000900090009001,0.10999099909990999,0.09000900090009001,0.09000900090009001,0.10999099909990999,0.09000900090009001,0.10999099909990999,0.10999099909990999,0.10999099909990999,0.09000900090009001
+Listener dist: 0.09000900090009001,0.10824802344260254,0.09000900090009001,0.09000900090009001,0.10283989107218304,0.09000900090009001,0.1153095287710809,0.1153095287710809,0.10824802344260254,0.09000900090009001
+Belief: {"Major":"Electrical Engineering","School":"University of Dallas","Name":"Gary","Location Preference":"outdoor"}
+Gen 2
+Observed: {"Major":"Electrical Engineering","School":"University of Dallas","Name":"Gary","Location Preference":"outdoor"}
+Uttered: "They study a science"
+Interpretation: {"probs":[0.17847240028304873,0.26295975087787404,0.26295975087787404,0.11713569767815428,0.17847240028304873],"support":[{"Major":"Astronomy","School":"Saint Mary's College of California","Name":"Nathan","Location Preference":"outdoor"},{"Major":"Electrical Engineering","School":"University of Dallas","Name":"Gary","Location Preference":"outdoor"},{"Major":"Veterinary Sciences","School":"Marymount University","Name":"Gary","Location Preference":"outdoor"},{"Major":"Ceramic Engineering","Company":"Commercial Metals Company","Name":"Nathan","Location Preference":"outdoor"},{"Major":"Astronomy","School":"Franklin Pierce Law Center","Name":"Nathan","Location Preference":"outdoor"}]}
+Speaker dist: 0.08182636445462728,0.1181736355453727,0.08182636445462728,0.08182636445462728,0.1181736355453727,0.08182636445462728,0.1181736355453727,0.1181736355453727,0.1181736355453727,0.08182636445462728
+Listener dist: 0.08182636445462728,0.11463205770082491,0.08182636445462728,0.08182636445462728,0.10413950985454405,0.08182636445462728,0.1287322762353348,0.1287322762353348,0.11463205770082491,0.08182636445462728
+Belief: {"Major":"Electrical Engineering","School":"University of Dallas","Name":"Gary","Location Preference":"outdoor"}
+Gen 3
+Observed: {"Major":"Electrical Engineering","School":"University of Dallas","Name":"Gary","Location Preference":"outdoor"}
+Uttered: "They study a science"
+Interpretation: {"probs":[0.1744960171867352,0.27200806220172097,0.27200806220172097,0.10699184122308775,0.1744960171867352],"support":[{"Major":"Astronomy","School":"Saint Mary's College of California","Name":"Nathan","Location Preference":"outdoor"},{"Major":"Electrical Engineering","School":"University of Dallas","Name":"Gary","Location Preference":"outdoor"},{"Major":"Veterinary Sciences","School":"Marymount University","Name":"Gary","Location Preference":"outdoor"},{"Major":"Ceramic Engineering","Company":"Commercial Metals Company","Name":"Nathan","Location Preference":"outdoor"},{"Major":"Astronomy","School":"Franklin Pierce Law Center","Name":"Nathan","Location Preference":"outdoor"}]}
+Speaker dist: 0.07438760404966116,0.12561239595033882,0.07438760404966116,0.07438760404966116,0.12561239595033882,0.07438760404966116,0.12561239595033882,0.12561239595033882,0.12561239595033882,0.07438760404966116
+Listener dist: 0.07438760404966116,0.12007423583590765,0.07438760404966116,0.07438760404966116,0.10439881270622983,0.07438760404966116,0.14175734768682446,0.14175734768682446,0.12007423583590765,0.07438760404966116
+Belief: {"Major":"Electrical Engineering","School":"University of Dallas","Name":"Gary","Location Preference":"outdoor"}
+Gen 4
+Observed: {"Major":"Electrical Engineering","School":"University of Dallas","Name":"Gary","Location Preference":"outdoor"}
+Uttered: "They study a science"
+Interpretation: {"probs":[0.17055196103720743,0.28059528508812986,0.28059528508812986,0.09770550774932524,0.17055196103720743],"support":[{"Major":"Astronomy","School":"Saint Mary's College of California","Name":"Nathan","Location Preference":"outdoor"},{"Major":"Electrical Engineering","School":"University of Dallas","Name":"Gary","Location Preference":"outdoor"},{"Major":"Veterinary Sciences","School":"Marymount University","Name":"Gary","Location Preference":"outdoor"},{"Major":"Ceramic Engineering","Company":"Commercial Metals Company","Name":"Nathan","Location Preference":"outdoor"},{"Major":"Astronomy","School":"Franklin Pierce Law Center","Name":"Nathan","Location Preference":"outdoor"}]}
+Speaker dist: 0.06762509459060106,0.13237490540939895,0.06762509459060106,0.06762509459060106,0.13237490540939895,0.06762509459060106,0.13237490540939895,0.13237490540939895,0.13237490540939895,0.06762509459060106
+Listener dist: 0.06762509459060106,0.12466311994511674,0.06762509459060106,0.06762509459060106,0.10379033043742034,0.06762509459060106,0.15437897835967043,0.15437897835967043,0.12466311994511674,0.06762509459060106
+Belief: {"Major":"Astronomy","School":"Saint Mary's College of California","Name":"Nathan","Location Preference":"outdoor"}
+Gen 0
+Observed: {"Major":"Hispanic-American Studies","School":"Franklin Pierce Law Center","Name":"Gerald","Location Preference":"outdoor"}
+Uttered: "They study a humanity"
+Interpretation: {"probs":[0.39067278287461765,0.39067278287461765,0.21865443425076453],"support":[{"Major":"Hispanic-American Studies","School":"Franklin Pierce Law Center","Name":"Gerald","Location Preference":"outdoor"},{"Major":"German","School":"State University of New York at Buffalo","Name":"Daniel","Location Preference":"outdoor"},{"Major":"German","School":"University of New Orleans","Name":"Nancy","Location Preference":"outdoor"}]}
+Speaker dist: 0.10231023102310233,0.09900990099009901,0.10231023102310233,0.10231023102310233,0.09900990099009901,0.09900990099009901,0.09900990099009901,0.09900990099009901,0.09900990099009901,0.09900990099009901
+Listener dist: 0.10117479637872044,0.09900990099009901,0.10287794834529324,0.10287794834529324,0.09900990099009901,0.09900990099009901,0.09900990099009901,0.09900990099009901,0.09900990099009901,0.09900990099009901
+Belief: {"Major":"Astronomy","School":"Saint Mary's College of California","Name":"Nathan","Location Preference":"outdoor"}
+Gen 1
+Observed: {"Major":"Astronomy","School":"Saint Mary's College of California","Name":"Nathan","Location Preference":"outdoor"}
+Uttered: "Their name starts with N"
+Interpretation: {"probs":[0.29696466647539843,0.2096960697103568,0.29696466647539843,0.19637459733884646],"support":[{"Major":"Astronomy","School":"Saint Mary's College of California","Name":"Nathan","Location Preference":"outdoor"},{"Major":"Ceramic Engineering","Company":"Commercial Metals Company","Name":"Nathan","Location Preference":"outdoor"},{"Major":"Astronomy","School":"Franklin Pierce Law Center","Name":"Nathan","Location Preference":"outdoor"},{"Major":"German","School":"University of New Orleans","Name":"Nancy","Location Preference":"outdoor"}]}
+Speaker dist: 0.11630005975804193,0.11254844492713734,0.09300930093009302,0.09300930093009302,0.11254844492713734,0.09000900090009001,0.09000900090009001,0.09000900090009001,0.11254844492713734,0.09000900090009001
+Listener dist: 0.10982932373873189,0.11700578876148987,0.09352540758663021,0.09352540758663021,0.1090722799646679,0.09000900090009001,0.09000900090009001,0.09000900090009001,0.11700578876148987,0.09000900090009001
+Belief: {"Major":"Astronomy","School":"Saint Mary's College of California","Name":"Nathan","Location Preference":"outdoor"}
+Gen 2
+Observed: {"Major":"Astronomy","School":"Saint Mary's College of California","Name":"Nathan","Location Preference":"outdoor"}
+Uttered: "Their name starts with N"
+Interpretation: {"probs":[0.30883404375160717,0.20090086190602074,0.30883404375160717,0.18143105059076509],"support":[{"Major":"Astronomy","School":"Saint Mary's College of California","Name":"Nathan","Location Preference":"outdoor"},{"Major":"Ceramic Engineering","Company":"Commercial Metals Company","Name":"Nathan","Location Preference":"outdoor"},{"Major":"Astronomy","School":"Franklin Pierce Law Center","Name":"Nathan","Location Preference":"outdoor"},{"Major":"German","School":"University of New Orleans","Name":"Nancy","Location Preference":"outdoor"}]}
+Speaker dist: 0.12901808588071428,0.12485621214262672,0.0845539099364482,0.0845539099364482,0.12485621214262672,0.08182636445462728,0.08182636445462728,0.08182636445462728,0.12485621214262672,0.08182636445462728
+Listener dist: 0.11633857163437127,0.1344447210333187,0.08502309780602746,0.08502309780602746,0.11742033286842724,0.08182636445462728,0.08182636445462728,0.08182636445462728,0.1344447210333187,0.08182636445462728
+Belief: {"Major":"Astronomy","School":"Saint Mary's College of California","Name":"Nathan","Location Preference":"outdoor"}
+Gen 3
+Observed: {"Major":"Astronomy","School":"Saint Mary's College of California","Name":"Nathan","Location Preference":"outdoor"}
+Uttered: "Their name starts with N"
+Interpretation: {"probs":[0.3198522627996703,0.1927614781653227,0.3198522627996703,0.16753399623533669],"support":[{"Major":"Astronomy","School":"Saint Mary's College of California","Name":"Nathan","Location Preference":"outdoor"},{"Major":"Ceramic Engineering","Company":"Commercial Metals Company","Name":"Nathan","Location Preference":"outdoor"},{"Major":"Astronomy","School":"Franklin Pierce Law Center","Name":"Nathan","Location Preference":"outdoor"},{"Major":"German","School":"University of New Orleans","Name":"Nancy","Location Preference":"outdoor"}]}
+Speaker dist: 0.14057992781041645,0.1360450914294353,0.07686719085131655,0.07686719085131655,0.1360450914294353,0.07438760404966117,0.07438760404966117,0.07438760404966117,0.1360450914294353,0.07438760404966117
+Listener dist: 0.12099270114354994,0.15129995210298705,0.07729372527820678,0.07729372527820678,0.12426952789541776,0.07438760404966117,0.07438760404966117,0.07438760404966117,0.15129995210298705,0.07438760404966117
+Belief: {"Major":"Astronomy","School":"Saint Mary's College of California","Name":"Nathan","Location Preference":"outdoor"}
+Gen 4
+Observed: {"Major":"Astronomy","School":"Saint Mary's College of California","Name":"Nathan","Location Preference":"outdoor"}
+Uttered: "Their name starts with N"
+Interpretation: {"probs":[0.33020885866622657,0.18507118694414082,0.33020885866622657,0.15451109572340613],"support":[{"Major":"Astronomy","School":"Saint Mary's College of California","Name":"Nathan","Location Preference":"outdoor"},{"Major":"Ceramic Engineering","Company":"Commercial Metals Company","Name":"Nathan","Location Preference":"outdoor"},{"Major":"Astronomy","School":"Franklin Pierce Law Center","Name":"Nathan","Location Preference":"outdoor"},{"Major":"German","School":"University of New Orleans","Name":"Nancy","Location Preference":"outdoor"}]}
+Speaker dist: 0.15109069320105475,0.1462167998719885,0.06987926441028776,0.06987926441028776,0.1462167998719885,0.06762509459060106,0.06762509459060106,0.06762509459060106,0.1462167998719885,0.06762509459060106
+Listener dist: 0.12403982792353686,0.16756439815419064,0.07026702298018798,0.07026702298018798,0.12979695144530165,0.06762509459060106,0.06762509459060106,0.06762509459060106,0.16756439815419064,0.06762509459060106
+Belief: {"Major":"Social Work & Social Services","Company":"Commercial Metals Company","Name":"Mary","Location Preference":"outdoor"}
+Gen 0
+Observed: {"Major":"Hispanic-American Studies","School":"Franklin Pierce Law Center","Name":"Gerald","Location Preference":"outdoor"}
+Uttered: "They study a humanity"
+Interpretation: {"probs":[0.39067278287461765,0.39067278287461765,0.21865443425076453],"support":[{"Major":"Hispanic-American Studies","School":"Franklin Pierce Law Center","Name":"Gerald","Location Preference":"outdoor"},{"Major":"German","School":"State University of New York at Buffalo","Name":"Daniel","Location Preference":"outdoor"},{"Major":"German","School":"University of New Orleans","Name":"Nancy","Location Preference":"outdoor"}]}
+Speaker dist: 0.10231023102310233,0.09900990099009901,0.10231023102310233,0.10231023102310233,0.09900990099009901,0.09900990099009901,0.09900990099009901,0.09900990099009901,0.09900990099009901,0.09900990099009901
+Listener dist: 0.10117479637872044,0.09900990099009901,0.10287794834529324,0.10287794834529324,0.09900990099009901,0.09900990099009901,0.09900990099009901,0.09900990099009901,0.09900990099009901,0.09900990099009901
+Belief: {"Major":"Social Work & Social Services","Company":"Commercial Metals Company","Name":"Mary","Location Preference":"outdoor"}
+Gen 1
+Observed: {"Major":"Social Work & Social Services","Company":"Commercial Metals Company","Name":"Mary","Location Preference":"outdoor"}
+Uttered: "They work"
+Interpretation: {"probs":[0.4292821153633307,0.5707178846366694],"support":[{"Major":"Social Work & Social Services","Company":"Commercial Metals Company","Name":"Mary","Location Preference":"outdoor"},{"Major":"Ceramic Engineering","Company":"Commercial Metals Company","Name":"Nathan","Location Preference":"outdoor"}]}
+Speaker dist: 0.09300930093009302,0.09000900090009001,0.09300930093009302,0.09300930093009302,0.13546354635463545,0.09000900090009001,0.09000900090009001,0.09000900090009001,0.09000900090009001,0.13546354635463545
+Listener dist: 0.09197708761701857,0.09000900090009001,0.09352540758663021,0.09352540758663021,0.14189244495796904,0.09000900090009001,0.09000900090009001,0.09000900090009001,0.09000900090009001,0.12903464775130188
+Belief: {"Major":"Social Work & Social Services","Company":"Commercial Metals Company","Name":"Mary","Location Preference":"outdoor"}
+Gen 2
+Observed: {"Major":"Social Work & Social Services","Company":"Commercial Metals Company","Name":"Mary","Location Preference":"outdoor"}
+Uttered: "They study a social science"
+Interpretation: {"probs":[0.650639453130408,0.34936054686959195],"support":[{"Major":"Social Work & Social Services","Company":"Commercial Metals Company","Name":"Mary","Location Preference":"outdoor"},{"Major":"Adult & Continuing Education","School":"Canisius College","Name":"Gary","Location Preference":"indoor"}]}
+Speaker dist: 0.08455390993644821,0.08182636445462729,0.08455390993644821,0.08455390993644821,0.12314867850421406,0.11811741870975341,0.08182636445462729,0.08182636445462729,0.08182636445462729,0.17776671515817888
+Listener dist: 0.08361553419728962,0.08182636445462729,0.08502309780602747,0.08502309780602747,0.12899313177997188,0.11358641417004475,0.08182636445462729,0.08182636445462729,0.08182636445462729,0.17645326642212975
+Belief: {"Major":"Social Work & Social Services","Company":"Commercial Metals Company","Name":"Mary","Location Preference":"outdoor"}
+Gen 3
+Observed: {"Major":"Social Work & Social Services","Company":"Commercial Metals Company","Name":"Mary","Location Preference":"outdoor"}
+Uttered: "They are female"
+Interpretation: {"probs":[0.6996450655387305,0.3003549344612695],"support":[{"Major":"Social Work & Social Services","Company":"Commercial Metals Company","Name":"Mary","Location Preference":"outdoor"},{"Major":"German","School":"University of New Orleans","Name":"Nancy","Location Preference":"outdoor"}]}
+Speaker dist: 0.10616995376734277,0.07438760404966117,0.07686719085131655,0.07686719085131655,0.11195334409474005,0.10737947155432127,0.07438760404966117,0.07438760404966117,0.07438760404966117,0.2232124326823182
+Listener dist: 0.1033191160394696,0.07438760404966117,0.07729372527820678,0.07729372527820678,0.11726648343633805,0.1032603765182225,0.07438760404966117,0.07438760404966117,0.07438760404966117,0.22401615725091162
+Belief: {"Major":"Social Work & Social Services","Company":"Commercial Metals Company","Name":"Mary","Location Preference":"outdoor"}
+Gen 4
+Observed: {"Major":"Social Work & Social Services","Company":"Commercial Metals Company","Name":"Mary","Location Preference":"outdoor"}
+Uttered: "They are female"
+Interpretation: {"probs":[0.7206462601809781,0.279353739819022],"support":[{"Major":"Social Work & Social Services","Company":"Commercial Metals Company","Name":"Mary","Location Preference":"outdoor"},{"Major":"German","School":"University of New Orleans","Name":"Nancy","Location Preference":"outdoor"}]}
+Speaker dist: 0.12582090270451962,0.06762509459060106,0.06987926441028776,0.06987926441028776,0.10177576735885457,0.09761770141301933,0.06762509459060106,0.06762509459060106,0.06762509459060106,0.26452672134062666
+Listener dist: 0.11932226365579253,0.06762509459060106,0.07026702298018798,0.07026702298018798,0.10660589403303458,0.09387306956202045,0.06762509459060106,0.06762509459060106,0.06762509459060106,0.2691643484263722
+undefined

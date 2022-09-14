@@ -1,0 +1,25 @@
+speaker,cg,generation,sampler,sampled_w_idx,selected_u,speaker_belief,listener_belief,location_pref,name,school/company,major,w_idx,cg_prob
+n/a,shared,0,weighted,-1,undefined,0.009708737864077669,0.009708737864077669,outdoor,Nancy,University of New Orleans,German,0,0.25
+n/a,shared,0,weighted,-1,undefined,0.009708737864077669,0.009708737864077669,outdoor,Nathan,Franklin Pierce Law Center,Astronomy,1,0.25
+n/a,shared,0,weighted,-1,undefined,0.009708737864077669,0.970873786407767,outdoor,Daniel,State University of New York at Buffalo,German,2,0.25
+n/a,shared,0,weighted,-1,undefined,0.970873786407767,0.009708737864077669,outdoor,Gerald,Franklin Pierce Law Center,Hispanic-American Studies,3,0.25
+a,shared,1,weighted,2,They are male,0.009708737864077669,0.009708737864077669,outdoor,Nancy,University of New Orleans,German,0,0.24691358024691357
+a,shared,1,weighted,2,They are male,0.009708737864077669,0.009708737864077669,outdoor,Nathan,Franklin Pierce Law Center,Astronomy,1,0.24957024535083608
+a,shared,1,weighted,2,They are male,0.009708737864077669,0.970873786407767,outdoor,Daniel,State University of New York at Buffalo,German,2,0.2517580872011252
+a,shared,1,weighted,2,They are male,0.970873786407767,0.009708737864077669,outdoor,Gerald,Franklin Pierce Law Center,Hispanic-American Studies,3,0.2517580872011252
+b,shared,2,weighted,3,They study a humanity,0.009708737864077669,0.009708737864077669,outdoor,Nancy,University of New Orleans,German,0,0.24519025953289553
+b,shared,2,weighted,3,They study a humanity,0.009708737864077669,0.009708737864077669,outdoor,Nathan,Franklin Pierce Law Center,Astronomy,1,0.23768594795317724
+b,shared,2,weighted,3,They study a humanity,0.970873786407767,0.009708737864077669,outdoor,Daniel,State University of New York at Buffalo,German,2,0.25856189625696363
+b,shared,2,weighted,3,They study a humanity,0.009708737864077669,0.970873786407767,outdoor,Gerald,Franklin Pierce Law Center,Hispanic-American Studies,3,0.25856189625696363
+a,shared,3,weighted,2,They are male,0.009708737864077669,0.009708737864077669,outdoor,Nancy,University of New Orleans,German,0,0.23351453288847193
+a,shared,3,weighted,2,They are male,0.009708737864077669,0.009708737864077669,outdoor,Nathan,Franklin Pierce Law Center,Astronomy,1,0.23571819667170357
+a,shared,3,weighted,2,They are male,0.009708737864077669,0.970873786407767,outdoor,Daniel,State University of New York at Buffalo,German,2,0.26538363521991226
+a,shared,3,weighted,2,They are male,0.970873786407767,0.009708737864077669,outdoor,Gerald,Franklin Pierce Law Center,Hispanic-American Studies,3,0.26538363521991226
+b,shared,4,weighted,3,They study a humanity,0.009708737864077669,0.009708737864077669,outdoor,Nancy,University of New Orleans,German,0,0.2313093261814413
+b,shared,4,weighted,3,They study a humanity,0.009708737864077669,0.009708737864077669,outdoor,Nathan,Franklin Pierce Law Center,Astronomy,1,0.22449352063971773
+b,shared,4,weighted,3,They study a humanity,0.970873786407767,0.009708737864077669,outdoor,Daniel,State University of New York at Buffalo,German,2,0.27209857658942055
+b,shared,4,weighted,3,They study a humanity,0.009708737864077669,0.970873786407767,outdoor,Gerald,Franklin Pierce Law Center,Hispanic-American Studies,3,0.27209857658942055
+a,shared,5,weighted,2,They are male,0.009708737864077669,0.009708737864077669,outdoor,Nancy,University of New Orleans,German,0,0.2202945963632774
+a,shared,5,weighted,2,They are male,0.009708737864077669,0.009708737864077669,outdoor,Nathan,Franklin Pierce Law Center,Astronomy,1,0.22208802278824974
+a,shared,5,weighted,2,They are male,0.009708737864077669,0.970873786407767,outdoor,Daniel,State University of New York at Buffalo,German,2,0.27880869042423645
+a,shared,5,weighted,2,They are male,0.970873786407767,0.009708737864077669,outdoor,Gerald,Franklin Pierce Law Center,Hispanic-American Studies,3,0.27880869042423645

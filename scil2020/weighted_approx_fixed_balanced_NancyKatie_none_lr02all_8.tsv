@@ -1,0 +1,38 @@
+speaker,cg,generation,sampler,sampled_w_idx,selected_u,listener_belief,speaker_belief,location_pref,name,school/company,major,w_idx,cg_listener_prob,cg_speaker_prob
+n/a,approx,0,weighted,-1,undefined,0.25,0.5263157894736842,outdoor,Nancy,University of New Orleans,German,0,0.25,0.25
+n/a,approx,0,weighted,-1,undefined,0.25,0.3684210526315789,indoor,Sally,University of New Orleans,German,1,0.25,0.25
+n/a,approx,0,weighted,-1,undefined,0.25,0.05263157894736842,outdoor,Katie,University of New Orleans,Astronomy,2,0.25,0.25
+n/a,approx,0,weighted,-1,undefined,0.25,0.05263157894736842,indoor,Ina,University of New Orleans,Astronomy,3,0.25,0.25
+a,approx,1,weighted,2,They study a science,0.25,0.5263157894736842,outdoor,Nancy,University of New Orleans,German,0,0.23809523809523808,0.23809523809523808
+a,approx,1,weighted,2,They study a science,0.25,0.3684210526315789,indoor,Sally,University of New Orleans,German,1,0.23809523809523808,0.23809523809523808
+a,approx,1,weighted,2,They study a science,0.25,0.05263157894736842,outdoor,Katie,University of New Orleans,Astronomy,2,0.2619047619047619,0.2619047619047619
+a,approx,1,weighted,2,They study a science,0.25,0.05263157894736842,indoor,Ina,University of New Orleans,Astronomy,3,0.2619047619047619,0.2619047619047619
+b,approx,2,weighted,1,They study a humanity,0.5263157894736842,0.25,outdoor,Nancy,University of New Orleans,German,0,0.2964519140989729,0.28174603174603174
+b,approx,2,weighted,1,They study a humanity,0.3684210526315789,0.25,indoor,Sally,University of New Orleans,German,1,0.26704014939309056,0.28174603174603174
+b,approx,2,weighted,1,They study a humanity,0.05263157894736842,0.25,outdoor,Katie,University of New Orleans,Astronomy,2,0.21825396825396828,0.21825396825396828
+b,approx,2,weighted,1,They study a humanity,0.05263157894736842,0.25,indoor,Ina,University of New Orleans,Astronomy,3,0.21825396825396828,0.21825396825396828
+a,approx,3,weighted,1,They like being indoors,0.25,0.5263157894736842,outdoor,Nancy,University of New Orleans,German,0,0.23478835978835974,0.2470432617491441
+a,approx,3,weighted,1,They like being indoors,0.25,0.3684210526315789,indoor,Sally,University of New Orleans,German,1,0.3223958497390034,0.3184036423265318
+a,approx,3,weighted,1,They like being indoors,0.25,0.05263157894736842,outdoor,Katie,University of New Orleans,Astronomy,2,0.1818783068783069,0.18187830687830692
+a,approx,3,weighted,1,They like being indoors,0.25,0.05263157894736842,indoor,Ina,University of New Orleans,Astronomy,3,0.26093748359432983,0.2526747890460173
+b,approx,4,weighted,2,They like being outdoors,0.5263157894736842,0.25,outdoor,Nancy,University of New Orleans,German,0,0.3586985067755087,0.29305523039783066
+b,approx,4,weighted,2,They like being outdoors,0.3684210526315789,0.25,indoor,Sally,University of New Orleans,German,1,0.26533636860544313,0.2686632081158362
+b,approx,4,weighted,2,They like being outdoors,0.05263157894736842,0.25,outdoor,Katie,University of New Orleans,Astronomy,2,0.1654028004140338,0.2208336584910582
+b,approx,4,weighted,2,They like being outdoors,0.05263157894736842,0.25,indoor,Ina,University of New Orleans,Astronomy,3,0.2105623242050144,0.21744790299527486
+a,approx,5,weighted,1,They like being indoors,0.25,0.5263157894736842,outdoor,Nancy,University of New Orleans,German,0,0.24421269199819223,0.2989154223129239
+a,approx,5,weighted,1,They like being indoors,0.25,0.3684210526315789,indoor,Sally,University of New Orleans,German,1,0.31132522921733097,0.3222510736717316
+a,approx,5,weighted,1,They like being indoors,0.25,0.05263157894736842,outdoor,Katie,University of New Orleans,Astronomy,2,0.18402804874254852,0.13783566701169483
+a,approx,5,weighted,1,They like being indoors,0.25,0.05263157894736842,indoor,Ina,University of New Orleans,Astronomy,3,0.26043403004192833,0.24099783700364966
+b,approx,6,weighted,1,They study a humanity,0.5263157894736842,0.25,outdoor,Nancy,University of New Orleans,German,0,0.34261974661415756,0.2718425725055178
+b,approx,6,weighted,1,They study a humanity,0.3684210526315789,0.25,indoor,Sally,University of New Orleans,German,1,0.34168566670638867,0.35777236184075156
+b,approx,6,weighted,1,They study a humanity,0.05263157894736842,0.25,outdoor,Katie,University of New Orleans,Astronomy,2,0.11486305584307903,0.1533567072854571
+b,approx,6,weighted,1,They study a humanity,0.05263157894736842,0.25,indoor,Ina,University of New Orleans,Astronomy,3,0.20083153083637473,0.2170283583682736
+a,approx,7,weighted,0,They like being outdoors,0.25,0.5263157894736842,outdoor,Nancy,University of New Orleans,German,0,0.318296428111347,0.41936210661715434
+a,approx,7,weighted,0,They like being outdoors,0.25,0.3684210526315789,indoor,Sally,University of New Orleans,German,1,0.29814363486729295,0.2847380555886572
+a,approx,7,weighted,0,They like being outdoors,0.25,0.05263157894736842,outdoor,Katie,University of New Orleans,Astronomy,2,0.20270297171446536,0.12854022876387616
+a,approx,7,weighted,0,They like being outdoors,0.25,0.05263157894736842,indoor,Ina,University of New Orleans,Astronomy,3,0.18085696530689466,0.16735960903031227
+b,approx,8,weighted,1,They like being indoors,0.5263157894736842,0.25,outdoor,Nancy,University of New Orleans,German,0,0.34946842218096197,0.2652470234261225
+b,approx,8,weighted,1,They like being indoors,0.3684210526315789,0.25,indoor,Sally,University of New Orleans,German,1,0.3887426695516418,0.35943870085741886
+b,approx,8,weighted,1,They like being indoors,0.05263157894736842,0.25,outdoor,Katie,University of New Orleans,Astronomy,2,0.10711685730323015,0.1689191430953878
+b,approx,8,weighted,1,They like being indoors,0.05263157894736842,0.25,indoor,Ina,University of New Orleans,Astronomy,3,0.1546720509641662,0.20639513262107084
+undefined

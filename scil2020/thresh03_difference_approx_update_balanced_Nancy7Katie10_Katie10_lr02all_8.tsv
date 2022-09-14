@@ -1,0 +1,102 @@
+speaker,cg,generation,sampler,sampled_w_idx,selected_u,listener_belief,speaker_belief,location_pref,name,school/company,major,w_idx,cg_listener_prob,cg_speaker_prob
+n/a,approx,0,difference_thresh,-1,undefined,0.07692307692307693,0.3684210526315789,outdoor,Nancy,University of New Orleans,German,0,0.25,0.25
+n/a,approx,0,difference_thresh,-1,undefined,0.07692307692307693,0.05263157894736842,indoor,Sally,University of New Orleans,German,1,0.25,0.25
+n/a,approx,0,difference_thresh,-1,undefined,0.7692307692307693,0.5263157894736842,outdoor,Katie,University of New Orleans,Astronomy,2,0.25,0.25
+n/a,approx,0,difference_thresh,-1,undefined,0.07692307692307693,0.05263157894736842,indoor,Ina,University of New Orleans,Astronomy,3,0.25,0.25
+dist {
+  params: {
+    ps: [
+      0.513157894736842,
+      0.19736842105263158,
+      0.6710526315789473,
+      0.19736842105263158
+    ],
+    vs: [ [Object], [Object], [Object], [Object] ]
+  },
+  marginal: dist {
+    params: { dist: [Object] },
+    supp: [ [Object], [Object], [Object], [Object] ],
+    getDist: [Function (anonymous)]
+  }
+}
+a,approx,1,difference_thresh,2,They study a science,0.07575757575757576,0.3684210526315789,outdoor,Nancy,University of New Orleans,German,0,0.23809523809523808,0.23809523809523808
+a,approx,1,difference_thresh,2,They study a science,0.07575757575757576,0.05263157894736842,indoor,Sally,University of New Orleans,German,1,0.23809523809523808,0.23809523809523808
+a,approx,1,difference_thresh,2,They study a science,0.7713498622589532,0.5263157894736842,outdoor,Katie,University of New Orleans,Astronomy,2,0.2813852813852814,0.2619047619047619
+a,approx,1,difference_thresh,2,They study a science,0.07713498622589532,0.05263157894736842,indoor,Ina,University of New Orleans,Astronomy,3,0.24242424242424238,0.2619047619047619
+b,approx,2,difference_thresh,2,They like being outdoors,0.3687766240681576,0.07575757575757576,outdoor,Nancy,University of New Orleans,German,0,0.2655053501698869,0.27320172794856346
+b,approx,2,difference_thresh,2,They like being outdoors,0.05208333333333333,0.07575757575757576,indoor,Sally,University of New Orleans,German,1,0.1984126984126984,0.1984126984126984
+b,approx,2,difference_thresh,2,They like being outdoors,0.5270567092651757,0.7713498622589532,outdoor,Katie,University of New Orleans,Astronomy,2,0.31782798316344646,0.32636537161853624
+b,approx,2,difference_thresh,2,They like being outdoors,0.05208333333333333,0.07713498622589532,indoor,Ina,University of New Orleans,Astronomy,3,0.21825396825396826,0.202020202020202
+dist {
+  params: {
+    ps: [
+      0.43561254373954056,
+      0.18601190476190482,
+      0.5415699959429991,
+      0.16617063492063494
+    ],
+    vs: [ [Object], [Object], [Object], [Object] ]
+  },
+  marginal: dist {
+    params: { dist: [Object] },
+    supp: [ [Object], [Object], [Object], [Object] ],
+    getDist: [Function (anonymous)]
+  }
+}
+a,approx,3,difference_thresh,1,They like being indoors,0.06313131313131314,0.3687766240681576,outdoor,Nancy,University of New Orleans,German,0,0.22766810662380285,0.22125445847490577
+a,approx,3,difference_thresh,1,They like being indoors,0.14398963724157687,0.05208333333333333,indoor,Sally,University of New Orleans,German,1,0.24620223945417904,0.242482297201895
+a,approx,3,difference_thresh,1,They like being indoors,0.6427915518824611,0.5270567092651757,outdoor,Katie,University of New Orleans,Astronomy,2,0.27197114301544684,0.2648566526362054
+a,approx,3,difference_thresh,1,They like being indoors,0.15008749774464902,0.05208333333333333,indoor,Ina,University of New Orleans,Astronomy,3,0.2541585109065712,0.27140659168699394
+b,approx,4,difference_thresh,2,They like being outdoors,0.37361220588207605,0.06313131313131314,outdoor,Nancy,University of New Orleans,German,0,0.25067706788769956,0.2639401727536218
+b,approx,4,difference_thresh,2,They like being outdoors,0.043402777777777776,0.14398963724157687,indoor,Sally,University of New Orleans,German,1,0.20206858100157915,0.20516853287848255
+b,approx,4,difference_thresh,2,They like being outdoors,0.5395822385623683,0.6427915518824611,outdoor,Katie,University of New Orleans,Astronomy,2,0.32108219137155974,0.31909253527908626
+b,approx,4,difference_thresh,2,They like being outdoors,0.043402777777777776,0.15008749774464902,indoor,Ina,University of New Orleans,Astronomy,3,0.2261721597391616,0.21179875908880935
+dist {
+  params: {
+    ps: [
+      0.4884739019171441,
+      0.20687296069896627,
+      0.5840388111135761,
+      0.18276938196138381
+    ],
+    vs: [ [Object], [Object], [Object], [Object] ]
+  },
+  marginal: dist {
+    params: { dist: [Object] },
+    supp: [ [Object], [Object], [Object], [Object] ],
+    getDist: [Function (anonymous)]
+  }
+}
+a,approx,5,difference_thresh,3,They like being indoors,0.052609427609427606,0.37361220588207605,outdoor,Nancy,University of New Orleans,German,0,0.21995014396135146,0.20889755657308293
+a,approx,5,difference_thresh,3,They like being indoors,0.19968638779534617,0.043402777777777776,indoor,Sally,University of New Orleans,German,1,0.2506688008261009,0.2440797431216392
+a,approx,5,difference_thresh,3,They like being indoors,0.5356596265687175,0.5395822385623683,outdoor,Katie,University of New Orleans,Astronomy,2,0.2659104460659052,0.2675684928096331
+a,approx,5,difference_thresh,3,They like being indoors,0.21204455802650876,0.043402777777777776,indoor,Ina,University of New Orleans,Astronomy,3,0.26347060914664233,0.27945420749564476
+b,approx,6,difference_thresh,2,They like being outdoors,0.3765626623119347,0.052609427609427606,outdoor,Nancy,University of New Orleans,German,0,0.23930045455444043,0.25682348737045196
+b,approx,6,difference_thresh,2,They like being outdoors,0.03616898148148148,0.19968638779534617,indoor,Sally,University of New Orleans,German,1,0.20339978593469935,0.2088906673550841
+b,approx,6,difference_thresh,2,They like being outdoors,0.5510993747251024,0.5356596265687175,outdoor,Katie,University of New Orleans,Astronomy,2,0.3244212532644897,0.31472700431892864
+b,approx,6,difference_thresh,2,They like being outdoors,0.03616898148148148,0.21204455802650876,indoor,Ina,University of New Orleans,Astronomy,3,0.23287850624637066,0.21955884095553532
+dist {
+  params: {
+    ps: [
+      0.5306812572872726,
+      0.2261882450765605,
+      0.6200971709903911,
+      0.19670952476488918
+    ],
+    vs: [ [Object], [Object], [Object], [Object] ]
+  },
+  marginal: dist {
+    params: { dist: [Object] },
+    supp: [ [Object], [Object], [Object], [Object] ],
+    getDist: [Function (anonymous)]
+  }
+}
+a,approx,7,difference_thresh,2,They study a science,0.04384118967452301,0.3765626623119347,outdoor,Nancy,University of New Orleans,German,0,0.21401957280870998,0.19941704546203368
+a,approx,7,difference_thresh,2,They study a science,0.16640532316278847,0.03616898148148148,indoor,Sally,University of New Orleans,German,1,0.17407555612923678,0.16949982161224944
+a,approx,7,difference_thresh,2,They study a science,0.5697101605094299,0.5510993747251024,outdoor,Katie,University of New Orleans,Astronomy,2,0.38559964196793917,0.37168675961075925
+a,approx,7,difference_thresh,2,They study a science,0.2200433266532587,0.03616898148148148,indoor,Ina,University of New Orleans,Astronomy,3,0.22630522909411416,0.25939637331495763
+b,approx,8,difference_thresh,2,They like being outdoors,0.3724131916137781,0.04384118967452301,outdoor,Nancy,University of New Orleans,German,0,0.22479184423886064,0.23049150542498759
+b,approx,8,difference_thresh,2,They like being outdoors,0.030140817901234563,0.16640532316278847,indoor,Sally,University of New Orleans,German,1,0.1412498513435412,0.14506296344103065
+b,approx,8,difference_thresh,2,They like being outdoors,0.5673051725837527,0.5697101605094299,outdoor,Katie,University of New Orleans,Astronomy,2,0.4177946599884668,0.43585784022222
+b,approx,8,difference_thresh,2,They like being outdoors,0.030140817901234563,0.2200433266532587,indoor,Ina,University of New Orleans,Astronomy,3,0.21616364442913136,0.1885876909117618
+undefined

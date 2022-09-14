@@ -1,0 +1,38 @@
+speaker,cg,generation,sampler,sampled_w_idx,selected_u,listener_belief,speaker_belief,location_pref,name,school/company,major,w_idx,cg_speaker_prob,cg_listener_prob
+n/a,approx,0,threshold,-1,undefined,0.25,0.7692307692307693,outdoor,Nancy,University of New Orleans,German,0,0.25,0.25
+n/a,approx,0,threshold,-1,undefined,0.25,0.07692307692307693,indoor,Sally,University of New Orleans,German,1,0.25,0.25
+n/a,approx,0,threshold,-1,undefined,0.25,0.07692307692307693,outdoor,Katie,University of New Orleans,Astronomy,2,0.25,0.25
+n/a,approx,0,threshold,-1,undefined,0.25,0.07692307692307693,indoor,Ina,University of New Orleans,Astronomy,3,0.25,0.25
+a,approx,1,threshold,0,They study a humanity,0.2619047619047619,0.7692307692307693,outdoor,Nancy,University of New Orleans,German,0,0.2619047619047619,0.2619047619047619
+a,approx,1,threshold,0,They study a humanity,0.2619047619047619,0.07692307692307693,indoor,Sally,University of New Orleans,German,1,0.2619047619047619,0.2619047619047619
+a,approx,1,threshold,0,They study a humanity,0.23809523809523808,0.07692307692307693,outdoor,Katie,University of New Orleans,Astronomy,2,0.23809523809523808,0.23809523809523808
+a,approx,1,threshold,0,They study a humanity,0.23809523809523808,0.07692307692307693,indoor,Ina,University of New Orleans,Astronomy,3,0.23809523809523808,0.23809523809523808
+b,approx,2,threshold,-1,NULL,0.7692307692307693,0.2619047619047619,outdoor,Nancy,University of New Orleans,German,0,0.2619047619047619,0.2619047619047619
+b,approx,2,threshold,-1,NULL,0.07692307692307693,0.2619047619047619,indoor,Sally,University of New Orleans,German,1,0.2619047619047619,0.2619047619047619
+b,approx,2,threshold,-1,NULL,0.07692307692307693,0.23809523809523808,outdoor,Katie,University of New Orleans,Astronomy,2,0.23809523809523808,0.23809523809523808
+b,approx,2,threshold,-1,NULL,0.07692307692307693,0.23809523809523808,indoor,Ina,University of New Orleans,Astronomy,3,0.23809523809523808,0.23809523809523808
+a,approx,3,threshold,0,They like being outdoors,0.307139976377726,0.7692307692307693,outdoor,Nancy,University of New Orleans,German,0,0.307139976377726,0.307139976377726
+a,approx,3,threshold,0,They like being outdoors,0.21825396825396826,0.07692307692307693,indoor,Sally,University of New Orleans,German,1,0.21825396825396826,0.21825396825396826
+a,approx,3,threshold,0,They like being outdoors,0.27619335695560737,0.07692307692307693,outdoor,Katie,University of New Orleans,Astronomy,2,0.27619335695560737,0.27619335695560737
+a,approx,3,threshold,0,They like being outdoors,0.1984126984126984,0.07692307692307693,indoor,Ina,University of New Orleans,Astronomy,3,0.1984126984126984,0.1984126984126984
+b,approx,4,threshold,-1,NULL,0.7692307692307693,0.307139976377726,outdoor,Nancy,University of New Orleans,German,0,0.307139976377726,0.307139976377726
+b,approx,4,threshold,-1,NULL,0.07692307692307693,0.21825396825396826,indoor,Sally,University of New Orleans,German,1,0.21825396825396826,0.21825396825396826
+b,approx,4,threshold,-1,NULL,0.07692307692307693,0.27619335695560737,outdoor,Katie,University of New Orleans,Astronomy,2,0.27619335695560737,0.27619335695560737
+b,approx,4,threshold,-1,NULL,0.07692307692307693,0.1984126984126984,indoor,Ina,University of New Orleans,Astronomy,3,0.1984126984126984,0.1984126984126984
+a,approx,5,threshold,0,They study a humanity,0.3589119164332526,0.7692307692307693,outdoor,Nancy,University of New Orleans,German,0,0.3589119164332526,0.3589119164332526
+a,approx,5,threshold,0,They study a humanity,0.24558303742649262,0.07692307692307693,indoor,Sally,University of New Orleans,German,1,0.24558303742649262,0.24558303742649262
+a,approx,5,threshold,0,They study a humanity,0.23016113079633943,0.07692307692307693,outdoor,Katie,University of New Orleans,Astronomy,2,0.23016113079633943,0.23016113079633943
+a,approx,5,threshold,0,They study a humanity,0.16534391534391532,0.07692307692307693,indoor,Ina,University of New Orleans,Astronomy,3,0.16534391534391532,0.16534391534391532
+b,approx,6,threshold,0,They like being outdoors,0.7715625473118849,0.3589119164332526,outdoor,Nancy,University of New Orleans,German,0,0.4529479507917777,0.40774094990938914
+b,approx,6,threshold,0,They like being outdoors,0.07575757575757575,0.24558303742649262,indoor,Sally,University of New Orleans,German,1,0.20465253118874388,0.20465253118874385
+b,approx,6,threshold,0,They like being outdoors,0.07692230117296359,0.23016113079633943,outdoor,Katie,University of New Orleans,Astronomy,2,0.20461292189954913,0.2498199227819376
+b,approx,6,threshold,0,They like being outdoors,0.07575757575757575,0.16534391534391532,indoor,Ina,University of New Orleans,Astronomy,3,0.13778659611992944,0.13778659611992944
+a,approx,7,threshold,0,They like being outdoors,0.4085828022554705,0.7715625473118849,outdoor,Nancy,University of New Orleans,German,0,0.44927366348558434,0.5022520936688354
+a,approx,7,threshold,0,They like being outdoors,0.20465253118874385,0.07575757575757575,indoor,Sally,University of New Orleans,German,1,0.17054377599061987,0.1705437759906199
+a,approx,7,threshold,0,They like being outdoors,0.2489780704358562,0.07692230117296359,outdoor,Katie,University of New Orleans,Astronomy,2,0.26536039709052134,0.21238196690727032
+a,approx,7,threshold,0,They like being outdoors,0.13778659611992944,0.07575757575757575,indoor,Ina,University of New Orleans,Astronomy,3,0.11482216343327455,0.11482216343327453
+b,approx,8,threshold,0,They study a humanity,0.7996565463312552,0.4085828022554705,outdoor,Nancy,University of New Orleans,German,0,0.5752311682953805,0.507836205760039
+b,approx,8,threshold,0,They study a humanity,0.07311022289329545,0.20465253118874385,indoor,Sally,University of New Orleans,German,1,0.1520987230874989,0.1753449938034646
+b,approx,8,threshold,0,They study a humanity,0.06410191764413632,0.2489780704358562,outdoor,Katie,University of New Orleans,Astronomy,2,0.17698497242272523,0.22113366424210112
+b,approx,8,threshold,0,They study a humanity,0.06313131313131312,0.13778659611992944,indoor,Ina,University of New Orleans,Astronomy,3,0.09568513619439543,0.09568513619439545
+undefined
